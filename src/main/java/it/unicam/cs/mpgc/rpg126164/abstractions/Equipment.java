@@ -6,5 +6,10 @@ package it.unicam.cs.mpgc.rpg126164.abstractions;
  */
 public interface Equipment {
 
-    // TODO DA RAGIONARCI MEGLIO
+    /**
+     * This method allows the attacker to use its own current weapon to deal damage to the defender
+     * @param attacker the character that is attacking
+     * @param defender the character that receives the damage
+     */
+    void useEquipment(Character attacker, Character defender);
 }

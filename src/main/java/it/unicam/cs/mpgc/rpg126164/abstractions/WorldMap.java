@@ -7,8 +7,6 @@ public interface WorldMap {
 
     /**
      * This method allows to open the map
-     * <p></p>
-     * NOTE: opening the map blocks the possibility of the player to move in the world game
      */
     void open();
 
@@ -18,7 +16,7 @@ public interface WorldMap {
     void close();
 
     /**
-     * This method allows to update the map with the completed progresses and the current position of the player
+     * This method allows to update the map with the completed progresses and the current level of the player
      */
     void update();
 }

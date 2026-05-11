@@ -10,6 +10,7 @@ public interface Consumable {
     /**
      * This method allows to consume this consumable object, applying the specific effects and advantages
      * to the character that uses it or to other characters
+     * @param character the character that consumes this consumable object
      */
-    void consume();
+    void consume(Character character);
 }

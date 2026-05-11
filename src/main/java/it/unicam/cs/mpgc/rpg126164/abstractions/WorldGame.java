@@ -1,7 +1,5 @@
 package it.unicam.cs.mpgc.rpg126164.abstractions;
 
-import it.unicam.cs.mpgc.rpg126164.domain.Position;
-
 public interface WorldGame {
 
     /**
@@ -24,12 +22,9 @@ public interface WorldGame {
     void exit();
 
     /**
-     * This method checks if the given position is reachable by the player character
-     *
-     * @param position the position to check
-     * @return true id the character can reach the given position, false otherwise
+     * This method allows the player to move to the next level
      */
-    boolean isReachable(Position position);
+    void next();
 
     // TODO MANCA PER LA PERCENTUALE DI PROGRESSO DEL GIOCO, SERVONO LE MECCANICHE PRIMA
 }
