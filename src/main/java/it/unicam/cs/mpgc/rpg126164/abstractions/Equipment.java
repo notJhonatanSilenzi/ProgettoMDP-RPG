@@ -8,8 +8,7 @@ public interface Equipment {
 
     /**
      * This method allows the attacker to use its own current weapon to deal damage to the defender
-     * @param attacker the character that is attacking
-     * @param defender the character that receives the damage
+     * @param target the character that is attacking
      */
-    void useEquipment(Character attacker, Character defender);
+    void useEquipment(Character target);
 }

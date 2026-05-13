@@ -7,11 +7,12 @@ package it.unicam.cs.mpgc.rpg126164.abstractions;
 public interface Fighter {
 
     // TODO DA RAGIONARCI MEGLIO
+    // DEVE RITORNARE LA SHEET E LA ABILITA'
 
     /**
      * This method allows to this character to cause damages to other characters able to fight
      */
-    void attack();
+    void attack(Character target);
 
     /**
      * This method allows to this character to receive damages from other characters able to fight
@@ -20,7 +21,6 @@ public interface Fighter {
 
     /**
      * This method checks if this character is still alive or not
-     *
      * @return true if it's still alive, false otherwise
      */
     boolean isAlive();
