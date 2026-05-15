@@ -4,11 +4,14 @@ import it.unicam.cs.mpgc.rpg126164.abstractions.Character;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Equipment;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Item;
 
-public class Weapon extends Item implements Equipment {
+/**
+ * This class represents a damage source, especially weapons or spells. They're reusable multiple times in fights
+ */
+public class DamageSource extends Item implements Equipment {
 
     private final int ATK;
 
-    public Weapon(String name, String description, int maxAmount, int ATK) {
+    public DamageSource(String name, String description, int maxAmount, int ATK) {
         if (maxAmount != 1) throw new IllegalArgumentException("Weapons are not cumulable");
 
         super(name, description, maxAmount);

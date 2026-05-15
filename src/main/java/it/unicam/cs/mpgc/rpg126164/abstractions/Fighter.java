@@ -1,27 +1,35 @@
 package it.unicam.cs.mpgc.rpg126164.abstractions;
 
+import it.unicam.cs.mpgc.rpg126164.domain.Archetype;
+
 /**
  * This interface allows to any character that implements this interface to fight with other characters able to
- * fight, allowing to cause or receive damages with other characters
+ * fight, allowing to interact with the sheet, the archetype and the equipment of this character. This interface
+ * is implemented by the playable characters and the enemies
  */
 public interface Fighter {
 
-    // TODO DA RAGIONARCI MEGLIO
-    // DEVE RITORNARE LA SHEET E LA ABILITA'
+    /**
+     * Returns the sheet of this fighter
+     * @return the sheet of this fighter
+     */
+    CharacterSheet getSheet();
 
     /**
-     * This method allows to this character to cause damages to other characters able to fight
+     * Returns the archetype of this fighter
+     * @return the archetype of this fighter
      */
-    void attack(Character target);
+    Archetype getArchetype();
 
     /**
-     * This method allows to this character to receive damages from other characters able to fight
+     * Returns the current Equipment of this fighter
+     * @return the current Equipment of this fighter
      */
-    void getDamage();
+    Equipment getEquipment();
 
     /**
-     * This method checks if this character is still alive or not
-     * @return true if it's still alive, false otherwise
+     * Allows to change the current equipment in usage
+     * @param equipment the equipment to equip
      */
-    boolean isAlive();
+    void setEquipment(Equipment equipment);
 }

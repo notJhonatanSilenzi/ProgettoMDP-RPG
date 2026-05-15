@@ -3,8 +3,10 @@ package it.unicam.cs.mpgc.rpg126164.domain;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Equipment;
 import it.unicam.cs.mpgc.rpg126164.abstractions.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Item;
+import it.unicam.cs.mpgc.rpg126164.abstractions.MoneyCollector;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a concrete inventory for a playable character. It contains the current equipment, the
@@ -13,20 +15,20 @@ import java.util.Map;
 public class Inventory implements InventoryBehaviour {
 
     private Equipment current;
-    private Map<Item, Integer> items;
-    private Wallet wallet;
+    private List<ItemStack> items;
+    private final MoneyCollector wallet;
+    private final int INVENTORY_SIZE = 5;
 
     /**
      * Creates an inventory
-     * @param current the current item, initially null
      * @param items the starting items collection
      * @param wallet the wallet with money
      */
-    public Inventory(Equipment current, Map<Item, Integer> items, Wallet wallet) {
-        if (current == null || items == null || wallet == null)
+    public Inventory(List<ItemStack> items, MoneyCollector wallet) {
+        if (items == null || wallet == null)
             throw new IllegalArgumentException("Invalid parameters for inventory");
 
-        this.current = current;
+        this.current = null;
         this.items = items;
         this.wallet = wallet;
     }
@@ -35,66 +37,66 @@ public class Inventory implements InventoryBehaviour {
      * Equips the given equipment as current item
      * @param equipment the equipable item to set as current item
      */
+    @SuppressWarnings("SuspiciousMethodCalls")
     public void equip(Equipment equipment) {
         if (equipment == null) throw new IllegalArgumentException("Equipment cannot be null");
+
+        if (this.getItems().contains(equipment))
+            throw new RuntimeException("Cannot equip an item that is not in the inventory");
 
         this.current = equipment;
     }
 
     /**
      * Collects the given item at the given amount in the inventory
-     * @param item the item to collect
-     * @param count the amount of item to collect
+     * @param stack the stack of item to collect
      */
-    public void collect(Item item, int count) {
-        this.checkInventory(item, count);
+    public void collect(ItemStack stack) {
+        if (stack == null) throw new IllegalArgumentException("Parameters cannot be null");
 
-        if (this.items.containsKey(item)) this.items.put(item, this.items.get(item) + count);
-        else this.items.put(item, count);
+        // If there's space and the player hasn't got this item in this inventory
+        if (!(this.items.contains(stack)) && items.size() <= INVENTORY_SIZE)
+            this.items.add(stack);
+
+        // If there's already this item in this inventory
+        for (ItemStack is : this.items)
+            if (is.getItem().equals(stack.getItem()))
+                if (is.getCount() + stack.getCount() <= is.getMaxAmount())
+                    is.setCount(is.getCount() + stack.getCount());
+                else {
+                    is.setCount(is.getMaxAmount());
+                    throw new RuntimeException("Cannot collect enough units of this item");
+                }
     }
 
-    /**
-     * Removes the given item at the given amount from the inventory
-     * @param item the item to drop from the inventory
-     * @param count the amount of item to drop
-     */
-    public void drop(Item item, int count) {
-        if (item == null || count <= 0) throw new IllegalArgumentException("Parameters cannot be null");
+    public void drop(ItemStack stack) {
+        if (stack == null || !(this.getItems().contains(stack.getItem())))
+            throw new IllegalArgumentException("Invalid parameters");
 
-        if (!(this.items.containsKey(item)))
-            throw new RuntimeException("Cannot drop an item that is not in the inventory");
+        // Find the item
+        int i = -1;
+        for (ItemStack is : this.items)
+            if (is.getItem().equals(stack.getItem())) i = items.indexOf(is);
 
-        if (count == item.getMaxAmount()) items.remove(item);
-        else this.items.put(item, this.items.get(item) - count);
+        if (items.get(i).getCount() - stack.getCount() > 0) // Item remains in inventory
+            items.get(i).setCount(items.get(i).getCount() - stack.getCount());
+        else this.items.remove(i); // Item doesn't remain in inventory
     }
 
-    /**
-     * Makes all the necessary checks for collecting items in the inventory
-     * @param item the item to check and collect
-     * @param count the given amount
-     * @throws IllegalArgumentException if the parameters are invalid
-     * @throws RuntimeException if the amount to collect exceeds the maximum amount of the item
-     */
-    private void checkInventory(Item item, int count) {
-        if (item == null || count <= 0) throw new IllegalArgumentException("Parameters cannot be null");
+    @Override
+    public Equipment getCurrentEquipment() { return current; }
 
-        if (this.items.containsKey(item))
-            if (this.items.get(item) + count >= item.getMaxAmount())
-                throw new RuntimeException("Cannot collect more than the maximum amount of this item");
-            else if (item instanceof Equipment)
-                 throw new RuntimeException("Cannot collect more than one of this item");
-
-        if (item instanceof Equipment && count > 1) throw new RuntimeException("Cannot collect more than one of this item");
-        if (count > item.getMaxAmount()) throw new RuntimeException("Cannot collect more than the maximum amount of this item");
-    }
-
-    // TODO - manca gestione del wallet
 
     // GETTERS
 
-    public Equipment getCurrent() { return current; }
+    public List<ItemStack> getStacks() { return items; }
 
-    public Map<Item, Integer> getItems() { return items; }
+    public MoneyCollector getWallet() { return wallet; }
 
-    public Wallet getWallet() { return wallet; }
+    public List<Item> getItems() {
+        List<Item> items = new ArrayList<>();
+        for (ItemStack stack : this.items)
+            items.add(stack.getItem());
+        return items;
+    }
 }

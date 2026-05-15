@@ -19,7 +19,7 @@ public class HarmingPotion extends Item implements Consumable {
      * @param maxAmount its max amount
      * @param HPdamage its
      */
-    public HarmingPotion(String name, String  description, int maxAmount, int HPdamage) {
+    public HarmingPotion(String name, String description, int maxAmount, int HPdamage) {
         if (HPdamage <= 0) throw new IllegalArgumentException("HP damage must be greater than 0");
 
         super(name, description, maxAmount);
