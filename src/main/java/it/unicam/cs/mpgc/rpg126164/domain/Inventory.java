@@ -15,7 +15,7 @@ import java.util.List;
 public class Inventory implements InventoryBehaviour {
 
     private Equipment current;
-    private List<ItemStack> items;
+    private final List<ItemStack> items;
     private final MoneyCollector wallet;
     private final int INVENTORY_SIZE = 5;
 
@@ -91,7 +91,8 @@ public class Inventory implements InventoryBehaviour {
 
     public List<ItemStack> getStacks() { return items; }
 
-    public MoneyCollector getWallet() { return wallet; }
+    @Override
+    public MoneyCollector getMoneyCollector() { return wallet; }
 
     public List<Item> getItems() {
         List<Item> items = new ArrayList<>();

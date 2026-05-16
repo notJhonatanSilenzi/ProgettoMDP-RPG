@@ -68,5 +68,9 @@ public enum Archetype {
                 (int) (this.DEF * multiplier));
     }
 
+    /**
+     * Returns a specific inventory for this character, given the archetype
+     * @return the initial inventory for this character
+     */
     public InventoryBehaviour getInventory() { return InventoryBuilder.getInitialInventory(this); }
 }

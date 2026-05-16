@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.domain;
 
-import it.unicam.cs.mpgc.rpg126164.abstractions.Character;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Consumable;
+import it.unicam.cs.mpgc.rpg126164.abstractions.Fighter;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Item;
 
 /**
@@ -19,15 +19,21 @@ public class HarmingPotion extends Item implements Consumable {
      * @param maxAmount its max amount
      * @param HPdamage its
      */
-    public HarmingPotion(String name, String description, int maxAmount, int HPdamage) {
+    public HarmingPotion(String name, String description, int maxAmount, int tradeValue, int HPdamage) {
         if (HPdamage <= 0) throw new IllegalArgumentException("HP damage must be greater than 0");
 
-        super(name, description, maxAmount);
+        super(name, description, maxAmount, tradeValue);
         this.HPdamage = HPdamage;
     }
 
     @Override
-    public void consume(Character character) {
-        // TODO - Deve ridurre il numero di HP del bersaglio
+    public void consume(Fighter target) {
+        if (target == null) throw new IllegalArgumentException("Target cannot be null");
+
+        target.getSheet().damage(HPdamage);
     }
+
+    // GETTERS
+
+    public int getHPdamage() { return HPdamage; }
 }

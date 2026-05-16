@@ -10,7 +10,7 @@ public interface CharacterSheet {
      * This method allows to get damage from other fighting characters
      * @param damage the hp that this character loses
      */
-    void getDamage(int damage);
+    void damage(int damage);
 
     /**
      * This method allows this character to heal himself

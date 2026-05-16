@@ -3,14 +3,26 @@ package it.unicam.cs.mpgc.rpg126164.domain;
 import it.unicam.cs.mpgc.rpg126164.abstractions.*;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Character;
 
+/**
+ * This class represents a playable character in the game, and it's represented by a name, a description, an
+ * archetype and also an inventory and a sheet for fights. The starting sheet and inventory are built according
+ * to the chosen archetype, and the player is allowed to buy or sell items in the shop, to interact with the
+ * inventory, to consume items and to attack the enemy. Attacking takes in count the current weapon
+ */
 public class PlayableCharacter extends Character implements Fighter {
 
     private final CharacterSheet sheet;
     private final Archetype archetype;
     private final InventoryBehaviour inventory;
 
-    public PlayableCharacter(String name, Archetype archetype) {
-        super(name);
+    /**
+     * Creates a playable character. The sheet and the inventory are built according to the chosen archetype
+     * @param name the name of the character
+     * @param description its description
+     * @param archetype the chosen archetype
+     */
+    public PlayableCharacter(String name, String description, Archetype archetype) {
+        super(name, description);
         this.archetype =  archetype;
         this.sheet = archetype.getSheet();
         this.inventory = archetype.getInventory();
@@ -28,23 +40,48 @@ public class PlayableCharacter extends Character implements Fighter {
     @Override
     public void setEquipment(Equipment equipment) { this.inventory.equip(equipment); }
 
+    /**
+     * This method represents for the player the possibility to attack during a fight. Attacking causes the
+     * player to lose one turn
+     * @param enemy the enemy to hit with the current damage source
+     */
     public void attack(Fighter enemy) {
-        // TODO - ragionarci meglio
-        this.getEquipment().useEquipment((Character) enemy);
+        this.getEquipment().useEquipment(enemy);
     }
 
-    public void usePotion(Item item) {
-        if (item instanceof Equipment)
-            throw new IllegalArgumentException("Can't use an equipment as a potion");
+    /**
+     * This method represents the possibility to use a consumable item to give himself some extra advantages.
+     * Consuming an item causes the player to lose one turn
+     * @param consumable the item to consume
+     */
+    public void usePotion(Consumable consumable) {
+        if (consumable == null)
+            throw new IllegalArgumentException("Null parameter");
 
-        if (item instanceof Consumable) ((Consumable) item).consume(this);
+        consumable.consume(this);
     }
 
+    /**
+     * This method is activable in the shop and allows the player to buy a certain amount of an item, causing
+     * a loss of money in the wallet
+     * @param itemStack the stack of item to purchase
+     */
     public void buyItem(ItemStack itemStack) {
-        // TODO - ragionarci meglio
+        if (itemStack == null) throw new IllegalArgumentException("Null parameter");
+
+        inventory.collect(itemStack);
+        inventory.getMoneyCollector().spend(itemStack.getItem().getTradeValue() * itemStack.getCount());
     }
 
+    /**
+     * This method is activable in the shop and allows the player to sell a certain amount of an item,
+     * causing an increase of money in the wallet
+     * @param itemStack the stack of item to sell
+     */
     public void sellItem(ItemStack itemStack) {
-        // TODO - ragionarci meglio
+        if (itemStack == null) throw new IllegalArgumentException("Null parameter");
+
+        inventory.drop(itemStack);
+        inventory.getMoneyCollector().cash((itemStack.getItem().getTradeValue() * itemStack.getCount()) / 2);
     }
 }

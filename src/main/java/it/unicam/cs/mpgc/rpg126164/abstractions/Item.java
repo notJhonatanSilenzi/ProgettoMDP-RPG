@@ -4,13 +4,15 @@ import java.util.Objects;
 
 /**
  * This abstract class represents a single item that can be collected in the inventory of a character. It cannot
- * be instantiated by itself, it requires specifications. It's defined by name, description, amount and maxAmount
+ * be instantiated by itself, it requires specifications. It's defined by name, description, maxAmount and the value
+ * on the market for a single item
  */
 public abstract class Item {
 
     private String name;
     private String description;
     private int maxAmount;
+    private final int tradeValue;
 
     /**
      * This constructor creates a generic item
@@ -19,13 +21,14 @@ public abstract class Item {
      * @param maxAmount the maximum number of this item that can stay together in the inventory
      * @throws IllegalArgumentException if the parameters are not valid
      */
-    public Item(String name, String description, int maxAmount) {
-        if (name.isEmpty() || description.isEmpty() || maxAmount <= 0)
+    public Item(String name, String description, int maxAmount, int tradeValue) {
+        if (name.isEmpty() || description.isEmpty() || maxAmount <= 0 || tradeValue <= 0)
             throw new IllegalArgumentException("Invalid item parameters");
 
         this.name = name;
         this.description = description;
         this.maxAmount = maxAmount;
+        this.tradeValue = tradeValue;
     }
 
     /**
@@ -42,7 +45,7 @@ public abstract class Item {
     }
 
     /**
-     * Returns the hash code of this item
+     * Returns the hash code of this item, based on the name
      * @return the hash code of this item
      */
     @Override
@@ -56,4 +59,6 @@ public abstract class Item {
     public String getDescription() { return description; }
 
     public int getMaxAmount() { return maxAmount; }
+
+    public int getTradeValue() { return tradeValue; }
 }

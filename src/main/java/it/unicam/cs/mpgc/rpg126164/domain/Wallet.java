@@ -10,7 +10,7 @@ public class Wallet implements MoneyCollector {
 
     private final String moneyName;
     private int amount;
-    private final int maxAmount = 1000;
+    private final int maxAmount = 2000;
 
     /**
      * Creates a wallet for a playable character
@@ -30,11 +30,11 @@ public class Wallet implements MoneyCollector {
     }
 
     @Override
-    public void collect(int n) { amount += Math.min(n, maxAmount - amount); }
+    public void cash(int n) { amount += Math.min(n, maxAmount - amount); }
 
     @Override
     public void spend(int n) {
-        if (n > amount)
+        if (!this.canAfford(n))
             throw new IllegalArgumentException("Amount to spend can't be greater than current amount");
 
         amount -= n;

@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.ItemStack;
 
 /**
  * This interface allows any object that implements this interface to work as an inventory. The inventory allows
- * to collect, drop and equip items and equipment
+ * to collect, drop and equip items and equipment, and also to interact with the assigned money collector
  */
 public interface InventoryBehaviour {
 
@@ -31,4 +31,10 @@ public interface InventoryBehaviour {
      * @param stack the stack of item to drop from the inventory
      */
     void drop(ItemStack stack);
+
+    /**
+     * This method returns a money collector included in this inventory
+     * @return the money collector assigned to this inventory
+     */
+    MoneyCollector getMoneyCollector();
 }

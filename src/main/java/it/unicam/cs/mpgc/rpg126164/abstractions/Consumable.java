@@ -9,8 +9,9 @@ public interface Consumable {
 
     /**
      * This method allows to consume this consumable object, applying the specific effects and advantages
-     * to the character that uses it or to other characters
-     * @param character the character that consumes this consumable object
+     * to the target that uses it or to other characters. The target that consumes this item must be a
+     * target able to fight
+     * @param target the target that consumes this consumable object
      */
-    void consume(Character character);
+    void consume(Fighter target);
 }

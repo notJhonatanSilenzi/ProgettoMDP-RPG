@@ -32,7 +32,7 @@ public class FighterSheet implements CharacterSheet {
     }
 
     @Override
-    public void getDamage(int damage) {
+    public void damage(int damage) {
         checkNotBelowZero(damage);
         if (damage >= this.HP) this.HP = 0;
         this.HP -= damage;
