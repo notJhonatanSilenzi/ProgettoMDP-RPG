@@ -1,15 +1,15 @@
 package it.unicam.cs.mpgc.rpg126164.domain;
 
+import it.unicam.cs.mpgc.rpg126164.abstractions.AbstractItem;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Equipment;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Fighter;
-import it.unicam.cs.mpgc.rpg126164.abstractions.Item;
 
 /**
  * This class represents a damage source, especially weapons or spells. They're reusable multiple times in fights,
  * and it contains an additive of ATK to the fighter's base ATK. They're not cumulable, so they can't be stacked
  * in the inventory and their count is always 1.
  */
-public class DamageSource extends Item implements Equipment {
+public class DamageSource extends AbstractItem implements Equipment {
 
     private final int ATK;
 
@@ -17,12 +17,12 @@ public class DamageSource extends Item implements Equipment {
      * Creates a damage source, equippable by the players
      * @param name its name
      * @param description its description
-     * @param maxAmount its max amount, which has to be 1
+     * @param maxAmount the maximum amount of this item that can be stacked in the inventory, must be 1 for this type of item
      * @param tradeValue its value in the market/shop
      * @param ATK the additive of ATK to the fighter's base ATK when equipped
      */
     public DamageSource(String name, String description, int maxAmount, int tradeValue, int ATK) {
-        if (maxAmount != 1) throw new IllegalArgumentException("Weapons are not cumulable");
+        if (maxAmount != 1 || ATK <= 0) throw new IllegalArgumentException("Invalid parameters");
 
         super(name, description, maxAmount, tradeValue);
         this.ATK = ATK;
@@ -30,6 +30,8 @@ public class DamageSource extends Item implements Equipment {
 
     @Override
     public void useEquipment(Fighter target) {
+        if (!target.getEquipment().equals(this))
+            throw new RuntimeException("Damage source not equipped");
         // TODO - Deve essere l'item corrente nell'inventario
     }
 
@@ -37,8 +39,4 @@ public class DamageSource extends Item implements Equipment {
     // GETTERS AND SETTERS
 
     public int getATK() { return ATK; }
-
-    public void setCount(int count) {
-        throw new IllegalArgumentException("Weapons are not cumulable, count cannot be changed");
-    }
 }

@@ -41,6 +41,7 @@ public class Enemy extends Character implements Fighter {
         this.equipment.useEquipment(target);
     }
 
+
     // GETTERS AND SETTERS
 
     @Override

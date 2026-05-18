@@ -5,8 +5,7 @@ import it.unicam.cs.mpgc.rpg126164.abstractions.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Item;
 import it.unicam.cs.mpgc.rpg126164.abstractions.MoneyCollector;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents a concrete inventory for a playable character. It contains the current equipment, the
@@ -15,8 +14,9 @@ import java.util.List;
 public class Inventory implements InventoryBehaviour {
 
     private Equipment current;
-    private final List<ItemStack> items;
+    private final Map<Item, ItemStack> items;
     private final MoneyCollector wallet;
+    @SuppressWarnings("FieldCanBeLocal")
     private final int INVENTORY_SIZE = 5;
 
     /**
@@ -24,7 +24,7 @@ public class Inventory implements InventoryBehaviour {
      * @param items the starting items collection
      * @param wallet the wallet with money
      */
-    public Inventory(List<ItemStack> items, MoneyCollector wallet) {
+    public Inventory(Map<Item, ItemStack> items, MoneyCollector wallet) {
         if (items == null || wallet == null)
             throw new IllegalArgumentException("Invalid parameters for inventory");
 
@@ -37,11 +37,11 @@ public class Inventory implements InventoryBehaviour {
      * Equips the given equipment as current item
      * @param equipment the equipable item to set as current item
      */
-    @SuppressWarnings("SuspiciousMethodCalls")
+    @Override
     public void equip(Equipment equipment) {
         if (equipment == null) throw new IllegalArgumentException("Equipment cannot be null");
 
-        if (this.getItems().contains(equipment))
+        if (this.getItems().containsKey(equipment))
             throw new RuntimeException("Cannot equip an item that is not in the inventory");
 
         this.current = equipment;
@@ -51,36 +51,32 @@ public class Inventory implements InventoryBehaviour {
      * Collects the given item at the given amount in the inventory
      * @param stack the stack of item to collect
      */
+    @Override
     public void collect(ItemStack stack) {
         if (stack == null) throw new IllegalArgumentException("Parameters cannot be null");
 
-        // If there's space and the player hasn't got this item in this inventory
-        if (!(this.items.contains(stack)) && items.size() <= INVENTORY_SIZE)
-            this.items.add(stack);
+        Item item = stack.getItem();
+        ItemStack itemStack = this.items.get(item);
+        // Item is already in the inventory
+        if (this.items.containsKey(item))
+            itemStack.setCount(Math.min(itemStack.getCount() + stack.getCount(), item.getMaxAmount()));
 
-        // If there's already this item in this inventory
-        for (ItemStack is : this.items)
-            if (is.getItem().equals(stack.getItem()))
-                if (is.getCount() + stack.getCount() <= is.getMaxAmount())
-                    is.setCount(is.getCount() + stack.getCount());
-                else {
-                    is.setCount(is.getMaxAmount());
-                    throw new RuntimeException("Cannot collect enough units of this item");
-                }
+        // Item isn't already in the inventory
+        if (this.items.size() < INVENTORY_SIZE)
+            this.items.put(stack.getItem(), stack);
+        else throw new IllegalArgumentException("Cannot collect this item, inventory is full or item is already in the inventory");
     }
 
+    @Override
     public void drop(ItemStack stack) {
-        if (stack == null || !(this.getItems().contains(stack.getItem())))
+        if (stack == null || stack.getCount() > this.items.get(stack.getItem()).getCount()
+                || !(this.items.containsKey(stack.getItem())))
             throw new IllegalArgumentException("Invalid parameters");
 
-        // Find the item
-        int i = -1;
-        for (ItemStack is : this.items)
-            if (is.getItem().equals(stack.getItem())) i = items.indexOf(is);
-
-        if (items.get(i).getCount() - stack.getCount() > 0) // Item remains in inventory
-            items.get(i).setCount(items.get(i).getCount() - stack.getCount());
-        else this.items.remove(i); // Item doesn't remain in inventory
+        Item item = stack.getItem();
+        if (this.items.get(item).getCount() - stack.getCount() > 0) // Item remains in the inventory
+            this.items.get(item).setCount(this.items.get(item).getCount() - stack.getCount());
+        else this.items.remove(item); // Item doesn't remain in the inventory
     }
 
     @Override
@@ -89,15 +85,8 @@ public class Inventory implements InventoryBehaviour {
 
     // GETTERS
 
-    public List<ItemStack> getStacks() { return items; }
-
     @Override
     public MoneyCollector getMoneyCollector() { return wallet; }
 
-    public List<Item> getItems() {
-        List<Item> items = new ArrayList<>();
-        for (ItemStack stack : this.items)
-            items.add(stack.getItem());
-        return items;
-    }
+    public Map<Item, ItemStack> getItems() { return items; }
 }

@@ -1,13 +1,13 @@
 package it.unicam.cs.mpgc.rpg126164.domain;
 
+import it.unicam.cs.mpgc.rpg126164.abstractions.AbstractItem;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Fighter;
-import it.unicam.cs.mpgc.rpg126164.abstractions.Item;
 
 /**
  * This class represents a healing potion, an item that can increase the amount of HP of a character
  */
-public class HealingPotion extends Item implements Consumable {
+public class HealingPotion extends AbstractItem implements Consumable {
 
     private final int HPincrease;
 
@@ -15,7 +15,7 @@ public class HealingPotion extends Item implements Consumable {
      * Creates a harming potion
      * @param name its name
      * @param description its description
-     * @param maxAmount its max amount
+     * @param maxAmount its maximum amount that can be stored in the inventory
      * @param tradeValue its trade value
      * @param HPincrease the amount of HP that this potion can increase
      */

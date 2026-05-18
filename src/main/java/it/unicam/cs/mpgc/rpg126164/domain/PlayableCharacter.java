@@ -59,6 +59,7 @@ public class PlayableCharacter extends Character implements Fighter {
             throw new IllegalArgumentException("Null parameter");
 
         consumable.consume(this);
+        inventory.drop(new ItemStack(consumable, 1));
     }
 
     /**

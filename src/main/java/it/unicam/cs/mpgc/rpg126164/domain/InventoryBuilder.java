@@ -1,12 +1,9 @@
 package it.unicam.cs.mpgc.rpg126164.domain;
 
-import it.unicam.cs.mpgc.rpg126164.abstractions.Equipment;
-import it.unicam.cs.mpgc.rpg126164.abstractions.InventoryBehaviour;
-import it.unicam.cs.mpgc.rpg126164.abstractions.Item;
-import it.unicam.cs.mpgc.rpg126164.abstractions.MoneyCollector;
+import it.unicam.cs.mpgc.rpg126164.abstractions.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This static class helps in building the starting inventory for a playable character
@@ -21,13 +18,13 @@ public final class InventoryBuilder {
      * @return the correct inventory for this archetype
      */
     public static InventoryBehaviour getInitialInventory(Archetype archetype) {
-        InventoryBehaviour inv = new Inventory(new ArrayList<>(getPotions()), getWallet());
+        InventoryBehaviour inv = new Inventory(new HashMap<>(getPotions()), getWallet());
         switch(archetype) {
             case WARRIOR -> getWarriorWeapon(inv);
             case BERSERKER -> getBerserkerWeapon(inv);
             case CLERIC -> getClericSpell(inv);
             case SORCERER -> getSorcererSpell(inv);
-        };
+        }
         return inv;
     }
 
@@ -37,7 +34,7 @@ public final class InventoryBuilder {
      */
     private static void getWarriorWeapon(InventoryBehaviour inv) {
         Equipment spear = new DamageSource("Iron Spear", "A simple spear, used by warriors", 1, 120, 4);
-        inv.collect(new ItemStack((Item) spear, 1, 1));
+        inv.collect(new ItemStack(spear, 1));
         inv.equip(spear);
     }
 
@@ -47,7 +44,7 @@ public final class InventoryBuilder {
      */
     private static void getBerserkerWeapon(InventoryBehaviour inv) {
         Equipment sword = new DamageSource("Iron Sword", "A simple sword, used by berserkers", 1, 150, 5);
-        inv.collect(new ItemStack((Item) sword, 1, 1));
+        inv.collect(new ItemStack(sword, 1));
         inv.equip(sword);
     }
 
@@ -57,7 +54,7 @@ public final class InventoryBuilder {
      */
     private static void getClericSpell(InventoryBehaviour inv) {
         Equipment simpleSpell = new DamageSource("Simple Spell", "A simple spell, used by clerics", 1, 140, 3);
-        inv.collect(new ItemStack((Item) simpleSpell, 1, 1));
+        inv.collect(new ItemStack(simpleSpell, 1));
         inv.equip(simpleSpell);
     }
 
@@ -67,7 +64,7 @@ public final class InventoryBuilder {
      */
     private static void getSorcererSpell(InventoryBehaviour inv) {
         Equipment fireSpell = new DamageSource("Fire Spell", "A dangerous spell, used by sorcerers", 1, 220, 6);
-        inv.collect(new ItemStack((Item) fireSpell, 1, 1));
+        inv.collect(new ItemStack(fireSpell, 1));
         inv.equip(fireSpell);
     }
 
@@ -75,16 +72,12 @@ public final class InventoryBuilder {
      * Returns the initial potions for every archetype, which are the same for all of them
      * @return the initial amount of potions to be added in the inventory
      */
-    private static List<ItemStack> getPotions() {
-        List<ItemStack> potions = new ArrayList<>();
-        potions.add(new ItemStack(
-                new HealingPotion("healing potion lvl 1", "This potion heals you, giving extra hp", 5, 60, 12),
-                2, 5)
-        );
-        potions.add(new ItemStack(
-                new HarmingPotion("harming potion lvl 1", "This potion harms the enemy, taking away hp", 5, 80,15),
-                1, 3)
-        );
+    private static Map<Item, ItemStack> getPotions() {
+        Map<Item, ItemStack> potions = new HashMap<>();
+        Consumable healingPotion = new HealingPotion("healing potion I", "This potion heals you, giving extra hp", 5, 60, 10);
+        Consumable harmingPotion = new HarmingPotion("harming potion lvl 1", "This potion harms the enemy, taking away hp", 5, 120,20);
+        potions.put(healingPotion, new ItemStack(healingPotion, 2));
+        potions.put(harmingPotion, new ItemStack(harmingPotion, 1));
         return potions;
     }
 
