@@ -33,14 +33,6 @@ public class Enemy extends Character implements Fighter {
         this.sheet = archetype.getSheet(type.getMultiplier());
     }
 
-    /**
-     * This method represents the possibility to attack another character able to fight, generally the player
-     * @param target the character to damage, generally the player
-     */
-    public void attack(Fighter target) {
-        this.equipment.useEquipment(target);
-    }
-
 
     // GETTERS AND SETTERS
 

@@ -29,10 +29,8 @@ public class DamageSource extends AbstractItem implements Equipment {
     }
 
     @Override
-    public void useEquipment(Fighter target) {
-        if (!target.getEquipment().equals(this))
-            throw new RuntimeException("Damage source not equipped");
-        // TODO - Deve essere l'item corrente nell'inventario
+    public int useEquipment() {
+        return this.getATK();
     }
 
 

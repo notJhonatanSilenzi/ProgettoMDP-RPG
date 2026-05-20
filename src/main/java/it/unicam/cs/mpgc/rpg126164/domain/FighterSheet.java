@@ -4,8 +4,8 @@ import it.unicam.cs.mpgc.rpg126164.abstractions.CharacterSheet;
 
 /**
  * This class represents a base Sheet for a character able to fight, and it contains all the stats and methods
- * to maintain and edit the stats throughout the time and the fights. The only stats are HP, HP_MAX, ATK and DF.
- * The Javadoc for the implemented methods are in the interface
+ * to maintain and edit the stats throughout the time and the fights. The only stats are HP, HP_MAX, ATK, DF
+ * and evade chance. The Javadoc for the implemented methods are in the interface
  */
 public class FighterSheet implements CharacterSheet {
 
@@ -13,6 +13,7 @@ public class FighterSheet implements CharacterSheet {
     private final int HP_MAX;
     private int ATK;
     private int DF;
+    private final double evadeChance;
 
     /**
      * Creates a Fighter Sheet for a character able to fight
@@ -20,15 +21,17 @@ public class FighterSheet implements CharacterSheet {
      * @param HP_MAX the maximum amount of hp reachable
      * @param ATK the attack
      * @param DF the defense
+     * @param evadeChance the chance to evade an attack, between 0 and 1
      */
-    public FighterSheet(int HP, int HP_MAX, int ATK, int DF) {
-        if (HP_MAX <= 0 || ATK <= 0 || DF <= 0 || HP != HP_MAX)
+    public FighterSheet(int HP, int HP_MAX, int ATK, int DF, double evadeChance) {
+        if (HP_MAX <= 0 || ATK <= 0 || DF <= 0 || HP != HP_MAX || evadeChance < 0 || evadeChance > 1)
             throw new IllegalArgumentException("Arguments are invalid");
 
         this.HP = HP;
         this.HP_MAX = HP_MAX;
         this.ATK = ATK;
         this.DF = DF;
+        this.evadeChance = evadeChance;
     }
 
     @Override
@@ -72,6 +75,12 @@ public class FighterSheet implements CharacterSheet {
     @Override
     public boolean isAlive() { return this.HP != 0; }
 
+    @Override
+    public boolean hasEvaded() {
+        if (this.evadeChance == 0) return false;
+        return this.evadeChance > Math.random(); // Verify if the attack has been evaded
+    }
+
     /**
      * This method checks if the given number is more than zero
      * @param n the number to check
@@ -84,9 +93,15 @@ public class FighterSheet implements CharacterSheet {
 
     // GETTERS
 
+    @Override
     public int getHP() { return HP; }
 
+    @Override
     public int getATK() { return ATK; }
 
+    @Override
     public int getDF() { return DF; }
+
+    @Override
+    public double getEvadeChance() { return evadeChance; }
 }

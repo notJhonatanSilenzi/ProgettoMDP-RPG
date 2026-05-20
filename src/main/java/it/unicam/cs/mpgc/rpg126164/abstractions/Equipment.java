@@ -8,9 +8,8 @@ public interface Equipment extends Item {
 
     /**
      * This method allows the attacker to use its own current weapon to deal damage to the defender. The target
-     * must be a character able to fight, playable or not
-     * @param target the character that is attacking
+     * must be a character able to fight, playable or not, and it only returns the additive ATK for the character
+     * @return the additive ATK for the character that is using this equipment
      */
-    // TODO - deve essere l'item corrente nell'inventario
-    void useEquipment(Fighter target);
+    int useEquipment();
 }

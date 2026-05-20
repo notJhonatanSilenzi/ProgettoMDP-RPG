@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg126164.abstractions;
 /**
  * This interface allows to any object that implements it to work as a character sheet. The sheet contains all the
  * stats, the methods to maintain stats during time and fights, and to check if the character is alive or not.
+ * This sheet refers exclusively to character that are able to fight with other character
  */
 public interface CharacterSheet {
 
@@ -47,4 +48,35 @@ public interface CharacterSheet {
      * @return true if the character is still alive, false otherwise
      */
     boolean isAlive();
+
+    /**
+     * Uses the evadeChance field to determine if the character has evaded during a fight, so he doesn't receive
+     * damage during a turn of a fight
+     * @return true if the character has evaded, false otherwise
+     */
+    boolean hasEvaded();
+
+    /**
+     * Returns the current amount of HP of this character
+     * @return the current amount of HP
+     */
+    int getHP();
+
+    /**
+     * Returns the ATK of this character
+     * @return the ATK of this character
+     */
+    int getATK();
+
+    /**
+     * Returns the DF of this character
+     * @return the DF of this character
+     */
+    int getDF();
+
+    /**
+     * Returns the evade chance of this character
+     * @return the evade chance of this character
+     */
+    double getEvadeChance();
 }

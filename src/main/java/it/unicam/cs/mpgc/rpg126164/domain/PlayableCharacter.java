@@ -28,26 +28,6 @@ public class PlayableCharacter extends Character implements Fighter {
         this.inventory = archetype.getInventory();
     }
 
-    @Override
-    public CharacterSheet getSheet() { return this.sheet; }
-
-    @Override
-    public Archetype getArchetype() { return this.archetype; }
-
-    @Override
-    public Equipment getEquipment() { return this.inventory.getCurrentEquipment(); }
-
-    @Override
-    public void setEquipment(Equipment equipment) { this.inventory.equip(equipment); }
-
-    /**
-     * This method represents for the player the possibility to attack during a fight. Attacking causes the
-     * player to lose one turn
-     * @param enemy the enemy to hit with the current damage source
-     */
-    public void attack(Fighter enemy) {
-        this.getEquipment().useEquipment(enemy);
-    }
 
     /**
      * This method represents the possibility to use a consumable item to give himself some extra advantages.
@@ -85,4 +65,21 @@ public class PlayableCharacter extends Character implements Fighter {
         inventory.drop(itemStack);
         inventory.getMoneyCollector().cash((itemStack.getItem().getTradeValue() * itemStack.getCount()) / 2);
     }
+
+
+    // GETTERS AND SETTERS
+
+    @Override
+    public CharacterSheet getSheet() { return this.sheet; }
+
+    @Override
+    public Archetype getArchetype() { return this.archetype; }
+
+    @Override
+    public Equipment getEquipment() { return this.inventory.getCurrentEquipment(); }
+
+    @Override
+    public void setEquipment(Equipment equipment) { this.inventory.equip(equipment); }
+
+    public InventoryBehaviour getInventory() { return this.inventory; }
 }
