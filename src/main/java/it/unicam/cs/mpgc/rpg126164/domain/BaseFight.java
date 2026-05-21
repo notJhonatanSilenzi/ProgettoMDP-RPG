@@ -16,52 +16,95 @@ public class BaseFight implements Fight {
     private final PlayableCharacter player;
     private final Set<Fighter> enemies;
     private FightResult result;
+    private final int goldForEachEnemy;
 
     /**
      * Creates a base fight system between fighters
      * @param player the player character
      * @param enemies the enemies to defeat
+     * @param goldForEachEnemy the amount of gold the player receives for each enemy defeated
      */
-    public BaseFight(PlayableCharacter player, Set<Fighter> enemies) {
-        if (player == null || enemies == null || enemies.isEmpty())
+    public BaseFight(PlayableCharacter player, Set<Fighter> enemies, int goldForEachEnemy) {
+        if (player == null || enemies == null || enemies.isEmpty() || goldForEachEnemy <= 0)
             throw new IllegalArgumentException("Invalid parameters");
 
         this.player = player;
         this.enemies = enemies;
+        this.result = null;
+        this.goldForEachEnemy = goldForEachEnemy;
+    }
+
+    @Override
+    public void startFight() {
+        if (result != null) throw new IllegalStateException("Attempt to start an already started fight");
+
         this.result = FightResult.ON_GOING;
     }
 
     @Override
     public void processTurn(GameAction gameAction) {
         if (gameAction == null) throw new IllegalArgumentException("Invalid argument");
+        if (result == null) throw new RuntimeException("Attempt to process a turn in a not started fight");
+        if (result != FightResult.ON_GOING) throw new RuntimeException("Attempt to process a turn in an ended fight");
 
         gameAction.execute(this);
-        getFinalResult();
+        updateFightStatus();
     }
 
-    @Override
-    public void getFinalResult() {
-        if (result != FightResult.ON_GOING) return;
-
+    /**
+     * Updates the status of this fight, checking if it's been completed by the player, or if the player has
+     * been defeated by the enemies
+     */
+    private void updateFightStatus() {
         if (!player.getSheet().isAlive()) this.setResult(FightResult.LOSE);
         else if (enemies.stream().noneMatch(e -> e.getSheet().isAlive()))
             this.setResult(FightResult.WIN);
     }
 
     @Override
-    public void attack(Fighter attacker, Fighter target) {
-        if (attacker == null || target == null)
+    public FightResult getFinalResult() { return this.result; }
+
+    @Override
+    public void attack(PlayableCharacter attacker, Fighter target) {
+        if (attacker == null || target == null || attacker != this.player || !enemies.contains(target))
             throw new IllegalArgumentException("Invalid parameters");
 
-        // If the defender evaded, break out
+        // If the defender evaded, break out. Else the target gets damage
         if (target.getSheet().hasEvaded()) return; // TODO - forse in futuro da adattare
+        else applyDamage(attacker, target);
 
-        int damage = Math.max( // else calculate the damage, and apply it to the target fighter
+        // If the target is dead and is an enemy, I remove it from the enemies list and give money to the player
+        if (!target.getSheet().isAlive()) {
+            enemies.remove(target);
+            attacker.getInventory().getMoneyCollector().cash(goldForEachEnemy);
+        } else this.applyDamage(target, attacker);
+    }
+
+    /**
+     * This method applies the damage to the given character, based on the stats of the given
+     * attacker and the given target
+     * @param attacker the fighter that causes the damage
+     * @param target the fighter that receives the damage
+     */
+    private void applyDamage(Fighter attacker, Fighter target) {
+        if (attacker == null || target == null)
+            throw new IllegalArgumentException("Invalid arguments");
+
+        int damage = calculateDamage(attacker, target);
+        target.getSheet().damage(damage);
+    }
+
+    /**
+     * This method calculates the damage to apply to the given target, taking in count the stats of the attacker
+     * and the stats of the target
+     * @param attacker the fighter that causes the damage
+     * @param target the fighter that receives the damage
+     * @return the amount of damage to apply
+     */
+    private int calculateDamage(Fighter attacker, Fighter target) {
+        return Math.max( // else calculate the damage, and apply it to the target fighter
                 attacker.getSheet().getATK() + attacker.getEquipment().useEquipment() - target.getSheet().getDF(),
                 1);
-        target.getSheet().damage(damage);
-        // If the target is dead and is an enemy, i remove it from the enemies list
-        if (enemies.contains(target) && !target.getSheet().isAlive()) enemies.remove(target);
     }
 
     @Override
@@ -70,6 +113,13 @@ public class BaseFight implements Fight {
             throw new IllegalArgumentException("Invalid parameters");
 
         consumable.consume(target);
+    }
+
+    @Override
+    public void reset() {
+        this.result = null;
+        for (Fighter enemy : this.enemies) enemy.getSheet().reset();
+        this.player.getSheet().reset();
     }
 
 

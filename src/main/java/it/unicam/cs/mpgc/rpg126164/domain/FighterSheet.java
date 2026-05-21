@@ -72,15 +72,6 @@ public class FighterSheet implements CharacterSheet {
         this.DF -= decrease;
     }
 
-    @Override
-    public boolean isAlive() { return this.HP != 0; }
-
-    @Override
-    public boolean hasEvaded() {
-        if (this.evadeChance == 0) return false;
-        return this.evadeChance > Math.random(); // Verify if the attack has been evaded
-    }
-
     /**
      * This method checks if the given number is more than zero
      * @param n the number to check
@@ -89,6 +80,19 @@ public class FighterSheet implements CharacterSheet {
     private void checkNotBelowZero(int n) {
         if (n <= 0) throw new IllegalArgumentException("Argument must be greater than 0");
     }
+
+    @Override
+    public boolean isAlive() { return this.getHP() != 0; }
+
+    @Override
+    public boolean hasEvaded() {
+        if (this.evadeChance == 0) return false;
+        return this.evadeChance > Math.random(); // Verify if the attack has been evaded
+    }
+
+    @Override
+    public void reset() { this.HP = this.HP_MAX; }
+
 
 
     // GETTERS

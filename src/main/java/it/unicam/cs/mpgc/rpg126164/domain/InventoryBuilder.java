@@ -74,8 +74,13 @@ public final class InventoryBuilder {
      */
     private static Map<Item, ItemStack> getPotions() {
         Map<Item, ItemStack> potions = new HashMap<>();
-        Consumable healingPotion = new HealingPotion("healing potion I", "This potion heals you, giving extra hp", 5, 60, 10);
-        Consumable harmingPotion = new HarmingPotion("harming potion lvl 1", "This potion harms the enemy, taking away hp", 5, 120,20);
+        Consumable healingPotion = new Potion(
+                "healing potion I", "This potion heals you, giving extra hp", 5,
+                60, new HealingEffect(20), PotionTargetType.SELF);
+        Consumable harmingPotion = new Potion(
+                "harming potion lvl 1", "This potion harms the enemy, taking away hp", 5,
+                120, new HarmingEffect(20), PotionTargetType.ENEMY
+        );
         potions.put(healingPotion, new ItemStack(healingPotion, 2));
         potions.put(harmingPotion, new ItemStack(harmingPotion, 1));
         return potions;

@@ -1,9 +1,11 @@
 package it.unicam.cs.mpgc.rpg126164.abstractions;
 
+import it.unicam.cs.mpgc.rpg126164.domain.PotionTargetType;
+
 /**
  * This interface allows any object that implements this interface to be consumed, in order to apply specific
  * effects and advantages to the character that uses the consumable or to other characters. It can only be used
- * once
+ * once. It offers also a method to return the type of target that receives the effects of the consumable object.
  */
 public interface Consumable extends Item {
 
@@ -14,4 +16,10 @@ public interface Consumable extends Item {
      * @param target the target that consumes this consumable object
      */
     void consume(Fighter target);
+
+    /**
+     * Returns the type of target that receives the effects of this consumable item
+     * @return the type of target
+     */
+    PotionTargetType getTargetType();
 }

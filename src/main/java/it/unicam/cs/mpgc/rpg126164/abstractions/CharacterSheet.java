@@ -79,4 +79,9 @@ public interface CharacterSheet {
      * @return the evade chance of this character
      */
     double getEvadeChance();
+
+    /**
+     * Resets the sheet by resetting the amount of hp of this fighter to the maximum amount permitted
+     */
+    void reset();
 }

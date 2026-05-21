@@ -11,19 +11,19 @@ import it.unicam.cs.mpgc.rpg126164.abstractions.GameAction;
  */
 public class AttackAction implements GameAction {
 
-    private final Fighter attacker;
+    private final PlayableCharacter player;
     private final Fighter target;
 
     /**
      * Creates an attack action to execute to process a turn during a fight
-     * @param attacker the attacker
+     * @param player the player
      * @param target the target
      */
-    public AttackAction (Fighter attacker, Fighter target) {
-        if (attacker == null || target == null || attacker == target)
+    public AttackAction (PlayableCharacter player, Fighter target) {
+        if (player == null || target == null || player == target)
             throw new IllegalArgumentException("Invalid arguments");
 
-        this.attacker = attacker;
+        this.player = player;
         this.target = target;
     }
 
@@ -32,13 +32,14 @@ public class AttackAction implements GameAction {
         if (fight == null)
             throw new IllegalArgumentException("Invalid argument");
 
-        fight.attack(attacker, target);
+        fight.attack(player, target);
     }
 
 
     // GETTERS
 
-    public Fighter getAttacker() { return attacker; }
+    @Override
+    public PlayableCharacter getPlayer() { return player; }
 
     public Fighter getTarget() { return target; }
 }
