@@ -1,9 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.domain;
 
-import it.unicam.cs.mpgc.rpg126164.abstractions.Consumable;
-import it.unicam.cs.mpgc.rpg126164.abstractions.Fight;
-import it.unicam.cs.mpgc.rpg126164.abstractions.Fighter;
-import it.unicam.cs.mpgc.rpg126164.abstractions.GameAction;
+import it.unicam.cs.mpgc.rpg126164.abstractions.*;
 
 import java.util.Set;
 
@@ -76,7 +73,7 @@ public class BaseFight implements Fight {
         // If the target is dead and is an enemy, I remove it from the enemies list and give money to the player
         if (!target.getSheet().isAlive()) {
             enemies.remove(target);
-            attacker.getInventory().getMoneyCollector().cash(goldForEachEnemy);
+            attacker.getMoneyCollector().cash(goldForEachEnemy);
         } else this.applyDamage(target, attacker);
     }
 
@@ -103,7 +100,7 @@ public class BaseFight implements Fight {
      */
     private int calculateDamage(Fighter attacker, Fighter target) {
         return Math.max( // else calculate the damage, and apply it to the target fighter
-                attacker.getSheet().getATK() + attacker.getEquipment().useEquipment() - target.getSheet().getDF(),
+                attacker.getSheet().getATK() + attacker.getWeaponAttack() - target.getSheet().getDF(),
                 1);
     }
 
@@ -113,6 +110,14 @@ public class BaseFight implements Fight {
             throw new IllegalArgumentException("Invalid parameters");
 
         consumable.consume(target);
+    }
+
+    @Override
+    public void equipItem(PlayableCharacter player, Equipment equipment) {
+        if (player == null || equipment == null || player != this.player)
+            throw new IllegalArgumentException("Invalid parameters");
+
+        player.equip(equipment);
     }
 
     @Override

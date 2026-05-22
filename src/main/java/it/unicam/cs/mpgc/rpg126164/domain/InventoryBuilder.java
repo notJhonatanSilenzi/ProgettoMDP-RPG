@@ -9,7 +9,7 @@ import java.util.Map;
  * This static class helps in building the starting inventory for a playable character
  */
 public final class InventoryBuilder {
-
+    // TODO - adattare quando verrà messa la persistenza
     private InventoryBuilder() {}
 
     /**
@@ -18,7 +18,7 @@ public final class InventoryBuilder {
      * @return the correct inventory for this archetype
      */
     public static InventoryBehaviour getInitialInventory(Archetype archetype) {
-        InventoryBehaviour inv = new Inventory(new HashMap<>(getPotions()), getWallet());
+        InventoryBehaviour inv = new Inventory(new HashMap<>(getPotions()));
         switch(archetype) {
             case WARRIOR -> getWarriorWeapon(inv);
             case BERSERKER -> getBerserkerWeapon(inv);
@@ -35,7 +35,6 @@ public final class InventoryBuilder {
     private static void getWarriorWeapon(InventoryBehaviour inv) {
         Equipment spear = new DamageSource("Iron Spear", "A simple spear, used by warriors", 1, 120, 4);
         inv.collect(new ItemStack(spear, 1));
-        inv.equip(spear);
     }
 
     /**
@@ -45,7 +44,6 @@ public final class InventoryBuilder {
     private static void getBerserkerWeapon(InventoryBehaviour inv) {
         Equipment sword = new DamageSource("Iron Sword", "A simple sword, used by berserkers", 1, 150, 5);
         inv.collect(new ItemStack(sword, 1));
-        inv.equip(sword);
     }
 
     /**
@@ -55,7 +53,6 @@ public final class InventoryBuilder {
     private static void getClericSpell(InventoryBehaviour inv) {
         Equipment simpleSpell = new DamageSource("Simple Spell", "A simple spell, used by clerics", 1, 140, 3);
         inv.collect(new ItemStack(simpleSpell, 1));
-        inv.equip(simpleSpell);
     }
 
     /**
@@ -65,7 +62,6 @@ public final class InventoryBuilder {
     private static void getSorcererSpell(InventoryBehaviour inv) {
         Equipment fireSpell = new DamageSource("Fire Spell", "A dangerous spell, used by sorcerers", 1, 220, 6);
         inv.collect(new ItemStack(fireSpell, 1));
-        inv.equip(fireSpell);
     }
 
     /**
@@ -90,5 +86,5 @@ public final class InventoryBuilder {
      * Returns the initial money collector for every player, which will be the same for all of them
      * @return the initial money collector
      */
-    private static MoneyCollector getWallet() { return new Wallet("gold", 200); }
+    public static MoneyCollector getWallet() { return new Wallet("gold", 200); }
 }

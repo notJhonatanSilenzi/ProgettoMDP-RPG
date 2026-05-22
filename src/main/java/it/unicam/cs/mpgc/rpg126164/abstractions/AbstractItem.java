@@ -30,6 +30,11 @@ public abstract class AbstractItem implements Item {
         this.tradeValue = tradeValue;
     }
 
+    /**
+     * Checks if the given object is equal to this item
+     * @param obj the reference object with which to compare.
+     * @return true if the two objects are equal, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -38,8 +43,15 @@ public abstract class AbstractItem implements Item {
         return (this.name.equals(((AbstractItem) obj).name));
     }
 
+    /**
+     * Calculates the hash code of this item
+     * @return the hash code of this item
+     */
     @Override
     public int hashCode() { return Objects.hash(name); }
+
+
+    // GETTERS
 
     @Override
     public String getName() { return name; }

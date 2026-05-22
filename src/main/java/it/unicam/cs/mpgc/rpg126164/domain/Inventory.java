@@ -1,56 +1,31 @@
 package it.unicam.cs.mpgc.rpg126164.domain;
 
-import it.unicam.cs.mpgc.rpg126164.abstractions.Equipment;
 import it.unicam.cs.mpgc.rpg126164.abstractions.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Item;
-import it.unicam.cs.mpgc.rpg126164.abstractions.MoneyCollector;
 
 import java.util.Map;
 
 /**
- * This class represents a concrete inventory for a playable character. It contains the current equipment, the
- * items collection with their quantity and the wallet. It implements InventoryBehaviour
+ * This class represents a concrete inventory for a playable character or a market. It implements InventoryBehaviour and
+ * it contains all the items that the object has currently stored in
  */
 public class Inventory implements InventoryBehaviour {
 
-    private Equipment current;
     private final Map<Item, ItemStack> items;
-    private final MoneyCollector wallet;
     @SuppressWarnings("FieldCanBeLocal")
     private final int INVENTORY_SIZE = 5;
 
     /**
      * Creates an inventory
      * @param items the starting items collection
-     * @param wallet the wallet with money
      */
-    public Inventory(Map<Item, ItemStack> items, MoneyCollector wallet) {
-        if (items == null || wallet == null)
+    public Inventory(Map<Item, ItemStack> items) {
+        if (items == null)
             throw new IllegalArgumentException("Invalid parameters for inventory");
 
-        this.current = null;
         this.items = items;
-        this.wallet = wallet;
     }
 
-    /**
-     * Equips the given equipment as current item
-     * @param equipment the equipable item to set as current item
-     */
-    @Override
-    public void equip(Equipment equipment) {
-        if (equipment == null) throw new IllegalArgumentException("Equipment cannot be null");
-
-        if (this.getItems().containsKey(equipment))
-            throw new RuntimeException("Cannot equip an item that is not in the inventory");
-
-        this.current = equipment;
-    }
-
-    /**
-     * Collects the given item at the given amount in the inventory
-     * @param stack the stack of item to collect
-     */
     @Override
     public void collect(ItemStack stack) {
         if (stack == null) throw new IllegalArgumentException("Parameters cannot be null");
@@ -79,14 +54,9 @@ public class Inventory implements InventoryBehaviour {
         else this.items.remove(item); // Item doesn't remain in the inventory
     }
 
-    @Override
-    public Equipment getCurrentEquipment() { return current; }
 
 
     // GETTERS
-
-    @Override
-    public MoneyCollector getMoneyCollector() { return wallet; }
 
     public Map<Item, ItemStack> getItems() { return items; }
 }

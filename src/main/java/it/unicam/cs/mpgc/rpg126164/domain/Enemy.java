@@ -43,10 +43,9 @@ public class Enemy extends Character implements Fighter {
     public Archetype getArchetype() { return this.archetype; }
 
     @Override
-    public Equipment getEquipment() { return this.equipment; }
+    public int getWeaponAttack() { return this.equipment.useEquipment(); }
 
-    @Override
-    public void setEquipment(Equipment equipment) { throw new RuntimeException("Enemies can't change their equipment"); }
+    public Equipment getEquipment() { return this.equipment; }
 
     public EnemyType getEnemyType()  { return this.type; }
 }

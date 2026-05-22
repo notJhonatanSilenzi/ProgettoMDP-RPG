@@ -6,21 +6,10 @@ import java.util.List;
 
 /**
  * This interface allows any object that implements this interface to work as an inventory. The inventory allows
- * to collect, drop and equip items and equipment, and also to interact with the assigned money collector
+ * to collect, drop items and also to interact with the assigned money collector. Inventories
+ * can be used by players and by any type of market in the game.
  */
 public interface InventoryBehaviour {
-
-    /**
-     * Returns the current equipment in use by this character
-     * @return the current equipment
-     */
-    Equipment getCurrentEquipment();
-
-    /**
-     * this method allows to equip the given equipable item
-     * @param equipment the equipable item to set as current item
-     */
-    void equip(Equipment equipment);
 
     /**
      * this method allows to collect a certain amount of an item. If there's not enough space for all the items
@@ -35,10 +24,4 @@ public interface InventoryBehaviour {
      * @param stack the stack of item to drop from the inventory
      */
     void drop(ItemStack stack);
-
-    /**
-     * This method returns a money collector included in this inventory
-     * @return the money collector assigned to this inventory
-     */
-    MoneyCollector getMoneyCollector();
 }

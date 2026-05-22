@@ -4,16 +4,22 @@ import it.unicam.cs.mpgc.rpg126164.abstractions.*;
 import it.unicam.cs.mpgc.rpg126164.abstractions.Character;
 
 /**
- * This class represents a playable character in the game, and it's represented by a name, a description, an
- * archetype and also an inventory and a sheet for fights. The starting sheet and inventory are built according
- * to the chosen archetype, and the player is allowed to buy or sell items in the shop, to interact with the
- * inventory, to consume items and to attack the enemy. Attacking takes in count the current weapon
+ * This class represents a playable character in the game, and it's represented by:
+ * - A name
+ * - A description
+ * - A character sheet with all the stats
+ * - An inventory to store items in and out
+ * - An object to manage equipments
+ * - A money collector to spend and cash in money
+ * The starting sheet and inventory are built according to the chosen archetype.
  */
 public class PlayableCharacter extends Character implements Fighter {
 
     private final CharacterSheet sheet;
     private final Archetype archetype;
     private final InventoryBehaviour inventory;
+    private final EquipmentManager equipmentManager;
+    private final MoneyCollector wallet;
 
     /**
      * Creates a playable character. The sheet and the inventory are built according to the chosen archetype
@@ -26,8 +32,9 @@ public class PlayableCharacter extends Character implements Fighter {
         this.archetype =  archetype;
         this.sheet = archetype.getSheet();
         this.inventory = archetype.getInventory();
+        this.equipmentManager = new EquipmentManager();
+        this.wallet = InventoryBuilder.getWallet();
     }
-
 
     /**
      * This method represents the possibility to use a consumable item to give himself some extra advantages.
@@ -43,27 +50,14 @@ public class PlayableCharacter extends Character implements Fighter {
     }
 
     /**
-     * This method is activable in the shop and allows the player to buy a certain amount of an item, causing
-     * a loss of money in the wallet
-     * @param itemStack the stack of item to purchase
+     * Allows to equip the given equipment as current equipment in fights
+     * @param equipment the item to equip
      */
-    public void buyItem(ItemStack itemStack) {
-        if (itemStack == null) throw new IllegalArgumentException("Null parameter");
+    public void equip(Equipment equipment) {
+        if (equipment == null)
+            throw new IllegalArgumentException("Null parameter");
 
-        inventory.collect(itemStack);
-        inventory.getMoneyCollector().spend(itemStack.getItem().getTradeValue() * itemStack.getCount());
-    }
-
-    /**
-     * This method is activable in the shop and allows the player to sell a certain amount of an item,
-     * causing an increase of money in the wallet
-     * @param itemStack the stack of item to sell
-     */
-    public void sellItem(ItemStack itemStack) {
-        if (itemStack == null) throw new IllegalArgumentException("Null parameter");
-
-        inventory.drop(itemStack);
-        inventory.getMoneyCollector().cash((itemStack.getItem().getTradeValue() * itemStack.getCount()) / 2);
+        this.equipmentManager.equip(equipment);
     }
 
 
@@ -76,10 +70,13 @@ public class PlayableCharacter extends Character implements Fighter {
     public Archetype getArchetype() { return this.archetype; }
 
     @Override
-    public Equipment getEquipment() { return this.inventory.getCurrentEquipment(); }
+    public int getWeaponAttack() { return this.getCurrentEquipment().useEquipment(); }
 
-    @Override
-    public void setEquipment(Equipment equipment) { this.inventory.equip(equipment); }
+    public Equipment getCurrentEquipment() { return this.equipmentManager.getCurrentEquipment(); }
 
     public InventoryBehaviour getInventory() { return this.inventory; }
+
+    public EquipmentManager getEquipmentManager() { return this.equipmentManager; }
+
+    public MoneyCollector getMoneyCollector() { return this.wallet; }
 }

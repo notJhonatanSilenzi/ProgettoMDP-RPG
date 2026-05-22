@@ -6,7 +6,8 @@ import it.unicam.cs.mpgc.rpg126164.domain.PlayableCharacter;
 /**
  * This interface represents a generic Fight between characters that are able to fight with other fighting characters.
  * It contains the methods to process a single turn in the game, to verify the final result of the fight and also
- * to simulate the actions of attack and of consuming a consumable item. It must be started to process turns
+ * to simulate the actions of attack, consuming a consumable item or equipping an equipable item.
+ * It must be started to process turns
  */
 public interface Fight {
 
@@ -43,6 +44,13 @@ public interface Fight {
      * @param consumable the consumable item to consume
      */
     void consumeItem(Fighter target, Consumable consumable);
+
+    /**
+     * Simulates the action of equipping an equipable item. This action doesn't waste turns in the fight
+     * @param player the player that equips the item
+     * @param equipment the item to equip
+     */
+    void equipItem(PlayableCharacter player, Equipment equipment);
 
     /**
      * Resets the current fight, means the player stats and enemies' stats get reset to the initial values,
