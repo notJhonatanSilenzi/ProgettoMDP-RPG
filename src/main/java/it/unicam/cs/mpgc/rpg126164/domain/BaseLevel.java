@@ -68,8 +68,11 @@ public class BaseLevel implements Level {
         completed = false;
     }
 
-    @Override
-    public void givePriceToPlayer(PlayableCharacter player) {
+    /**
+     * Gives a price to the player, if they completed the level by winning the fight
+     * @param player the player that receives the price
+     */
+    private void givePriceToPlayer(PlayableCharacter player) {
         if (player == null)
             throw new IllegalArgumentException("Invalid parameters");
 

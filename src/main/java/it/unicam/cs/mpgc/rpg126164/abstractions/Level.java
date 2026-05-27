@@ -36,10 +36,4 @@ public interface Level {
      * Resets the level to the initial status, in case of loss
      */
     void reset();
-
-    /**
-     * Gives the player a price, in case of winning the fight and completing the level
-     * @param player the player that receives the price
-     */
-    void givePriceToPlayer(PlayableCharacter player);
 }

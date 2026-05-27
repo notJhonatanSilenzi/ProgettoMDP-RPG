@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.domain;
 
 import it.unicam.cs.mpgc.rpg126164.abstractions.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -126,6 +127,25 @@ public class BaseFight implements Fight {
         for (Fighter enemy : this.enemies) enemy.getSheet().reset();
         this.player.getSheet().reset();
     }
+
+    /**
+     * Checks if the given object is equal to this fight, basing on player and enemies
+     * @param obj   the reference object with which to compare.
+     * @return true if the two objects are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        return player.equals(((BaseFight) obj).getPlayer()) && enemies.equals(((BaseFight) obj).getEnemies());
+    }
+
+    /**
+     * Returns the hash code of this fight
+     * @return the hash code of this fight
+     */
+    @Override
+    public int hashCode() { return Objects.hash(player, enemies); }
 
 
     // GETTERS
