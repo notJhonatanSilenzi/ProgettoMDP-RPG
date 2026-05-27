@@ -37,19 +37,6 @@ public class PlayableCharacter extends Character implements Fighter {
     }
 
     /**
-     * This method represents the possibility to use a consumable item to give himself some extra advantages.
-     * Consuming an item causes the player to lose one turn
-     * @param consumable the item to consume
-     */
-    public void usePotion(Consumable consumable) {
-        if (consumable == null)
-            throw new IllegalArgumentException("Null parameter");
-
-        consumable.consume(this);
-        inventory.drop(new ItemStack(consumable, 1));
-    }
-
-    /**
      * Allows to equip the given equipment as current equipment in fights
      * @param equipment the item to equip
      */
@@ -58,6 +45,41 @@ public class PlayableCharacter extends Character implements Fighter {
             throw new IllegalArgumentException("Null parameter");
 
         this.equipmentManager.equip(equipment);
+    }
+
+    /**
+     * This method represents the possibility to use a consumable item to give himself some extra advantages.
+     * Consuming an item causes the player to lose one turn
+     * @param consumable the item to consume
+     */
+    public void consumeItem(Consumable consumable, Fighter target) {
+        if (consumable == null)
+            throw new IllegalArgumentException("Null parameter");
+
+        consumable.consume(target);
+        inventory.drop(new ItemStack(consumable, 1));
+    }
+
+    /**
+     * This method represents for this player the possibility to collect a certain amount of an item
+     * @param stack the stack of items to collect
+     */
+    public void collectItem(ItemStack stack) {
+        if (stack == null)
+            throw new IllegalArgumentException("Null parameter");
+
+        inventory.collect(stack);
+    }
+
+    /**
+     * This method represents the possibility to drop a certain amount of an item
+     * @param stack the stack of items to drop
+     */
+    public void dropItem(ItemStack stack) {
+        if (stack == null)
+            throw new IllegalArgumentException("Null parameter");
+
+        inventory.drop(stack);
     }
 
 

@@ -40,7 +40,6 @@ public class BaseWorldGame implements WorldGame {
         if (this.player != null) throw new IllegalArgumentException("Game not started");
 
         this.levelManager.enter(character);
-        this.player = null;
     }
 
     @Override
@@ -48,7 +47,6 @@ public class BaseWorldGame implements WorldGame {
         if (this.player != null) throw new IllegalArgumentException("Game not started");
 
         this.market.enter(character);
-        this.player = null;
     }
 
     @Override

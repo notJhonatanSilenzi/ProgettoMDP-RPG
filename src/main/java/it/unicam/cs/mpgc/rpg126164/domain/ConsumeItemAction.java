@@ -44,8 +44,8 @@ public class ConsumeItemAction implements GameAction {
             throw new IllegalArgumentException("Invalid target for this consumable");
 
         // Using the item causes the removing from the inventory
-        fight.consumeItem(target, consumable);
-        player.getInventory().drop(new ItemStack(consumable, 1));
+        player.consumeItem(consumable, target);
+        player.dropItem(new ItemStack(consumable, 1));
     }
 
 

@@ -43,7 +43,7 @@ public class Emporium implements Market {
         if (this.player == null) throw new IllegalStateException("No player is in the emporium");
 
         itemsForSale.drop(itemStack);
-        player.getInventory().collect(itemStack);
+        player.collectItem(itemStack);
         player.getMoneyCollector().spend(itemStack.getCount() * itemStack.getItem().getTradeValue());;
     }
 
@@ -52,7 +52,7 @@ public class Emporium implements Market {
         if (itemStack == null) throw new IllegalArgumentException("Item stack cannot be null");
         if (this.player == null) throw new IllegalStateException("No player is in the emporium");
 
-        player.getInventory().drop(itemStack);
+        player.dropItem(itemStack);
         player.getMoneyCollector().cash(itemStack.getCount() * itemStack.getItem().getTradeValue() / 2);
     }
 
