@@ -6,12 +6,15 @@ import it.unicam.cs.mpgc.rpg126164.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.gamemechanics.combat.FightResult;
 import it.unicam.cs.mpgc.rpg126164.gamemechanics.combat.GameAction;
 
+import java.util.UUID;
+
 /**
  * This class represents a generic level in the world game. It contains a reference to the fight to complete in order
  * to move onto the next level, and also a price and a flag to assert the level is completed.
  */
 public class BaseLevel implements Level {
 
+    private final String id;
     private final Fight fight;
     private final ItemStack price;
     private boolean completed;
@@ -24,6 +27,7 @@ public class BaseLevel implements Level {
     public BaseLevel(Fight fight, ItemStack price) {
         if  (fight == null || price == null) throw new IllegalArgumentException("Invalid parameters");
 
+        this.id = UUID.randomUUID().toString();
         this.fight = fight;
         this.price = price;
         this.completed = false;
@@ -78,11 +82,13 @@ public class BaseLevel implements Level {
         if (player == null)
             throw new IllegalArgumentException("Invalid parameters");
 
-        if (playerHasWon()) player.getInventory().collect(price);
+        if (playerHasWon()) player.collectItem(price);
     }
 
 
     // GETTERS
+
+    public String getId() { return id; }
 
     public Fight getFight() { return fight; }
 

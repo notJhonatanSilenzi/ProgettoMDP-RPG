@@ -36,4 +36,6 @@ public interface Level {
      * Resets the level to the initial status, in case of loss
      */
     void reset();
+
+    String getId();
 }

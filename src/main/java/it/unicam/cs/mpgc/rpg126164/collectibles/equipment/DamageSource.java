@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.collectibles.equipment;
 
-import it.unicam.cs.mpgc.rpg126164.collectibles.Item;
-
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -9,7 +8,7 @@ import java.util.Objects;
  * and it contains an additive of ATK to the fighter's base ATK. They're not cumulable, so they can't be stacked
  * in the inventory and their count is always 1.
  */
-public class DamageSource implements Item, Equipment {
+public class DamageSource implements Equipment, Serializable {
 
     private final String name;
     private final String description;

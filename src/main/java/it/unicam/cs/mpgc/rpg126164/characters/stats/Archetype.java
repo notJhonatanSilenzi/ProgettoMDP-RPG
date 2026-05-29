@@ -3,12 +3,14 @@ package it.unicam.cs.mpgc.rpg126164.characters.stats;
 import it.unicam.cs.mpgc.rpg126164.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.inventory.InventoryBuilder;
 
+import java.io.Serializable;
+
 /**
  * This enum contains all the possible archetypes for player characters and enemies. This enum also helps
  * to create the character sheet for each archetype, with the method getSheet() that returns a new FighterSheet
  * with the stats of the archetype.
  */
-public enum Archetype {
+public enum Archetype implements Serializable {
     /**
      * The archetype that works as a tank. High HP, High DF, cannot evade
      */

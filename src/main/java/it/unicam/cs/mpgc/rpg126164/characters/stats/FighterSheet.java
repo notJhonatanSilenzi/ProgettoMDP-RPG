@@ -1,11 +1,13 @@
 package it.unicam.cs.mpgc.rpg126164.characters.stats;
 
+import java.io.Serializable;
+
 /**
  * This class represents a base Sheet for a character able to fight, and it contains all the stats and methods
  * to maintain and edit the stats throughout the time and the fights. The only stats are HP, HP_MAX, ATK, DF
  * and evade chance. The Javadoc for the implemented methods are in the interface
  */
-public class FighterSheet implements CharacterSheet {
+public class FighterSheet implements CharacterSheet, Serializable {
 
     private int HP;
     private final int HP_MAX;

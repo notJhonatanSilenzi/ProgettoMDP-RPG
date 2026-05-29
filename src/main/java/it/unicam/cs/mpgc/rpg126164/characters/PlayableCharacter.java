@@ -10,6 +10,8 @@ import it.unicam.cs.mpgc.rpg126164.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.inventory.InventoryBuilder;
 import it.unicam.cs.mpgc.rpg126164.inventory.MoneyCollector;
 
+import java.io.Serializable;
+
 /**
  * This class represents a playable character in the game, and it's represented by:
  * - A name
@@ -20,7 +22,7 @@ import it.unicam.cs.mpgc.rpg126164.inventory.MoneyCollector;
  * - A money collector to spend and cash in money
  * The starting sheet and inventory are built according to the chosen archetype.
  */
-public class PlayableCharacter extends Character implements Fighter {
+public class PlayableCharacter extends Character implements Fighter, Serializable {
 
     private final CharacterSheet sheet;
     private final Archetype archetype;

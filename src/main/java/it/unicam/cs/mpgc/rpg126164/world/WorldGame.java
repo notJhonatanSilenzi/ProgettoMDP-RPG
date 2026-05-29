@@ -25,6 +25,10 @@ public interface WorldGame {
     void enterMarket(PlayableCharacter character);
 
     /**
+     * Saves the current state of the game, creating a GameState DTO
+     */
+    void save();
+    /**
      * This method allows to exit the game and return to the home page
      */
     void exit();

@@ -1,10 +1,12 @@
 package it.unicam.cs.mpgc.rpg126164.collectibles;
 
+import java.io.Serializable;
+
 /**
  * This class represents an item stack that can be added or deleted in the inventory. It refers to an item, and it
  * contains the current amount for this item. For equipments, it has to be 1 and maximum 1
  */
-public class ItemStack {
+public class ItemStack implements Serializable {
 
     private final Item item;
     private int count;

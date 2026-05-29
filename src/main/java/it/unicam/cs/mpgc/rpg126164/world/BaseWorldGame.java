@@ -14,16 +14,19 @@ public class BaseWorldGame implements WorldGame {
     private PlayableCharacter player;
     private final LevelManager levelManager;
     private final Market market;
+    private final SaveManager saveManager;
 
     /**
      * Creates a basic world game for this game
      * @param levelManager the level manager to be used in this game
      * @param market the market to be used in this game
+     * @param saveManager the save manager to be used in this game
      */
-    public BaseWorldGame(LevelManager levelManager, Market market) {
+    public BaseWorldGame(LevelManager levelManager, Market market, SaveManager saveManager) {
         this.player = null;
         this.levelManager = levelManager;
         this.market = market;
+        this.saveManager = saveManager;
     }
 
     @Override
@@ -48,6 +51,19 @@ public class BaseWorldGame implements WorldGame {
     }
 
     @Override
+    public void save() {
+        if (this.player == null) throw new IllegalArgumentException("Game not started");
+
+        this.saveManager.save(
+                new GameState(
+                        this.player,
+                        this.levelManager.getCurrentLevelId(),
+                        this.levelManager.getProgressionPercentage()
+                )
+        );
+    }
+
+    @Override
     public void exit() {
         if (this.player == null) throw new IllegalArgumentException("Game not started");
 
@@ -62,4 +78,6 @@ public class BaseWorldGame implements WorldGame {
     public LevelManager getLevelManager() { return levelManager; }
 
     public Market getMarket() { return market; }
+
+    public SaveManager getSaveManager() { return saveManager; }
 }

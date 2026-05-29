@@ -23,4 +23,8 @@ public interface LevelManager {
      * This method allows the player to exit from this game mode
      */
     void exit();
+
+    String getCurrentLevelId();
+
+    int getProgressionPercentage();
 }

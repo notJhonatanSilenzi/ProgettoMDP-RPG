@@ -2,11 +2,13 @@ package it.unicam.cs.mpgc.rpg126164.inventory;
 
 import it.unicam.cs.mpgc.rpg126164.collectibles.equipment.Equipment;
 
+import java.io.Serializable;
+
 /**
  * This class represents a utility to manage the equipment of a player. It allows to equip an item and to
  * get the currently equipped item.
  */
-public class EquipmentManager {
+public class EquipmentManager implements Serializable {
 
     private Equipment current;
 

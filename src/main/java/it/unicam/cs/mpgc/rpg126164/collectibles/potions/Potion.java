@@ -1,17 +1,17 @@
 package it.unicam.cs.mpgc.rpg126164.collectibles.potions;
 
-import it.unicam.cs.mpgc.rpg126164.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.characters.Enemy;
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.characters.Fighter;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * This class represents a generic potions, and it can be consumed to benefit of the specific effect. It implements
  * the Consumable interface, and extends the AbstractItem abstract class
  */
-public abstract class Potion implements Item, Consumable {
+public abstract class Potion implements Consumable, Serializable {
 
     private final String name;
     private final String description;

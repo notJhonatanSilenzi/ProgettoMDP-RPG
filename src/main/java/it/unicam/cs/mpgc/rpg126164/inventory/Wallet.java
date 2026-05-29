@@ -1,10 +1,12 @@
 package it.unicam.cs.mpgc.rpg126164.inventory;
 
+import java.io.Serializable;
+
 /**
  * This class represents a wallet for a playable character. It requires a money name, the current amount and the
  * maximum amount, and it implements MoneyCollector
  */
-public class Wallet implements MoneyCollector {
+public class Wallet implements MoneyCollector, Serializable {
 
     private final String moneyName;
     private int amount;

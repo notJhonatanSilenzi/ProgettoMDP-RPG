@@ -68,5 +68,7 @@ public class BaseAdventure implements LevelManager {
 
     public Level getCurrentLevel() { return currentLevel; }
 
+    public String getCurrentLevelId() { return currentLevel.getId(); }
+
     public int getProgressionPercentage() { return progressionPercentage; }
 }
