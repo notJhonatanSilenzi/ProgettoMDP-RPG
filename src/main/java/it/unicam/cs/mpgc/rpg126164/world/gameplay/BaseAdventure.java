@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg126164.world;
+package it.unicam.cs.mpgc.rpg126164.world.gameplay;
 
 import it.unicam.cs.mpgc.rpg126164.gamemechanics.Level;
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
@@ -68,7 +68,9 @@ public class BaseAdventure implements LevelManager {
 
     public Level getCurrentLevel() { return currentLevel; }
 
+    @Override
     public String getCurrentLevelId() { return currentLevel.getId(); }
 
+    @Override
     public int getProgressionPercentage() { return progressionPercentage; }
 }

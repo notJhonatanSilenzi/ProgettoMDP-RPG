@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg126164.world;
+package it.unicam.cs.mpgc.rpg126164.world.savingmechanics;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -6,8 +6,13 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * This class works as an implementation of the SaveManager interface, and it saves the given game state
+ * into a text file, through serialization
+ */
 public final class SaveSlot implements SaveManager {
 
+    // The file where the game state is saved
     private static final Path SAVE_FILE = Path.of("save.dat");
 
     @Override

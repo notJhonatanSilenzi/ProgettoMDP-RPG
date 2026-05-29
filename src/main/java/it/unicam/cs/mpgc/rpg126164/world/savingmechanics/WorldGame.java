@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg126164.world;
+package it.unicam.cs.mpgc.rpg126164.world.savingmechanics;
 
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
 
@@ -28,6 +28,7 @@ public interface WorldGame {
      * Saves the current state of the game, creating a GameState DTO
      */
     void save();
+
     /**
      * This method allows to exit the game and return to the home page
      */

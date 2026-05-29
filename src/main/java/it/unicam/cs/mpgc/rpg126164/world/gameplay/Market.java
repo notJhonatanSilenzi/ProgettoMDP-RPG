@@ -1,7 +1,8 @@
-package it.unicam.cs.mpgc.rpg126164.world;
+package it.unicam.cs.mpgc.rpg126164.world.gameplay;
 
 import it.unicam.cs.mpgc.rpg126164.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.inventory.InventoryBehaviour;
 
 /**
  * This interface represents a generic market that can be added to the world game. In this area, players can enter
@@ -34,4 +35,10 @@ public interface Market {
      * Allows the player to exit the emporium, leaving this area
      */
     void exit();
+
+    /**
+     * Returns the inventory of this market
+     * @return the inventory of this market
+     */
+    InventoryBehaviour getWarehouse();
 }

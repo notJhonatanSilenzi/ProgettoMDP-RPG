@@ -1,6 +1,4 @@
-package it.unicam.cs.mpgc.rpg126164.world;
-
-import java.util.Optional;
+package it.unicam.cs.mpgc.rpg126164.world.savingmechanics;
 
 /**
  * This interface represents a generic save manager for this game, which allows to save the progresses
@@ -16,6 +14,7 @@ public interface SaveManager {
 
     /**
      * Loads the game from the last saved state
+     * @return the last saved state of the game
      */
     GameState load();
 

@@ -1,20 +1,39 @@
 package it.unicam.cs.mpgc.rpg126164.collectibles.equipment;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * This class represents a damage source, especially weapons or spells. They're reusable multiple times in fights,
  * and it contains an additive of ATK to the fighter's base ATK. They're not cumulable, so they can't be stacked
  * in the inventory and their count is always 1.
  */
+@Entity(name = "weapons")
 public class DamageSource implements Equipment, Serializable {
 
-    private final String name;
-    private final String description;
-    private final int maxAmount;
-    private final int tradeValue;
-    private final int ATK;
+    @Id
+    @Column(nullable = false, unique = true)
+    private String id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private int maxAmount;
+
+    @Column(nullable = false)
+    private int tradeValue;
+
+    @Column(nullable = false)
+    private int ATK;
+
+    public DamageSource() {}
 
     /**
      * Creates a damage source, equippable by the players
@@ -30,6 +49,7 @@ public class DamageSource implements Equipment, Serializable {
                     maxAmount != 1 || ATK <= 0)
             throw new IllegalArgumentException("Invalid parameters");
 
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
         this.maxAmount = maxAmount;
@@ -48,9 +68,9 @@ public class DamageSource implements Equipment, Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Equipment)) return false;
+        if (!(obj instanceof DamageSource)) return false;
 
-        return (this.name.equals(((Equipment) obj).getName()));
+        return this.getId().equals(((DamageSource) obj).getId());
     }
 
     /**
@@ -58,10 +78,12 @@ public class DamageSource implements Equipment, Serializable {
      * @return the hash code of this item
      */
     @Override
-    public int hashCode() { return Objects.hash(name); }
+    public int hashCode() { return Objects.hash(id); }
 
 
     // GETTERS AND SETTERS
+
+    public String getId() { return id; }
 
     @Override
     public String getName() { return name; }

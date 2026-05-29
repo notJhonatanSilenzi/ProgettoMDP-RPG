@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg126164.world;
+package it.unicam.cs.mpgc.rpg126164.world.gameplay;
 
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
 
@@ -24,7 +24,15 @@ public interface LevelManager {
      */
     void exit();
 
+    /**
+     * Returns the id of the current level
+     * @return the id of the current level
+     */
     String getCurrentLevelId();
 
+    /**
+     * Returns the current progression percentage of the game
+     * @return the current progression percentage of the game
+     */
     int getProgressionPercentage();
 }

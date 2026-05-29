@@ -1,6 +1,8 @@
-package it.unicam.cs.mpgc.rpg126164.world;
+package it.unicam.cs.mpgc.rpg126164.world.savingmechanics;
 
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.world.gameplay.LevelManager;
+import it.unicam.cs.mpgc.rpg126164.world.gameplay.Market;
 
 /**
  * This class represents a basic implementation of a world game, and it manages the player's character,
@@ -58,7 +60,8 @@ public class BaseWorldGame implements WorldGame {
                 new GameState(
                         this.player,
                         this.levelManager.getCurrentLevelId(),
-                        this.levelManager.getProgressionPercentage()
+                        this.levelManager.getProgressionPercentage(),
+                        this.market.getWarehouse()
                 )
         );
     }

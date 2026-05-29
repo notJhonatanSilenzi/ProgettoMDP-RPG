@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg126164.world;
+package it.unicam.cs.mpgc.rpg126164.world.gameplay;
 
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.inventory.InventoryBehaviour;
@@ -63,4 +63,10 @@ public class Emporium implements Market {
 
         this.player = null;
     }
+
+
+    // GETTERS
+
+    @Override
+    public InventoryBehaviour getWarehouse() { return this.itemsForSale; }
 }
