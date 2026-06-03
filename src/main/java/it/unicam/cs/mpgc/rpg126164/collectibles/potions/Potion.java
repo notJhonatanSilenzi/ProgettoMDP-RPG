@@ -19,7 +19,7 @@ public class Potion implements Consumable, Serializable {
     @Column(nullable = false, unique = true)
     private String id;
 
-    @Column(nullable = false, name = "name")
+    @Column(nullable = false, name = "name", unique = true)
     private String name;
 
     @Lob

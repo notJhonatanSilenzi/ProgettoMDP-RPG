@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg126164.characters.Enemy;
 import it.unicam.cs.mpgc.rpg126164.collectibles.equipment.Weapon;
 import it.unicam.cs.mpgc.rpg126164.collectibles.potions.Potion;
 import it.unicam.cs.mpgc.rpg126164.gamemechanics.BaseLevel;
-import org.hibernate.Session;
+import it.unicam.cs.mpgc.rpg126164.gamemechanics.LevelEnemy;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -25,13 +25,12 @@ public class HibernateUtil {
                     .addAnnotatedClass(Potion.class)
                     .addAnnotatedClass(Enemy.class)
                     .addAnnotatedClass(BaseLevel.class)
+                    .addAnnotatedClass(LevelEnemy.class)
                     .buildSessionFactory();
 
     /**
      * returns a SessionFactory
      * @return a SessionFactory
      */
-    public static Session getSessionFactory() {
-        return sessionFactory.openSession();
-    }
+    public static SessionFactory getSessionFactory() { return sessionFactory; }
 }

@@ -20,10 +20,22 @@ public class SeederManager {
     }
 
     /**
+     * Checks if the session needs to be seeded with data, and if so it seeds the data in the
+     * database
+     * @param session the session to be seeded
+     */
+    public void seedIfNecessary(Session session) {
+        long count = session.createQuery("SELECT COUNT(e) FROM Enemy e", Long.class)
+                .getSingleResult();
+
+        if (count == 0) seedAll(session);
+    }
+
+    /**
      * Seeds all the data using the methods of the seeders
      * @param session the session that receives the data from the seeders
      */
-    public void seedAll(Session session) {
+    private void seedAll(Session session) {
         for (Seeder seeder : seeders) seeder.seed(session);
     }
 }

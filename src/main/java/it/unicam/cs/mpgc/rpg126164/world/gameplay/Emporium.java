@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg126164.world.gameplay;
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.collectibles.ItemStack;
+import it.unicam.cs.mpgc.rpg126164.repositories.PotionRepository;
 
 /**
  * This class represents an implementation of the Market interface, and it works as an emporium for the world game.
@@ -12,22 +13,16 @@ import it.unicam.cs.mpgc.rpg126164.collectibles.ItemStack;
 public class Emporium implements Market {
 
     private PlayableCharacter player;
-    private InventoryBehaviour itemsForSale;
+    private final InventoryBehaviour itemsForSale;
 
     /**
      * Creates an emporium for this world
      */
-    public Emporium() {
-        this.player = null;
-        this.loadItemsForSale();
-    }
+    public Emporium(InventoryBehaviour itemsForSale) {
+        if (itemsForSale == null) throw new IllegalArgumentException("Items for sale cannot be null");
 
-    /**
-     * Loads all the items that the emporium can sell by default at the starting of the game
-     */
-    private void loadItemsForSale() {
-        // TODO - implementare quando ci sarà un meccanismo di persistenza
-        this.itemsForSale = null;
+        this.player = null;
+        this.itemsForSale = itemsForSale;
     }
 
     @Override

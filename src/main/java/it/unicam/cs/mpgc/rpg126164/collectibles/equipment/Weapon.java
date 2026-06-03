@@ -19,7 +19,7 @@ public class Weapon implements Equipment, Serializable {
     @Column(nullable = false, unique = true)
     private String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)

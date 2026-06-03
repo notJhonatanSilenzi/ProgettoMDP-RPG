@@ -15,7 +15,7 @@ import java.util.Map;
  * This static class helps in building the starting inventory for a playable character
  */
 public final class InventoryBuilder {
-    // TODO - adattare quando verrà messa la persistenza
+
     private InventoryBuilder() {}
 
     /**

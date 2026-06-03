@@ -24,7 +24,7 @@ public class BaseLevel implements Level {
     @Column(name = "id", nullable = false, unique = true)
     private String id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "enemy_count", nullable = false)
@@ -58,7 +58,7 @@ public class BaseLevel implements Level {
     }
 
     @Override
-    public void startLevel(PlayableCharacter player, Set<Fighter> enemies, ItemStack price) {
+    public void startLevel(PlayableCharacter player, Set<Fighter> enemies, ItemStack prize) {
         if (player == null || enemies == null || enemies.isEmpty())
             throw new IllegalArgumentException("Invalid parameters");
 
@@ -66,7 +66,7 @@ public class BaseLevel implements Level {
 
         if (fight == null) {
             this.fight = new BaseFight(player, enemies);
-            this.prize = price;
+            this.prize = prize;
         } else fight.reset();
 
         fight.startFight();
@@ -89,7 +89,7 @@ public class BaseLevel implements Level {
      */
     private void checkLevelStatus(GameAction gameAction) {
         if (playerHasWon()) {
-            givePriceToPlayer(gameAction.getPlayer());
+            givePrizeToPlayer(gameAction.getPlayer());
             completed = true;
         }
         else if (playerHasLost()) this.reset();
@@ -111,7 +111,7 @@ public class BaseLevel implements Level {
      * Gives a price to the player, if they completed the level by winning the fight
      * @param player the player that receives the price
      */
-    private void givePriceToPlayer(PlayableCharacter player) {
+    private void givePrizeToPlayer(PlayableCharacter player) {
         if (player == null)
             throw new IllegalArgumentException("Invalid parameters");
 

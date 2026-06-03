@@ -10,10 +10,10 @@ public class LevelSeeder implements Seeder {
 
     @Override
     public void seed(Session session) {
-        session.persist(new BaseLevel("Level 1", 1));
-        session.persist(new BaseLevel("Level 2", 2));
-        session.persist(new BaseLevel("Level 3", 1));
-        session.persist(new BaseLevel("Level 4", 2));
-        session.persist(new BaseLevel("Level 5", 1));
+        session.persist(new BaseLevel("Level 1 - Waterfall", 1));
+        session.persist(new BaseLevel("Level 2 - Mineshaft", 2));
+        session.persist(new BaseLevel("Level 3 - Cave", 1));
+        session.persist(new BaseLevel("Level 4 - Forest", 3));
+        session.persist(new BaseLevel("Level 5 - Mountain", 1));
     }
 }

@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg126164.characters;
 import it.unicam.cs.mpgc.rpg126164.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.characters.stats.CharacterSheet;
 import it.unicam.cs.mpgc.rpg126164.collectibles.equipment.Equipment;
+import it.unicam.cs.mpgc.rpg126164.collectibles.equipment.Weapon;
 import jakarta.persistence.*;
 
 /**
@@ -14,8 +15,8 @@ import jakarta.persistence.*;
 @Table(name = "enemies")
 public class Enemy extends Character implements Fighter {
 
-    @Transient
-    private Equipment equipment;
+    @ManyToOne
+    private Weapon equipment;
 
     @Transient
     private CharacterSheet sheet;
@@ -36,7 +37,7 @@ public class Enemy extends Character implements Fighter {
      * @param archetype its archetype, which influences the sheet creation
      * @param type its type, which influences the amount of stats to adapt its strength
      */
-    public Enemy(String name, String description, Equipment equipment, Archetype archetype, EnemyType type) {
+    public Enemy(String name, String description, Weapon equipment, Archetype archetype, EnemyType type) {
         super(name, description);
         this.equipment = equipment;
         this.archetype = archetype;
