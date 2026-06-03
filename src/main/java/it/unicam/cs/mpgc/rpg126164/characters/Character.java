@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.characters;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -7,11 +9,21 @@ import java.util.UUID;
  * This class represents a generic character which is in the world game. It can't be initialized, it requires
  * more specifications to be initialized.
  */
+@MappedSuperclass
 public abstract class Character {
 
-    private final String id;
-    private final String name;
-    private final String description;
+    @Id
+    @Column(name = "id", nullable = false, unique = true)
+    private String id;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Lob
+    @Column(name = "description",  nullable = false)
+    private String description;
+
+    public Character() {}
 
     /**
      * Constructor that initializes a generic character with an id and a name

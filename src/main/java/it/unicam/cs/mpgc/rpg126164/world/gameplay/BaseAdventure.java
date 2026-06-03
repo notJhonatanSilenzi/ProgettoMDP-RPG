@@ -66,10 +66,8 @@ public class BaseAdventure implements LevelManager {
 
     public List<Level> getLevels() { return levels; }
 
-    public Level getCurrentLevel() { return currentLevel; }
-
     @Override
-    public String getCurrentLevelId() { return currentLevel.getId(); }
+    public Level getCurrentLevel() { return currentLevel; }
 
     @Override
     public int getProgressionPercentage() { return progressionPercentage; }

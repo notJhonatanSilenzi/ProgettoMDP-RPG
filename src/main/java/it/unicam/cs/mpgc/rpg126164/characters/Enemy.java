@@ -3,18 +3,30 @@ package it.unicam.cs.mpgc.rpg126164.characters;
 import it.unicam.cs.mpgc.rpg126164.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.characters.stats.CharacterSheet;
 import it.unicam.cs.mpgc.rpg126164.collectibles.equipment.Equipment;
+import jakarta.persistence.*;
 
 /**
  * This class represents an NPC character able to fight with the player, and it's similar to playable characters
  * in its representation. The difference is that it can't change weapon and doesn't have an inventory. There
  * are three types of enemies, and the type influences the stats in the sheet
  */
+@Entity
+@Table(name = "enemies")
 public class Enemy extends Character implements Fighter {
 
-    private final Equipment equipment;
-    private final CharacterSheet sheet;
-    private final Archetype archetype;
-    private final EnemyType type;
+    @Transient
+    private Equipment equipment;
+
+    @Transient
+    private CharacterSheet sheet;
+
+    @Column(name = "archetype", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Archetype archetype;
+
+    @Column(name = "enemy_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EnemyType type;
 
     /**
      * Creates an enemy
@@ -31,6 +43,8 @@ public class Enemy extends Character implements Fighter {
         this.type = type;
         this.sheet = archetype.getSheet(type.getMultiplier());
     }
+
+    public Enemy() { super(); }
 
 
     // GETTERS AND SETTERS

@@ -1,13 +1,12 @@
 package it.unicam.cs.mpgc.rpg126164.inventory;
 
 import it.unicam.cs.mpgc.rpg126164.collectibles.*;
-import it.unicam.cs.mpgc.rpg126164.collectibles.equipment.DamageSource;
+import it.unicam.cs.mpgc.rpg126164.collectibles.equipment.Weapon;
 import it.unicam.cs.mpgc.rpg126164.collectibles.equipment.Equipment;
-import it.unicam.cs.mpgc.rpg126164.collectibles.potions.HarmingPotion;
-import it.unicam.cs.mpgc.rpg126164.collectibles.potions.HealingPotion;
 import it.unicam.cs.mpgc.rpg126164.collectibles.potions.Potion;
 import it.unicam.cs.mpgc.rpg126164.collectibles.potions.PotionTargetType;
 import it.unicam.cs.mpgc.rpg126164.characters.stats.Archetype;
+import it.unicam.cs.mpgc.rpg126164.collectibles.potions.StatsType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +39,7 @@ public final class InventoryBuilder {
      * @param inv the inventory to which the weapon will be added and equipped
      */
     private static void getWarriorWeapon(InventoryBehaviour inv) {
-        Equipment spear = new DamageSource("Iron Spear", "A simple spear, used by warriors", 1, 120, 4);
+        Equipment spear = new Weapon("Iron Spear", "A simple spear, used by warriors", 1, 120, 4);
         inv.collect(new ItemStack(spear, 1));
     }
 
@@ -49,7 +48,7 @@ public final class InventoryBuilder {
      * @param inv the inventory to which the weapon will be added and equipped
      */
     private static void getBerserkerWeapon(InventoryBehaviour inv) {
-        Equipment sword = new DamageSource("Iron Sword", "A simple sword, used by berserkers", 1, 150, 5);
+        Equipment sword = new Weapon("Iron Sword", "A simple sword, used by berserkers", 1, 150, 5);
         inv.collect(new ItemStack(sword, 1));
     }
 
@@ -58,7 +57,7 @@ public final class InventoryBuilder {
      * @param inv the inventory to which the spell will be added and equipped
      */
     private static void getClericSpell(InventoryBehaviour inv) {
-        Equipment simpleSpell = new DamageSource("Simple Spell", "A simple spell, used by clerics", 1, 140, 3);
+        Equipment simpleSpell = new Weapon("Simple Spell", "A simple spell, used by clerics", 1, 140, 3);
         inv.collect(new ItemStack(simpleSpell, 1));
     }
 
@@ -67,7 +66,7 @@ public final class InventoryBuilder {
      * @param inv the inventory to which the spell will be added and equipped
      */
     private static void getSorcererSpell(InventoryBehaviour inv) {
-        Equipment fireSpell = new DamageSource("Fire Spell", "A dangerous spell, used by sorcerers", 1, 220, 6);
+        Equipment fireSpell = new Weapon("Fire Spell", "A dangerous spell, used by sorcerers", 1, 220, 6);
         inv.collect(new ItemStack(fireSpell, 1));
     }
 
@@ -77,12 +76,12 @@ public final class InventoryBuilder {
      */
     private static Map<Item, ItemStack> getPotions() {
         Map<Item, ItemStack> potions = new HashMap<>();
-        Potion healingPotion = new HealingPotion(
+        Potion healingPotion = new Potion(
                 "healing potion I", "This potion heals you, giving extra hp", 5,
-                60, PotionTargetType.SELF, 20);
-        Potion harmingPotion = new HarmingPotion(
-                "harming potion lvl 1", "This potion harms the enemy, taking away hp", 5,
-                120, PotionTargetType.ENEMY, 20);
+                60, PotionTargetType.SELF, StatsType.HEALTH, 20);
+        Potion harmingPotion = new Potion(
+                "harming potion I", "This potion harms the enemy, taking away hp", 5,
+                120, PotionTargetType.ENEMY, StatsType.HEALTH, 20);
         potions.put(healingPotion, new ItemStack(healingPotion, 2));
         potions.put(harmingPotion, new ItemStack(harmingPotion, 1));
         return potions;

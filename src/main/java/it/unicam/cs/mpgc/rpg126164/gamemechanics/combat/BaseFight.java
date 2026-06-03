@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.gamemechanics.combat;
 
+import it.unicam.cs.mpgc.rpg126164.characters.Enemy;
 import it.unicam.cs.mpgc.rpg126164.characters.Fighter;
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.collectibles.potions.Consumable;
@@ -17,22 +18,19 @@ public class BaseFight implements Fight {
     private final PlayableCharacter player;
     private final Set<Fighter> enemies;
     private FightResult result;
-    private final int goldForEachEnemy;
 
     /**
      * Creates a base fight system between fighters
      * @param player the player character
      * @param enemies the enemies to defeat
-     * @param goldForEachEnemy the amount of gold the player receives for each enemy defeated
      */
-    public BaseFight(PlayableCharacter player, Set<Fighter> enemies, int goldForEachEnemy) {
-        if (player == null || enemies == null || enemies.isEmpty() || goldForEachEnemy <= 0)
+    public BaseFight(PlayableCharacter player, Set<Fighter> enemies) {
+        if (player == null || enemies == null || enemies.isEmpty())
             throw new IllegalArgumentException("Invalid parameters");
 
         this.player = player;
         this.enemies = enemies;
         this.result = null;
-        this.goldForEachEnemy = goldForEachEnemy;
     }
 
     @Override
@@ -75,9 +73,9 @@ public class BaseFight implements Fight {
         else applyDamage(attacker, target);
 
         // If the target is dead and is an enemy, I remove it from the enemies list and give money to the player
-        if (!target.getSheet().isAlive()) {
+        if (!target.getSheet().isAlive() && target instanceof Enemy enemy) {
             enemies.remove(target);
-            attacker.getMoneyCollector().cash(goldForEachEnemy);
+            attacker.getMoneyCollector().cash(enemy.getEnemyType().getGoldForDefeat());
         } else this.applyDamage(target, attacker);
     }
 

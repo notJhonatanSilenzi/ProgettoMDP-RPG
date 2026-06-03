@@ -13,16 +13,14 @@ public interface WorldGame {
     /**
      * This method allows the player to enter the adventure mode, where they can complete levels
      * and fight with the enemies, in order to gain prizes
-     * @param character the player that enters the adventure mode
      */
-    void enterAdventure(PlayableCharacter character);
+    void enterAdventure();
 
     /**
      * This method allows the player to enter the market, where they can buy and sell items,
      * in order to obtain unique items and cash in money
-     * @param character the player that enters the market
      */
-    void enterMarket(PlayableCharacter character);
+    void enterMarket();
 
     /**
      * Saves the current state of the game, creating a GameState DTO

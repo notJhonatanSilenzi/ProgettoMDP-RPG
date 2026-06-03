@@ -11,8 +11,9 @@ import java.util.UUID;
  * and it contains an additive of ATK to the fighter's base ATK. They're not cumulable, so they can't be stacked
  * in the inventory and their count is always 1.
  */
-@Entity(name = "weapons")
-public class DamageSource implements Equipment, Serializable {
+@Entity
+@Table(name = "weapons")
+public class Weapon implements Equipment, Serializable {
 
     @Id
     @Column(nullable = false, unique = true)
@@ -22,18 +23,19 @@ public class DamageSource implements Equipment, Serializable {
     private String name;
 
     @Column(nullable = false)
+    @Lob
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "max_amount")
     private int maxAmount;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "trade_value")
     private int tradeValue;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "atk")
     private int ATK;
 
-    public DamageSource() {}
+    public Weapon() {}
 
     /**
      * Creates a damage source, equippable by the players
@@ -43,7 +45,7 @@ public class DamageSource implements Equipment, Serializable {
      * @param tradeValue its value in the market/shop
      * @param ATK the additive of ATK to the fighter's base ATK when equipped
      */
-    public DamageSource(String name, String description, int maxAmount, int tradeValue, int ATK) {
+    public Weapon(String name, String description, int maxAmount, int tradeValue, int ATK) {
         if (name == null || description == null || tradeValue <= 0 || name.isEmpty() ||
                 description.isEmpty() ||  name.length() < 3 ||  description.length() < 3 ||
                     maxAmount != 1 || ATK <= 0)
@@ -68,9 +70,9 @@ public class DamageSource implements Equipment, Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof DamageSource)) return false;
+        if (!(obj instanceof Weapon)) return false;
 
-        return this.getId().equals(((DamageSource) obj).getId());
+        return this.getId().equals(((Weapon) obj).getId());
     }
 
     /**

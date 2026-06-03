@@ -1,23 +1,49 @@
 package it.unicam.cs.mpgc.rpg126164.collectibles.potions;
 
-import it.unicam.cs.mpgc.rpg126164.characters.Enemy;
-import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.characters.Fighter;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * This class represents a generic potions, and it can be consumed to benefit of the specific effect. It implements
  * the Consumable interface, and extends the AbstractItem abstract class
  */
-public abstract class Potion implements Consumable, Serializable {
+@Entity
+@Table(name = "potions")
+public class Potion implements Consumable, Serializable {
 
-    private final String name;
-    private final String description;
-    private final int maxAmount;
-    private final int tradeValue;
-    private final PotionTargetType targetType;
+    @Id
+    @Column(nullable = false, unique = true)
+    private String id;
+
+    @Column(nullable = false, name = "name")
+    private String name;
+
+    @Lob
+    @Column(nullable = false, name = "description")
+    private String description;
+
+    @Column(nullable = false, name = "max_amount")
+    private int maxAmount;
+
+    @Column(nullable = false, name = "trade_value")
+    private int tradeValue;
+
+    @Column(nullable = false, name = "target_type")
+    @Enumerated(EnumType.STRING)
+    private PotionTargetType targetType;
+
+    @Column(nullable = false, name = "stat_type")
+    @Enumerated(EnumType.STRING)
+    private StatsType statsType;
+
+    @Column(nullable = false, name = "modifier")
+    private int statsModifier;
+
+    public Potion() {}
 
     /**
      * Creates a potion
@@ -27,35 +53,30 @@ public abstract class Potion implements Consumable, Serializable {
      * @param tradeValue its value in the market
      * @param targetType the type of target that this effect can be applied to
      */
-    public Potion(String name, String description, int maxAmount, int tradeValue, PotionTargetType targetType) {
+    public Potion(String name, String description, int maxAmount, int tradeValue,
+                  PotionTargetType targetType, StatsType statsType, int statsModifier) {
 
         if (name == null || description == null || maxAmount <= 0 || tradeValue <= 0 ||
-                targetType == null || name.isEmpty() || description.isEmpty() ||
-                    name.length() < 3 ||  description.length() < 3)
+                targetType == null || statsType == null || statsModifier <= 0 || name.isEmpty()
+                || description.isEmpty() || name.length() < 3 ||  description.length() < 3)
             throw new IllegalArgumentException("Effect and target type cannot be null.");
 
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
         this.maxAmount = maxAmount;
         this.tradeValue = tradeValue;
         this.targetType = targetType;
+        this.statsType = statsType;
+        this.statsModifier = statsModifier;
     }
 
     @Override
-    public abstract void consume(Fighter target);
+    public void consume(Fighter target) {
+        if (target == null || statsType.invalidTarget(target, targetType))
+            throw new IllegalArgumentException("Invalid parameter");
 
-    /**
-     * Checks if the given target can't receive the effects of this potion
-     * @param target the fighter to check on
-     * @return true if this target cannot receive the given effect, false otherwise
-     */
-    public boolean invalidTarget(Fighter target) {
-        return switch (target) {
-            case null -> true;
-            case PlayableCharacter _ when this.targetType == PotionTargetType.ENEMY -> true;
-            case Enemy _ when this.targetType == PotionTargetType.SELF -> true;
-            default -> false;
-        };
+        this.statsType.apply(target, statsModifier, targetType);
     }
 
     /**
@@ -68,8 +89,7 @@ public abstract class Potion implements Consumable, Serializable {
         if (this == obj) return true;
         if (!(obj instanceof Potion)) return false;
 
-        return (this.name.equals(((Potion) obj).getName())
-                && this.targetType == ((Potion) obj).getTargetType());
+        return (this.id.equals(((Potion) obj).id));
     }
 
     /**
@@ -77,10 +97,12 @@ public abstract class Potion implements Consumable, Serializable {
      * @return the hash code of this item
      */
     @Override
-    public int hashCode() { return Objects.hash(name, targetType); }
+    public int hashCode() { return Objects.hash(id); }
 
 
     // GETTERS
+
+    public String getId() { return id; }
 
     @Override
     public PotionTargetType getTargetType() { return targetType; }
@@ -96,4 +118,8 @@ public abstract class Potion implements Consumable, Serializable {
 
     @Override
     public int getTradeValue() { return tradeValue; }
+
+    public StatsType getStatsType() { return statsType; }
+
+    public int getStatsModifier() { return statsModifier; }
 }

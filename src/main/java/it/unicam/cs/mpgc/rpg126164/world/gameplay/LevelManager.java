@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.world.gameplay;
 
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.gamemechanics.Level;
 
 /**
  * This interface represents a generic level manager, and it counts as the world gaming mode. It contains all the
@@ -25,14 +26,15 @@ public interface LevelManager {
     void exit();
 
     /**
-     * Returns the id of the current level
-     * @return the id of the current level
+     * Returns the current level that has to be completed by the player
+     * @return the current level
      */
-    String getCurrentLevelId();
+    Level getCurrentLevel();
 
     /**
      * Returns the current progression percentage of the game
      * @return the current progression percentage of the game
      */
     int getProgressionPercentage();
+
 }

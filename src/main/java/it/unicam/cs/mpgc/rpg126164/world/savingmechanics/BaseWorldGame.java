@@ -34,22 +34,23 @@ public class BaseWorldGame implements WorldGame {
     @Override
     public void enter(PlayableCharacter character) {
         if (character == null) throw new IllegalArgumentException("Game already started");
+        if (this.player != null) throw new IllegalStateException("Game already started");
 
         this.player = character;
     }
 
     @Override
-    public void enterAdventure(PlayableCharacter character) {
-        if (this.player != null) throw new IllegalArgumentException("Game not started");
+    public void enterAdventure() {
+        if (this.player == null) throw new IllegalArgumentException("Game not started");
 
-        this.levelManager.enter(character);
+        this.levelManager.enter(player);
     }
 
     @Override
-    public void enterMarket(PlayableCharacter character) {
-        if (this.player != null) throw new IllegalArgumentException("Game not started");
+    public void enterMarket() {
+        if (this.player == null) throw new IllegalArgumentException("Game not started");;
 
-        this.market.enter(character);
+        this.market.enter(player);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class BaseWorldGame implements WorldGame {
         this.saveManager.save(
                 new GameState(
                         this.player,
-                        this.levelManager.getCurrentLevelId(),
+                        this.levelManager.getCurrentLevel().getId(),
                         this.levelManager.getProgressionPercentage(),
                         this.market.getWarehouse()
                 )

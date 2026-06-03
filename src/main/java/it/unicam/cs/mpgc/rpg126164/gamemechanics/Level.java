@@ -1,6 +1,11 @@
 package it.unicam.cs.mpgc.rpg126164.gamemechanics;
 
+import it.unicam.cs.mpgc.rpg126164.characters.Fighter;
+import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.gamemechanics.combat.GameAction;
+
+import java.util.Set;
 
 /**
  * This interface represents a generic level in the world game, and it refers to a fight. It contains different
@@ -12,7 +17,7 @@ public interface Level {
     /**
      * Starts this level, allowing to process actions in this level
      */
-    void startLevel();
+    void startLevel(PlayableCharacter player, Set<Fighter> enemies, ItemStack price);
 
     /**
      * Processes a turn through the given game action, passing it to the fight field in the class
@@ -37,5 +42,9 @@ public interface Level {
      */
     void reset();
 
+    /**
+     * Returns the id of this level
+     * @return the id of this level
+     */
     String getId();
 }

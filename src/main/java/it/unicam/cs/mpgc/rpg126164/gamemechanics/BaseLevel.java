@@ -1,41 +1,74 @@
 package it.unicam.cs.mpgc.rpg126164.gamemechanics;
 
+import it.unicam.cs.mpgc.rpg126164.characters.Fighter;
 import it.unicam.cs.mpgc.rpg126164.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.collectibles.ItemStack;
+import it.unicam.cs.mpgc.rpg126164.gamemechanics.combat.BaseFight;
 import it.unicam.cs.mpgc.rpg126164.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.gamemechanics.combat.FightResult;
 import it.unicam.cs.mpgc.rpg126164.gamemechanics.combat.GameAction;
+import jakarta.persistence.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 /**
  * This class represents a generic level in the world game. It contains a reference to the fight to complete in order
  * to move onto the next level, and also a price and a flag to assert the level is completed.
  */
+@Entity
+@Table(name = "levels")
 public class BaseLevel implements Level {
 
-    private final String id;
-    private final Fight fight;
-    private final ItemStack price;
+    @Id
+    @Column(name = "id", nullable = false, unique = true)
+    private String id;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "enemy_count", nullable = false)
+    private int enemyCount;
+
+    @Transient
+    private Fight fight;
+
+    @Transient
+    private ItemStack prize;
+
+    @Transient
     private boolean completed;
+
+    public BaseLevel() {}
 
     /**
      * Creates a basic level in the world game
-     * @param fight the fight that the player must complete to continue in the game
-     * @param price the items that the player collects if he wins the fight
+     * @param name the name of the level
+     * @param enemyCount the number of enemies that the player must defeat to complete the level
      */
-    public BaseLevel(Fight fight, ItemStack price) {
-        if  (fight == null || price == null) throw new IllegalArgumentException("Invalid parameters");
+    public BaseLevel(String name, int enemyCount) {
+        if  (name == null || enemyCount <= 0 || name.isEmpty()) throw new IllegalArgumentException("Invalid parameters");
 
         this.id = UUID.randomUUID().toString();
-        this.fight = fight;
-        this.price = price;
+        this.name = name;
+        this.enemyCount = enemyCount;
+        this.fight = null;
+        this.prize = null;
         this.completed = false;
     }
 
     @Override
-    public void startLevel() {
-        fight.reset();
+    public void startLevel(PlayableCharacter player, Set<Fighter> enemies, ItemStack price) {
+        if (player == null || enemies == null || enemies.isEmpty())
+            throw new IllegalArgumentException("Invalid parameters");
+
+        if (enemies.size() != enemyCount) throw new IllegalArgumentException("Invalid number of enemies");
+
+        if (fight == null) {
+            this.fight = new BaseFight(player, enemies);
+            this.prize = price;
+        } else fight.reset();
+
         fight.startFight();
     }
 
@@ -82,7 +115,7 @@ public class BaseLevel implements Level {
         if (player == null)
             throw new IllegalArgumentException("Invalid parameters");
 
-        if (playerHasWon()) player.collectItem(price);
+        if (playerHasWon()) player.collectItem(prize);
     }
 
 
@@ -90,9 +123,13 @@ public class BaseLevel implements Level {
 
     public String getId() { return id; }
 
+    public String getName() { return name; }
+
+    public int getEnemyCount() { return enemyCount; }
+
     public Fight getFight() { return fight; }
 
-    public ItemStack getPrice() { return price; }
+    public ItemStack getPrize() { return prize; }
 
     public boolean isCompleted() { return completed; }
 }
