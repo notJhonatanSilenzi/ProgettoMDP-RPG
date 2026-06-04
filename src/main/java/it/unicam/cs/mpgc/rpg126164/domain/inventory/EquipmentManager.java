@@ -5,7 +5,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import java.io.Serializable;
 
 /**
- * This class represents a utility to manage the equipment of a player. It allows to equip an item and to
+ * This class represents a utility to manage the equipment of a getPlayer. It allows to equip an item and to
  * get the currently equipped item.
  */
 public class EquipmentManager implements Serializable {

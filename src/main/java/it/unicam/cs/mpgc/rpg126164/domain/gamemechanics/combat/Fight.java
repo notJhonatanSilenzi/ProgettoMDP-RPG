@@ -20,12 +20,12 @@ public interface Fight {
 
     /**
      * This method processes a turn in the fight, given a specific action
-     * @param gameAction the action chosen by the player/enemy
+     * @param gameAction the action chosen by the getPlayer/enemy
      */
     void processTurn(GameAction gameAction);
 
     /**
-     * This method updates the state of the fight at the end of every turn. The fight ends if the player dies or
+     * This method updates the state of the fight at the end of every turn. The fight ends if the getPlayer dies or
      * if all enemies die
      * @return the current status of this fight
      */
@@ -41,7 +41,7 @@ public interface Fight {
 
     /**
      * Simulates the action of consuming a consumable item, applying the effects to the given character.
-     * The target must be a fighter, which can be the player or an enemy
+     * The target must be a fighter, which can be the getPlayer or an enemy
      * @param target the fighter that receives the effects of the potion
      * @param consumable the consumable item to consume
      */
@@ -49,13 +49,13 @@ public interface Fight {
 
     /**
      * Simulates the action of equipping an equipable item. This action doesn't waste turns in the fight
-     * @param player the player that equips the item
+     * @param player the getPlayer that equips the item
      * @param equipment the item to equip
      */
     void equipItem(PlayableCharacter player, Equipment equipment);
 
     /**
-     * Resets the current fight, means the player stats and enemies' stats get reset to the initial values,
+     * Resets the current fight, means the getPlayer stats and enemies' stats get reset to the initial values,
      * and prepares the fight to get started again.
      */
     void reset();

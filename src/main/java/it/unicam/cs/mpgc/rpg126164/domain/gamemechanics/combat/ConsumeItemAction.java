@@ -19,13 +19,13 @@ public class ConsumeItemAction implements GameAction {
 
     /**
      * Creates a consume potion action to be applied in a turn, during a fight
-     * @param player the player involved in this action
+     * @param player the getPlayer involved in this action
      * @param target the fighter that receives the effects of the potion
      * @param consumable the potion to consume
      * @throws IllegalArgumentException if:
-     *   - player, target or consumable are null
+     *   - getPlayer, target or consumable are null
      *   - a healing potion is tried to be consumed by an enemy
-     *   - a harming potion is tried to be applied to a player
+     *   - a harming potion is tried to be applied to a getPlayer
      */
     public ConsumeItemAction(PlayableCharacter player, Fighter target, Consumable consumable) {
         if (player == null || target == null || consumable == null)

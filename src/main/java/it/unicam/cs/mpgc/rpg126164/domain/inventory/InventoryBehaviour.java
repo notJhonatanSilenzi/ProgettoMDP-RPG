@@ -1,6 +1,9 @@
 package it.unicam.cs.mpgc.rpg126164.domain.inventory;
 
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
+
+import java.util.Map;
 
 /**
  * This interface allows any object that implements this interface to work as an inventory. The inventory allows
@@ -22,4 +25,10 @@ public interface InventoryBehaviour {
      * @param stack the stack of item to drop from the inventory
      */
     void drop(ItemStack stack);
+
+    /**
+     * Returns the items currently in the inventory, with their relative amount
+     * @return the items currently in the inventory
+     */
+    Map<Item, ItemStack> getItems();
 }

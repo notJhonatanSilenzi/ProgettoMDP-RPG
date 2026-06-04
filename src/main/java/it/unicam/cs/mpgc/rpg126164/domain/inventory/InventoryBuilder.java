@@ -36,7 +36,7 @@ public final class InventoryBuilder {
     }
 
     /**
-     * Returns the initial weapon for a warrior player
+     * Returns the initial weapon for a warrior getPlayer
      * @param inv the inventory to which the weapon will be added and equipped
      */
     private static void getWarriorWeapon(InventoryBehaviour inv) {
@@ -45,7 +45,7 @@ public final class InventoryBuilder {
     }
 
     /**
-     * Returns the initial weapon for a berserker player
+     * Returns the initial weapon for a berserker getPlayer
      * @param inv the inventory to which the weapon will be added and equipped
      */
     private static void getBerserkerWeapon(InventoryBehaviour inv) {
@@ -54,7 +54,7 @@ public final class InventoryBuilder {
     }
 
     /**
-     * Returns the initial spell for a cleric player
+     * Returns the initial spell for a cleric getPlayer
      * @param inv the inventory to which the spell will be added and equipped
      */
     private static void getClericSpell(InventoryBehaviour inv) {
@@ -63,7 +63,7 @@ public final class InventoryBuilder {
     }
 
     /**
-     * Returns the initial spell for a sorcerer player
+     * Returns the initial spell for a sorcerer getPlayer
      * @param inv the inventory to which the spell will be added and equipped
      */
     private static void getSorcererSpell(InventoryBehaviour inv) {
@@ -89,7 +89,7 @@ public final class InventoryBuilder {
     }
 
     /**
-     * Returns the initial money collector for every player, which will be the same for all of them
+     * Returns the initial money collector for every getPlayer, which will be the same for all of them
      * @return the initial money collector
      */
     public static MoneyCollector getWallet() { return new Wallet("gold", 200); }

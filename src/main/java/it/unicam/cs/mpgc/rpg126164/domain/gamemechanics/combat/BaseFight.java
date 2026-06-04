@@ -21,7 +21,7 @@ public class BaseFight implements Fight {
 
     /**
      * Creates a base fight system between fighters
-     * @param player the player character
+     * @param player the getPlayer character
      * @param enemies the enemies to defeat
      */
     public BaseFight(PlayableCharacter player, Set<Fighter> enemies) {
@@ -51,7 +51,7 @@ public class BaseFight implements Fight {
     }
 
     /**
-     * Updates the status of this fight, checking if it's been completed by the player, or if the player has
+     * Updates the status of this fight, checking if it's been completed by the getPlayer, or if the getPlayer has
      * been defeated by the enemies
      */
     private void updateFightStatus() {
@@ -72,7 +72,7 @@ public class BaseFight implements Fight {
         if (target.getSheet().hasEvaded()) return; // TODO - forse in futuro da adattare
         else applyDamage(attacker, target);
 
-        // If the target is dead and is an enemy, I remove it from the enemies list and give money to the player
+        // If the target is dead and is an enemy, I remove it from the enemies list and give money to the getPlayer
         if (!target.getSheet().isAlive() && target instanceof Enemy enemy) {
             enemies.remove(target);
             attacker.getMoneyCollector().cash(enemy.getEnemyType().getGoldForDefeat());
@@ -130,7 +130,7 @@ public class BaseFight implements Fight {
     }
 
     /**
-     * Checks if the given object is equal to this fight, basing on player and enemies
+     * Checks if the given object is equal to this fight, basing on getPlayer and enemies
      * @param obj   the reference object with which to compare.
      * @return true if the two objects are equal, false otherwise
      */

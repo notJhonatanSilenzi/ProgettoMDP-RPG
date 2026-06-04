@@ -44,7 +44,7 @@ public class BaseLevel implements Level {
     /**
      * Creates a basic level in the world game
      * @param name the name of the level
-     * @param enemyCount the number of enemies that the player must defeat to complete the level
+     * @param enemyCount the number of enemies that the getPlayer must defeat to complete the level
      */
     public BaseLevel(String name, int enemyCount) {
         if  (name == null || enemyCount <= 0 || name.isEmpty()) throw new IllegalArgumentException("Invalid parameters");
@@ -82,10 +82,10 @@ public class BaseLevel implements Level {
 
     /**
      * Checks if the fight has ended. In particular:
-     * - it gives the price to the player, if they won the fight, and signs the level as completed
-     * - it resets the level if the player lost the fight
+     * - it gives the price to the getPlayer, if they won the fight, and signs the level as completed
+     * - it resets the level if the getPlayer lost the fight
      * - otherwise it doesn't do anything
-     * @param gameAction the game action that the player has done in this turn
+     * @param gameAction the game action that the getPlayer has done in this turn
      */
     private void checkLevelStatus(GameAction gameAction) {
         if (playerHasWon()) {
@@ -108,8 +108,8 @@ public class BaseLevel implements Level {
     }
 
     /**
-     * Gives a price to the player, if they completed the level by winning the fight
-     * @param player the player that receives the price
+     * Gives a price to the getPlayer, if they completed the level by winning the fight
+     * @param player the getPlayer that receives the price
      */
     private void givePrizeToPlayer(PlayableCharacter player) {
         if (player == null)

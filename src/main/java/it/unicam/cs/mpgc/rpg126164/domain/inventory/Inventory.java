@@ -59,5 +59,6 @@ public class Inventory implements InventoryBehaviour, Serializable {
 
     // GETTERS
 
+    @Override
     public Map<Item, ItemStack> getItems() { return items; }
 }

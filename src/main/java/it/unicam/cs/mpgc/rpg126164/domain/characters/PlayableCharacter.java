@@ -58,7 +58,7 @@ public class PlayableCharacter extends Character implements Fighter, Serializabl
 
     /**
      * This method represents the possibility to use a consumable item to give himself some extra advantages.
-     * Consuming an item causes the player to lose one turn
+     * Consuming an item causes the getPlayer to lose one turn
      * @param consumable the item to consume
      */
     public void consumeItem(Consumable consumable, Fighter target) {
@@ -70,7 +70,7 @@ public class PlayableCharacter extends Character implements Fighter, Serializabl
     }
 
     /**
-     * This method represents for this player the possibility to collect a certain amount of an item
+     * This method represents for this getPlayer the possibility to collect a certain amount of an item
      * @param stack the stack of items to collect
      */
     public void collectItem(ItemStack stack) {

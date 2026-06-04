@@ -5,9 +5,9 @@ import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.LevelManager;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
 
 /**
- * This class represents a basic implementation of a world game, and it manages the player's character,
+ * This class represents a basic implementation of a world game, and it manages the getPlayer's character,
  * the level manager, and the market. It provides methods to enter the game, enter an adventure,
- * enter the market, and exit the game. The class ensures that the player can only enter the game
+ * enter the market, and exit the game. The class ensures that the getPlayer can only enter the game
  * if they are not already in it, and that they can only enter an adventure or the market if they
  * are currently in the game.
  */

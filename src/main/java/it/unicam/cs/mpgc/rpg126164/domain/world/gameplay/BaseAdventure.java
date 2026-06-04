@@ -7,8 +7,8 @@ import java.util.List;
 
 /**
  * This class represents a basic implementation of the LevelManager interface, managing the progression
- * of a player through a series of levels in an adventure game. It keeps track of the current level,
- * the player's progress, and allows for entering and exiting the adventure.
+ * of a getPlayer through a series of levels in an adventure game. It keeps track of the current level,
+ * the getPlayer's progress, and allows for entering and exiting the adventure.
  */
 public class BaseAdventure implements LevelManager {
 
@@ -46,7 +46,7 @@ public class BaseAdventure implements LevelManager {
     }
 
     /**
-     * Updates the progression of the player in this mode, according to the completed levels
+     * Updates the progression of the getPlayer in this mode, according to the completed levels
      */
     private void updateProgression() {
         this.progressionPercentage = this.levels.indexOf(currentLevel) * 100 / this.levels.size();
@@ -71,4 +71,7 @@ public class BaseAdventure implements LevelManager {
 
     @Override
     public int getProgressionPercentage() { return progressionPercentage; }
+
+    @Override
+    public void setCurrentLevel(Level level)  { this.currentLevel = level; }
 }

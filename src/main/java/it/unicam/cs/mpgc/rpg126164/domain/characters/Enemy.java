@@ -7,7 +7,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Weapon;
 import jakarta.persistence.*;
 
 /**
- * This class represents an NPC character able to fight with the player, and it's similar to playable characters
+ * This class represents an NPC character able to fight with the getPlayer, and it's similar to playable characters
  * in its representation. The difference is that it can't change weapon and doesn't have an inventory. There
  * are three types of enemies, and the type influences the stats in the sheet
  */

@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * This interface represents a generic level in the world game, and it refers to a fight. It contains different
  * methods: starting the level, processing a turn, verifying if the fight is over, resetting and giving a price
- * to the player if the level is completed.
+ * to the getPlayer if the level is completed.
  */
 public interface Level {
 
@@ -26,14 +26,14 @@ public interface Level {
     void processTurn(GameAction gameAction);
 
     /**
-     * Checks if the player has won the fight
-     * @return true if the player won the fight, false otherwise
+     * Checks if the getPlayer has won the fight
+     * @return true if the getPlayer won the fight, false otherwise
      */
     boolean playerHasWon();
 
     /**
-     * Checks if the player has lost the fight
-     * @return true if the player lost the fight, false otherwise
+     * Checks if the getPlayer has lost the fight
+     * @return true if the getPlayer lost the fight, false otherwise
      */
     boolean playerHasLost();
 

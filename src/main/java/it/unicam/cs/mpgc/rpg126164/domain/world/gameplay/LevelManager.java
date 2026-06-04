@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.gameplay;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.BaseLevel;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
 
 /**
@@ -10,26 +11,28 @@ import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
 public interface LevelManager {
 
     /**
-     * Allows the player to enter this game mode
-     * @param character the player that enters the game mode
+     * Allows the getPlayer to enter this game mode
+     * @param character the getPlayer that enters the game mode
      */
     void enter(PlayableCharacter character);
 
     /**
-     * This method moves the player to the next level, if the player has completed the current level
+     * This method moves the getPlayer to the next level, if the getPlayer has completed the current level
      */
     void nextLevel();
 
     /**
-     * This method allows the player to exit from this game mode
+     * This method allows the getPlayer to exit from this game mode
      */
     void exit();
 
     /**
-     * Returns the current level that has to be completed by the player
+     * Returns the current level that has to be completed by the getPlayer
      * @return the current level
      */
     Level getCurrentLevel();
+
+    void setCurrentLevel(Level level);
 
     /**
      * Returns the current progression percentage of the game

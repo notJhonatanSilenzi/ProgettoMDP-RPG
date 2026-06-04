@@ -3,6 +3,8 @@ package it.unicam.cs.mpgc.rpg126164.persistance.repositories;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Weapon;
 import org.hibernate.Session;
 
+import java.util.List;
+
 /**
  * This class works as a repository for the "weapons" entity, and it contains methods to query the
  * SQLite database
@@ -34,4 +36,10 @@ public class WeaponRepository {
      * @return the complete weapon
      */
     public Weapon findById(String id) { return session.find(Weapon.class, id); }
+
+    /**
+     * Finds all the weapons in the database
+     * @return the list of all weapons in the database
+     */
+    public List<Weapon> findAll() { return session.createQuery("FROM Weapon", Weapon.class).list(); }
 }

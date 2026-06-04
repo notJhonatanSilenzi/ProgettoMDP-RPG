@@ -21,9 +21,9 @@ public interface MoneyCollector {
     void spend(int n);
 
     /**
-     * This method allows to check if the player can spend a certain amount of money, according to this wallet
+     * This method allows to check if the getPlayer can spend a certain amount of money, according to this wallet
      * @param n the amount of money to check
-     * @return true if the player can afford this buying, false otherwise
+     * @return true if the getPlayer can afford this buying, false otherwise
      */
     boolean canAfford(int n);
 }

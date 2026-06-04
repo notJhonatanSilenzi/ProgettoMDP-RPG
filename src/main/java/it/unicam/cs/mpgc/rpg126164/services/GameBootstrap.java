@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.services;
 
+import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.SaveManager;
+import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.SaveSlot;
 import it.unicam.cs.mpgc.rpg126164.persistance.HibernateUtil;
 import it.unicam.cs.mpgc.rpg126164.persistance.repositories.*;
 import it.unicam.cs.mpgc.rpg126164.persistance.seeders.*;
@@ -13,23 +15,33 @@ import java.util.List;
  */
 public class GameBootstrap {
 
+    private final Session session;
+    private final WeaponRepository weaponRepository;
+    private final PotionRepository potionRepository;
+    private final EnemyRepository enemyRepository;
+    private final LevelRepository levelRepository;
+    private final LevelEnemyRepository levelEnemyRepository;
+    private final SaveManager saveManager;
+
+    public GameBootstrap() {
+        this.session = HibernateUtil.getSessionFactory().openSession(); // Create a session
+        this.weaponRepository = new WeaponRepository(session);
+        this.potionRepository = new PotionRepository(session);
+        this.enemyRepository = new EnemyRepository(session);
+        this.levelRepository = new LevelRepository(session);
+        this.levelEnemyRepository = new LevelEnemyRepository(session);
+        this.saveManager = new SaveSlot();
+    }
+
     /**
      * Initializes the game service, especially the database
      * @return the game service
      */
-    public GameService init() {
-        Session session = HibernateUtil.getSessionFactory().openSession(); // Create a session
+    public GameService initGamePlay() {
 
         runSeeders(session); // Seeds the database
 
-        // Initialize the repositories and the service
-        WeaponRepository weaponRepository = new WeaponRepository(session);
-        PotionRepository potionRepository = new PotionRepository(session);
-        EnemyRepository enemyRepository = new EnemyRepository(session);
-        LevelRepository levelRepository = new LevelRepository(session);
-        LevelEnemyRepository levelEnemyRepository = new LevelEnemyRepository(session);
-
-        return new GameService(weaponRepository, potionRepository, enemyRepository, levelRepository, levelEnemyRepository);
+        return new GameService(saveManager);
     }
 
     /**
@@ -54,5 +66,21 @@ public class GameBootstrap {
         } catch (Exception ex) {
             throw new RuntimeException("Failed to run seeders", ex);
         }
+    }
+
+    /**
+     * Initializes a world service, to build the world game for the gameplay
+     * @return a world service for this game
+     */
+    public WorldService initWorldGame() {
+        return new WorldService(weaponRepository, potionRepository, levelRepository);
+    }
+
+    /**
+     * Initializes a market service for the market of this game
+     * @return a market service for the market
+     */
+    public MarketService initMarket() {
+        return new MarketService();
     }
 }

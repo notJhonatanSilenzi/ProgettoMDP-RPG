@@ -14,7 +14,7 @@ public enum StatsType {
     DEFENSE;
 
     /**
-     * Applies the modifier of a potion to the target, given the target type. The player receives
+     * Applies the modifier of a potion to the target, given the target type. The getPlayer receives
      * an increase of stats, the enemy receives a decrease of stats
      * @param target the fighter that receives the effect
      * @param modifier the stats modifier to apply
