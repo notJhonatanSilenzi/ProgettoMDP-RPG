@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
+import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.*;
 import it.unicam.cs.mpgc.rpg126164.persistance.LevelPrize;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.Inventory;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
@@ -11,10 +12,6 @@ import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.BaseAdventure;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Emporium;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.LevelManager;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
-import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.BaseWorldGame;
-import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.GameState;
-import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.SaveManager;
-import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 import it.unicam.cs.mpgc.rpg126164.persistance.repositories.*;
 
 import java.util.HashMap;
@@ -41,26 +38,24 @@ public class WorldService {
 
     /**
      * Builds a world game for a new gameplay, with a new player character
-     * @param saveManager the save slot
      * @param player the player's character
      * @return a new world game
      */
-    public WorldGame buildNewWorldGame(SaveManager saveManager, PlayableCharacter player) {
-        WorldGame worldGame = new BaseWorldGame(buildAdventure(), buildNewEmporium(), saveManager);
+    public WorldGame buildNewWorldGame(PlayableCharacter player) {
+        WorldGame worldGame = new BaseWorldGame(buildAdventure(), buildNewEmporium(), new SaveSlot());
         worldGame.enter(player);
         return worldGame;
     }
 
     /**
      * Builds a world game, based on the last game state
-     * @param saveManager the save slot
      * @param gameState the game state of the last session
      * @return the last stated world game
      */
-    public WorldGame buildSavedWorldGame(SaveManager saveManager, GameState gameState) {
+    public WorldGame buildSavedWorldGame(GameState gameState) {
         LevelManager adventure = buildAdventure();
         adventure.setCurrentLevel(levelRepository.findById(gameState.currentLevelId()));
-        WorldGame worldGame = new BaseWorldGame(adventure, buildSavedEmporium(gameState), saveManager);
+        WorldGame worldGame = new BaseWorldGame(adventure, buildSavedEmporium(gameState), new SaveSlot());
         worldGame.enter(gameState.player());
         return worldGame;
     }

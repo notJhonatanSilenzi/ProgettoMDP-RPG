@@ -19,7 +19,6 @@ public class GameService {
      * @param saveManager the save slot
      */
     public GameService(SaveManager saveManager) {
-
         if (saveManager == null)
             throw new IllegalArgumentException("Invalid parameters");
 
@@ -41,11 +40,7 @@ public class GameService {
      * Creates a gameplay, based on the saved data in the save slot
      * @return the last saved world game, according to the loaded game state
      */
-    public GameState loadGame() {
-        GameState gameState = saveManager.load();
-        if (gameState == null) throw new IllegalStateException("No saved game found");
-        return gameState;
-    }
+    public GameState loadGame() { return saveManager.load(); }
 
     /**
      * Saves the current game state
