@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.persistance.repositories;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.LevelEnemy;
+import it.unicam.cs.mpgc.rpg126164.persistance.LevelEnemy;
 import org.hibernate.Session;
 
 import java.util.List;

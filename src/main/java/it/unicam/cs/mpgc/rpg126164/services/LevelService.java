@@ -3,7 +3,7 @@ package it.unicam.cs.mpgc.rpg126164.services;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.LevelEnemy;
+import it.unicam.cs.mpgc.rpg126164.persistance.LevelEnemy;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.BaseFight;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.LevelManager;

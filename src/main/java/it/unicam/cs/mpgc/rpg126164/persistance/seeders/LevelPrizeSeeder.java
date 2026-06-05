@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.persistance.seeders;
 
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Potion;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.BaseLevel;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.LevelPrize;
+import it.unicam.cs.mpgc.rpg126164.persistance.LevelPrize;
 import it.unicam.cs.mpgc.rpg126164.persistance.repositories.LevelRepository;
 import it.unicam.cs.mpgc.rpg126164.persistance.repositories.PotionRepository;
 import org.hibernate.Session;

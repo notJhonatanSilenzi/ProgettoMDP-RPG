@@ -4,8 +4,6 @@ import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Weapon;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Potion;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.BaseLevel;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.LevelEnemy;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.LevelPrize;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

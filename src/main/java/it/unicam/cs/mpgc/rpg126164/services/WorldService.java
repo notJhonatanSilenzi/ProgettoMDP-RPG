@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.LevelPrize;
+import it.unicam.cs.mpgc.rpg126164.persistance.LevelPrize;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.Inventory;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.BaseAdventure;

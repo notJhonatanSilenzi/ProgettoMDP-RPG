@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.persistance.seeders;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.BaseLevel;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.LevelEnemy;
+import it.unicam.cs.mpgc.rpg126164.persistance.LevelEnemy;
 import it.unicam.cs.mpgc.rpg126164.persistance.repositories.EnemyRepository;
 import it.unicam.cs.mpgc.rpg126164.persistance.repositories.LevelRepository;
 import org.hibernate.Session;

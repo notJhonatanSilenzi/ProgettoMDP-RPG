@@ -1,6 +1,7 @@
-package it.unicam.cs.mpgc.rpg126164.domain.gamemechanics;
+package it.unicam.cs.mpgc.rpg126164.persistance;
 
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Potion;
+import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.BaseLevel;
 import jakarta.persistence.*;
 
 import java.util.UUID;

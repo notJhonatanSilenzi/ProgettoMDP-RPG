@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.persistance.repositories;
 
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.LevelPrize;
+import it.unicam.cs.mpgc.rpg126164.persistance.LevelPrize;
 import org.hibernate.Session;
 
 import java.util.List;

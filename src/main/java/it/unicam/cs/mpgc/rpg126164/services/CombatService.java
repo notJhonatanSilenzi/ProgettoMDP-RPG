@@ -19,15 +19,20 @@ public class CombatService {
      * Starts the fight, initializing the fight system and allowing to process turns
      * @param fight the fight to start
      */
-    public void startFight(Fight fight) { fight.startFight(); }
+    public void startFight(Fight fight) {
+        if (fight == null) throw new IllegalArgumentException("Fight cannot be null");
+
+        fight.startFight();
+    }
 
     /**
      * Allows the player to attack the given enemy
-     * @param player the player that attacks
      * @param fight the fight to process
      * @param index the index of the enemy to attack
      */
-    public void playerAttackEnemy(PlayableCharacter player, Fight fight, int index) {
+    public void playerAttackEnemy(Fight fight, int index) {
+        if (fight == null || index < 0) throw new IllegalArgumentException("Invalid parameters");
+
         fight.playerAttackEnemy(index);
         fight.enemyCounterAttack(index);
     }
@@ -39,7 +44,10 @@ public class CombatService {
      * @param target the fighter that receives the effects of the potion
      */
     public void playerConsumesPotion(Fight fight, Consumable potion, Fighter target) {
+        if (fight == null || potion == null || target == null) throw new IllegalArgumentException("Invalid parameters");
+
         fight.consumeItem(target, potion);
+        fight.enemyCounterAttack(0);
     }
 
     /**
@@ -48,6 +56,8 @@ public class CombatService {
      * @return the collection of items currently in the player's inventory
      */
     public Map<Item, ItemStack> showInventory(PlayableCharacter player) {
+        if (player == null) throw new IllegalArgumentException("Player cannot be null");
+
         return player.getInventory().getItems();
     }
 
@@ -58,6 +68,9 @@ public class CombatService {
      * @param weapon the weapon chosen by the player
      */
     public void changeEquipment(PlayableCharacter player, Fight fight, Equipment weapon) {
+        if (player == null || fight == null || weapon == null)
+            throw new IllegalArgumentException("Invalid parameters");
+
         fight.equipItem(player, weapon);
     }
 
@@ -66,6 +79,8 @@ public class CombatService {
      * @param fight the fight to restart
      */
     public void restartLevel(Fight fight) {
+        if (fight == null) throw new IllegalArgumentException("Fight cannot be null");
+
         fight.reset();
         fight.startFight();
     }
