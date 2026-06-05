@@ -6,8 +6,8 @@ import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * This class represents a base fight system to use in the game to process turns and verify the ending of the fight.
@@ -16,7 +16,8 @@ import java.util.Set;
 public class BaseFight implements Fight {
 
     private final PlayableCharacter player;
-    private final Set<Fighter> enemies;
+    private final List<Fighter> defaultEnemies;
+    private List<Fighter> currentEnemies;
     private FightResult result;
 
     /**
@@ -24,12 +25,13 @@ public class BaseFight implements Fight {
      * @param player the getPlayer character
      * @param enemies the enemies to defeat
      */
-    public BaseFight(PlayableCharacter player, Set<Fighter> enemies) {
+    public BaseFight(PlayableCharacter player, List<Fighter> enemies) {
         if (player == null || enemies == null || enemies.isEmpty())
             throw new IllegalArgumentException("Invalid parameters");
 
         this.player = player;
-        this.enemies = enemies;
+        this.defaultEnemies = enemies;
+        this.currentEnemies = enemies;
         this.result = null;
     }
 
@@ -40,13 +42,33 @@ public class BaseFight implements Fight {
         this.result = FightResult.ON_GOING;
     }
 
-    @Override
-    public void processTurn(GameAction gameAction) {
-        if (gameAction == null) throw new IllegalArgumentException("Invalid argument");
-        if (result == null) throw new RuntimeException("Attempt to process a turn in a not started fight");
-        if (result != FightResult.ON_GOING) throw new RuntimeException("Attempt to process a turn in an ended fight");
 
-        gameAction.execute(this);
+    @Override
+    public FightResult getFinalResult() { return this.result; }
+
+    @Override
+    public void playerAttackEnemy(int index) {
+        if (index < 0 || index >= currentEnemies.size())
+            throw new IllegalArgumentException("Invalid enemy index");
+
+        Fighter enemy = currentEnemies.get(index);
+        this.applyDamage(player, enemy);
+        if (!enemy.getSheet().isAlive() && enemy instanceof Enemy) {
+            player.getMoneyCollector().cash(((Enemy) enemy).getEnemyType().getGoldForDefeat());
+            currentEnemies.remove(index);
+        }
+
+        updateFightStatus();
+    }
+
+    @Override
+    public void enemyCounterAttack(int index) {
+        if (index < 0 || index >= currentEnemies.size())
+            throw new IllegalArgumentException("Invalid enemy index");
+
+        Fighter enemy = currentEnemies.get(index);
+        if (!player.getSheet().hasEvaded()) this.applyDamage(enemy, player);
+
         updateFightStatus();
     }
 
@@ -56,27 +78,8 @@ public class BaseFight implements Fight {
      */
     private void updateFightStatus() {
         if (!player.getSheet().isAlive()) this.setResult(FightResult.LOSE);
-        else if (enemies.stream().noneMatch(e -> e.getSheet().isAlive()))
+        else if (currentEnemies.stream().noneMatch(e -> e.getSheet().isAlive()))
             this.setResult(FightResult.WIN);
-    }
-
-    @Override
-    public FightResult getFinalResult() { return this.result; }
-
-    @Override
-    public void attack(PlayableCharacter attacker, Fighter target) {
-        if (attacker == null || target == null || attacker != this.player || !enemies.contains(target))
-            throw new IllegalArgumentException("Invalid parameters");
-
-        // If the defender evaded, break out. Else the target gets damage
-        if (target.getSheet().hasEvaded()) return; // TODO - forse in futuro da adattare
-        else applyDamage(attacker, target);
-
-        // If the target is dead and is an enemy, I remove it from the enemies list and give money to the getPlayer
-        if (!target.getSheet().isAlive() && target instanceof Enemy enemy) {
-            enemies.remove(target);
-            attacker.getMoneyCollector().cash(enemy.getEnemyType().getGoldForDefeat());
-        } else this.applyDamage(target, attacker);
     }
 
     /**
@@ -112,6 +115,7 @@ public class BaseFight implements Fight {
             throw new IllegalArgumentException("Invalid parameters");
 
         consumable.consume(target);
+        this.updateFightStatus();
     }
 
     @Override
@@ -125,7 +129,8 @@ public class BaseFight implements Fight {
     @Override
     public void reset() {
         this.result = null;
-        for (Fighter enemy : this.enemies) enemy.getSheet().reset();
+        this.currentEnemies = defaultEnemies;
+        for (Fighter enemy : currentEnemies) enemy.getSheet().reset();
         this.player.getSheet().reset();
     }
 
@@ -138,7 +143,7 @@ public class BaseFight implements Fight {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        return player.equals(((BaseFight) obj).getPlayer()) && enemies.equals(((BaseFight) obj).getEnemies());
+        return player.equals(((BaseFight) obj).getPlayer()) && currentEnemies.equals(((BaseFight) obj).getCurrentEnemies());
     }
 
     /**
@@ -146,14 +151,16 @@ public class BaseFight implements Fight {
      * @return the hash code of this fight
      */
     @Override
-    public int hashCode() { return Objects.hash(player, enemies); }
+    public int hashCode() { return Objects.hash(player, currentEnemies); }
 
 
     // GETTERS
 
     public Fighter getPlayer() { return player; }
 
-    public Set<Fighter> getEnemies() { return enemies; }
+    public List<Fighter> getDefaultEnemies() { return defaultEnemies; }
+
+    public List<Fighter> getCurrentEnemies() { return currentEnemies; }
 
     public FightResult getResult() { return result; }
 

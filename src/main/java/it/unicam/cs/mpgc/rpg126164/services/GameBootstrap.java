@@ -21,6 +21,7 @@ public class GameBootstrap {
     private final EnemyRepository enemyRepository;
     private final LevelRepository levelRepository;
     private final LevelEnemyRepository levelEnemyRepository;
+    private final LevelPrizeRepository levelPrizeRepository;
     private final SaveManager saveManager;
 
     public GameBootstrap() {
@@ -30,6 +31,7 @@ public class GameBootstrap {
         this.enemyRepository = new EnemyRepository(session);
         this.levelRepository = new LevelRepository(session);
         this.levelEnemyRepository = new LevelEnemyRepository(session);
+        this.levelPrizeRepository = new LevelPrizeRepository(session);
         this.saveManager = new SaveSlot();
     }
 
@@ -73,7 +75,7 @@ public class GameBootstrap {
      * @return a world service for this game
      */
     public WorldService initWorldGame() {
-        return new WorldService(weaponRepository, potionRepository, levelRepository);
+        return new WorldService(weaponRepository, potionRepository, levelRepository, levelPrizeRepository);
     }
 
     /**
@@ -83,4 +85,18 @@ public class GameBootstrap {
     public MarketService initMarket() {
         return new MarketService();
     }
+
+    /**
+     * Initializes a level service for the adventure mode of this game
+     * @return a level service for the adventure mode
+     */
+    public LevelService initLevelManager() {
+        return new LevelService(enemyRepository, levelEnemyRepository);
+    }
+
+    /**
+     * Initializes a combat service for the fights during the levels of this game
+     * @return a combat service for the level game play
+     */
+    public CombatService initCombat() { return new CombatService();}
 }

@@ -1,0 +1,72 @@
+package it.unicam.cs.mpgc.rpg126164.services;
+
+import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
+import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
+
+import java.util.Map;
+
+/**
+ * This class works as a service for the fight system during levels
+ */
+public class CombatService {
+
+    /**
+     * Starts the fight, initializing the fight system and allowing to process turns
+     * @param fight the fight to start
+     */
+    public void startFight(Fight fight) { fight.startFight(); }
+
+    /**
+     * Allows the player to attack the given enemy
+     * @param player the player that attacks
+     * @param fight the fight to process
+     * @param index the index of the enemy to attack
+     */
+    public void playerAttackEnemy(PlayableCharacter player, Fight fight, int index) {
+        fight.playerAttackEnemy(index);
+        fight.enemyCounterAttack(index);
+    }
+
+    /**
+     * Allows the player to consume a potion during the fight
+     * @param fight the fight to process
+     * @param potion the potion to consume
+     * @param target the fighter that receives the effects of the potion
+     */
+    public void playerConsumesPotion(Fight fight, Consumable potion, Fighter target) {
+        fight.consumeItem(target, potion);
+    }
+
+    /**
+     * Shows the inventory, in order to change weapon or consume a potion
+     * @param player the player that is fighting
+     * @return the collection of items currently in the player's inventory
+     */
+    public Map<Item, ItemStack> showInventory(PlayableCharacter player) {
+        return player.getInventory().getItems();
+    }
+
+    /**
+     * Allows the player to change weapon during the fight
+     * @param player the player that changes weapon
+     * @param fight the fight to process
+     * @param weapon the weapon chosen by the player
+     */
+    public void changeEquipment(PlayableCharacter player, Fight fight, Equipment weapon) {
+        fight.equipItem(player, weapon);
+    }
+
+    /**
+     * Restarts the given fight, in case of loss by the player
+     * @param fight the fight to restart
+     */
+    public void restartLevel(Fight fight) {
+        fight.reset();
+        fight.startFight();
+    }
+}

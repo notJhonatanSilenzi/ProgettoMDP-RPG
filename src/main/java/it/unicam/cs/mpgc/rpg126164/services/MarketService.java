@@ -7,6 +7,10 @@ import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
 
 import java.util.Map;
 
+/**
+ * This class works as a service for the economy in this game, managing buying and selling from the
+ * market, and showing the inventories of both the market and the player
+ */
 public class MarketService {
 
     /**

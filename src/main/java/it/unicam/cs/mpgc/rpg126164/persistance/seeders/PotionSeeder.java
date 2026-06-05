@@ -21,34 +21,34 @@ public class PotionSeeder implements Seeder {
     }
 
     private void seedHealingPotions(Session session) {
-        session.persist(new Potion("healing potion I", "This potion heals you, giving extra hp", 5, 60, PotionTargetType.SELF, StatsType.HEALTH, 20));
-        session.persist(new Potion("healing potion II", "This potion heals you, giving extra hp", 4, 120, PotionTargetType.SELF, StatsType.HEALTH, 35));
-        session.persist(new Potion("healing potion III", "This potion heals you, giving extra hp", 3, 180, PotionTargetType.SELF, StatsType.HEALTH, 50));
+        session.persist(new Potion("Health Potion I", "This potion heals you, giving extra hp", 5, 60, PotionTargetType.SELF, StatsType.HEALTH, 20));
+        session.persist(new Potion("Health Potion II", "This potion heals you, giving extra hp", 4, 120, PotionTargetType.SELF, StatsType.HEALTH, 35));
+        session.persist(new Potion("Health potion III", "This potion heals you, giving extra hp", 3, 180, PotionTargetType.SELF, StatsType.HEALTH, 50));
     }
 
     private void seedHarmingPotions(Session session) {
-        session.persist(new Potion("harming potion I", "This potion harms the enemy, taking away hp", 5, 120, PotionTargetType.ENEMY, StatsType.HEALTH, 20));
-        session.persist(new Potion("harming potion II", "This potion harms the enemy, taking away hp", 4, 240, PotionTargetType.ENEMY, StatsType.HEALTH, 30));
-        session.persist(new Potion("harming potion III", "This potion harms the enemy, taking away hp", 3, 360, PotionTargetType.ENEMY, StatsType.HEALTH, 40));
+        session.persist(new Potion("Harming Potion I", "This potion harms the enemy, taking away hp", 5, 120, PotionTargetType.ENEMY, StatsType.HEALTH, 20));
+        session.persist(new Potion("Harming Potion II", "This potion harms the enemy, taking away hp", 4, 240, PotionTargetType.ENEMY, StatsType.HEALTH, 30));
+        session.persist(new Potion("Harming Potion III", "This potion harms the enemy, taking away hp", 3, 360, PotionTargetType.ENEMY, StatsType.HEALTH, 40));
     }
 
     private void seedAttackBoostPotions(Session session) {
-        session.persist(new Potion("attack boost potion I", "This potion boosts your attack, giving extra attack points", 3, 90, PotionTargetType.SELF, StatsType.ATTACK, 10));
-        session.persist(new Potion("attack boost potion II", "This potion boosts your attack, giving extra attack points", 2, 180, PotionTargetType.SELF, StatsType.ATTACK, 25));
+        session.persist(new Potion("Attack Boost Potion I", "This potion boosts your attack, giving extra attack points", 3, 90, PotionTargetType.SELF, StatsType.ATTACK, 10));
+        session.persist(new Potion("Attack Boost Potion II", "This potion boosts your attack, giving extra attack points", 2, 180, PotionTargetType.SELF, StatsType.ATTACK, 25));
     }
 
     private void seedWeaknessPotions(Session session) {
-        session.persist(new Potion("weakness potion I", "This potion weakens the enemy, taking away attack points", 3, 90, PotionTargetType.ENEMY, StatsType.ATTACK, 5));
-        session.persist(new Potion("weakness potion II", "This potion weakens the enemy, taking away attack points", 2, 180, PotionTargetType.ENEMY, StatsType.ATTACK, 15));
+        session.persist(new Potion("Weakness Potion I", "This potion weakens the enemy, taking away attack points", 3, 90, PotionTargetType.ENEMY, StatsType.ATTACK, 5));
+        session.persist(new Potion("Weakness Potion II", "This potion weakens the enemy, taking away attack points", 2, 180, PotionTargetType.ENEMY, StatsType.ATTACK, 15));
     }
 
     private void seedDefenseBoostPotions(Session session) {
-        session.persist(new Potion("defense boost potion I", "This potion boosts your defense, giving extra defense points", 3, 90, PotionTargetType.SELF, StatsType.DEFENSE, 5));
-        session.persist(new Potion("defense boost potion II", "This potion boosts your defense, giving extra defense points", 2, 180, PotionTargetType.SELF, StatsType.DEFENSE, 15));
+        session.persist(new Potion("Defense Boost Potion I", "This potion boosts your defense, giving extra defense points", 3, 90, PotionTargetType.SELF, StatsType.DEFENSE, 5));
+        session.persist(new Potion("Defense Boost Potion II", "This potion boosts your defense, giving extra defense points", 2, 180, PotionTargetType.SELF, StatsType.DEFENSE, 15));
     }
 
     private void seedDefenseDebuffPotions(Session session) {
-        session.persist(new Potion("defense debuff potion I", "This potion weakens the enemy, taking away defense points", 3, 90, PotionTargetType.ENEMY, StatsType.DEFENSE, 5));
-        session.persist(new Potion("defense debuff potion II", "This potion weakens the enemy, taking away defense points", 2, 180, PotionTargetType.ENEMY, StatsType.DEFENSE, 15));
+        session.persist(new Potion("Defense Debuff Potion I", "This potion weakens the enemy, taking away defense points", 3, 90, PotionTargetType.ENEMY, StatsType.DEFENSE, 5));
+        session.persist(new Potion("Defense Debuff Potion II", "This potion weakens the enemy, taking away defense points", 2, 180, PotionTargetType.ENEMY, StatsType.DEFENSE, 15));
     }
 }

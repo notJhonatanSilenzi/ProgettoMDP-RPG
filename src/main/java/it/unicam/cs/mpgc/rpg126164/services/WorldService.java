@@ -3,6 +3,8 @@ package it.unicam.cs.mpgc.rpg126164.services;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
+import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
+import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.LevelPrize;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.Inventory;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.BaseAdventure;
@@ -16,18 +18,25 @@ import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 import it.unicam.cs.mpgc.rpg126164.persistance.repositories.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * This class works as a service for the world game, and it includes operations like building the
+ * world game, and also moving into the various game modes
+ */
 public class WorldService {
 
     private final WeaponRepository weaponRepository;
     private final PotionRepository potionRepository;
     private final LevelRepository levelRepository;
+    private final LevelPrizeRepository levelPrizeRepository;
 
-    public WorldService(WeaponRepository weaponRepository, PotionRepository potionRepository,LevelRepository levelRepository) {
+    public WorldService(WeaponRepository weaponRepository, PotionRepository potionRepository,LevelRepository levelRepository, LevelPrizeRepository levelPrizeRepository) {
         this.weaponRepository = weaponRepository;
         this.potionRepository = potionRepository;
         this.levelRepository = levelRepository;
+        this.levelPrizeRepository = levelPrizeRepository;
     }
 
     /**
@@ -37,7 +46,7 @@ public class WorldService {
      * @return a new world game
      */
     public WorldGame buildNewWorldGame(SaveManager saveManager, PlayableCharacter player) {
-        WorldGame worldGame = new BaseWorldGame(buildAdventure(), buildEmporium(), saveManager);
+        WorldGame worldGame = new BaseWorldGame(buildAdventure(), buildNewEmporium(), saveManager);
         worldGame.enter(player);
         return worldGame;
     }
@@ -51,8 +60,8 @@ public class WorldService {
     public WorldGame buildSavedWorldGame(SaveManager saveManager, GameState gameState) {
         LevelManager adventure = buildAdventure();
         adventure.setCurrentLevel(levelRepository.findById(gameState.currentLevelId()));
-        WorldGame worldGame = new BaseWorldGame(adventure, buildEmporium(), saveManager);
-        worldGame.enter(gameState.getPlayer());
+        WorldGame worldGame = new BaseWorldGame(adventure, buildSavedEmporium(gameState), saveManager);
+        worldGame.enter(gameState.player());
         return worldGame;
     }
 
@@ -60,13 +69,21 @@ public class WorldService {
      * Builds a level manager for the adventure mode of the game
      * @return a level manager for the adventure mode
      */
-    private LevelManager buildAdventure() { return new BaseAdventure(levelRepository.findAll()); }
+    private LevelManager buildAdventure() {
+        List<Level> levels = levelRepository.findAll();
+        LevelManager adventure = new BaseAdventure(levels);
+        for (Level level : levels) {
+            LevelPrize entry = levelPrizeRepository.findByLevel(level);
+            level.setPrize(new ItemStack(entry.getPrize(), entry.getQuantity()));
+        }
+        return adventure;
+    }
 
     /**
-     * Builds a market for the market mode
-     * @return a market for the market mode
+     * Builds a new market for the market mode
+     * @return a new market for the market mode
      */
-    private Market buildEmporium() {
+    private Market buildNewEmporium() {
         Map<Item, ItemStack> emporiumItems = new HashMap<>();
         emporiumItems.putAll(weaponRepository.findAll()
                 .stream().collect(
@@ -79,6 +96,13 @@ public class WorldService {
         InventoryBehaviour emporiumInv = new Inventory(emporiumItems);
         return new Emporium(emporiumInv);
     }
+
+    /**
+     * Builds an emporium, according to the last saved game state
+     * @param gameState the last game state saved
+     * @return the last saved emporium
+     */
+    private Market buildSavedEmporium(GameState gameState) { return new Emporium(gameState.emporiumInventory()); }
 
     /**
      * Makes the player enter into the market of the given world game

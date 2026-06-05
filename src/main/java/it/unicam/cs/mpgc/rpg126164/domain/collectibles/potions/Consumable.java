@@ -23,4 +23,10 @@ public interface Consumable extends Item {
      * @return the type of target
      */
     PotionTargetType getTargetType();
+
+    /**
+     * Returns the type of stats that this item modifies
+     * @return the type of stats
+     */
+    StatsType getStatsType();
 }

@@ -1,11 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.domain.gamemechanics;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.GameAction;
-
-import java.util.Set;
 
 /**
  * This interface represents a generic level in the world game, and it refers to a fight. It contains different
@@ -15,15 +11,12 @@ import java.util.Set;
 public interface Level {
 
     /**
-     * Starts this level, allowing to process actions in this level
+     * Checks if the fight has ended. In particular:
+     * - it gives the price to the getPlayer, if they won the fight, and signs the level as completed
+     * - it resets the level if the getPlayer lost the fight
+     * - otherwise it doesn't do anything
      */
-    void startLevel(PlayableCharacter player, Set<Fighter> enemies, ItemStack price);
-
-    /**
-     * Processes a turn through the given game action, passing it to the fight field in the class
-     * @param gameAction the action to process
-     */
-    void processTurn(GameAction gameAction);
+    void checkLevelStatus(PlayableCharacter player);
 
     /**
      * Checks if the getPlayer has won the fight
@@ -41,6 +34,12 @@ public interface Level {
      * Resets the level to the initial status, in case of loss
      */
     void reset();
+
+    /**
+     * Sets the given item stack as a prize for completing the level
+     * @param prize the prize of the level
+     */
+    void setPrize(ItemStack prize);
 
     /**
      * Returns the id of this level

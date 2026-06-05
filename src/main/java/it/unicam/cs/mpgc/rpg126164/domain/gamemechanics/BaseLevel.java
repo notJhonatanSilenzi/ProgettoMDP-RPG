@@ -1,15 +1,11 @@
 package it.unicam.cs.mpgc.rpg126164.domain.gamemechanics;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.BaseFight;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.FightResult;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.GameAction;
 import jakarta.persistence.*;
 
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -47,7 +43,8 @@ public class BaseLevel implements Level {
      * @param enemyCount the number of enemies that the getPlayer must defeat to complete the level
      */
     public BaseLevel(String name, int enemyCount) {
-        if  (name == null || enemyCount <= 0 || name.isEmpty()) throw new IllegalArgumentException("Invalid parameters");
+        if  (name == null || enemyCount <= 0 || name.isEmpty())
+            throw new IllegalArgumentException("Invalid parameters");
 
         this.id = UUID.randomUUID().toString();
         this.name = name;
@@ -58,41 +55,11 @@ public class BaseLevel implements Level {
     }
 
     @Override
-    public void startLevel(PlayableCharacter player, Set<Fighter> enemies, ItemStack prize) {
-        if (player == null || enemies == null || enemies.isEmpty())
-            throw new IllegalArgumentException("Invalid parameters");
-
-        if (enemies.size() != enemyCount) throw new IllegalArgumentException("Invalid number of enemies");
-
-        if (fight == null) {
-            this.fight = new BaseFight(player, enemies);
-            this.prize = prize;
-        } else fight.reset();
-
-        fight.startFight();
-    }
-
-    @Override
-    public void processTurn(GameAction gameAction) {
-        if (gameAction == null) throw new IllegalArgumentException("Invalid arguments");
-
-        fight.processTurn(gameAction);
-        checkLevelStatus(gameAction);
-    }
-
-    /**
-     * Checks if the fight has ended. In particular:
-     * - it gives the price to the getPlayer, if they won the fight, and signs the level as completed
-     * - it resets the level if the getPlayer lost the fight
-     * - otherwise it doesn't do anything
-     * @param gameAction the game action that the getPlayer has done in this turn
-     */
-    private void checkLevelStatus(GameAction gameAction) {
+    public void checkLevelStatus(PlayableCharacter player) {
         if (playerHasWon()) {
-            givePrizeToPlayer(gameAction.getPlayer());
+            givePrizeToPlayer(player);
             completed = true;
         }
-        else if (playerHasLost()) this.reset();
     }
 
     @Override
@@ -115,8 +82,11 @@ public class BaseLevel implements Level {
         if (player == null)
             throw new IllegalArgumentException("Invalid parameters");
 
-        if (playerHasWon()) player.collectItem(prize);
+        if (playerHasWon() && !(prize == null)) player.collectItem(prize);
     }
+
+    @Override
+    public void setPrize(ItemStack prize) { this.prize = prize; }
 
 
     // GETTERS
