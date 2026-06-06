@@ -20,7 +20,7 @@ public class InfoPage {
     public Scene createScene() {
         Label title = new javafx.scene.control.Label("HOW TO PLAY");
         title.setStyle(
-                "-fx-text-fill: white;" +
+                "-fx-text-fill: black;" +
                 "-fx-font-size: 50px;" +
                 "-fx-font-style: bold;" +
                 "-fx-font-family: sans-serif;"
@@ -28,8 +28,8 @@ public class InfoPage {
 
         Text info = new Text(this.getInfo());
         info.setStyle(
-                "-fx-text-fill: white;" +
-                "-fx-font-size: 15px;" +
+                "-fx-text-fill: black;" +
+                "-fx-font-size: 20px;" +
                 "-fx-font-family: sans-serif;" +
                 "-fx-padding: 20px;"
         );
@@ -41,7 +41,7 @@ public class InfoPage {
         VBox root = new VBox(20, title, info, back);
         root.setStyle("-fx-background-color: #8b6f47;");
         root.setAlignment(Pos.CENTER);
-        return new Scene(root, 600, 500);
+        return new Scene(root, 800, 600);
     }
 
     private String getInfo() {

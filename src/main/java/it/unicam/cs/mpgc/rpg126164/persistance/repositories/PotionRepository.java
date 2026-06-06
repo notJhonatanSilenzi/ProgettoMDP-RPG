@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.persistance.repositories;
 
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Potion;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.StatsType;
+import it.unicam.cs.mpgc.rpg126164.persistance.HibernateUtil;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -12,23 +13,17 @@ import java.util.List;
  */
 public class PotionRepository {
 
-    private final Session session;
-
-    /**
-     * Creates a potion repository
-     * @param session the session that is being used to query the db
-     */
-    public PotionRepository(Session session) { this.session = session; }
-
     /**
      * Finds a potion, given the name
      * @param name the name of the potion
      * @return the complete potion
      */
     public Potion findByName(String name) {
-        return session.createQuery("FROM Potion WHERE name = :name", Potion.class)
-                .setParameter("name", name)
-                .uniqueResult();
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Potion WHERE name = :name", Potion.class)
+                    .setParameter("name", name)
+                    .uniqueResult();
+        }
     }
 
     /**
@@ -36,7 +31,11 @@ public class PotionRepository {
      * @param id the id of the potion
      * @return the complete potion
      */
-    public Potion findById(String id) { return session.find(Potion.class, id); }
+    public Potion findById(String id) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.find(Potion.class, id);
+        }
+    }
 
     /**
      * Finds all the potion, given the stats type that they modify
@@ -44,9 +43,11 @@ public class PotionRepository {
      * @return the list of potions that modify the given stats type
      */
     public List<Potion> findByStatsType(StatsType type) {
-        return session.createQuery("FROM Potion WHERE statsType = :type", Potion.class)
-                .setParameter("type", type)
-                .getResultList();
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Potion WHERE statsType = :type", Potion.class)
+                    .setParameter("type", type)
+                    .getResultList();
+        }
     }
 
     /**
@@ -54,6 +55,8 @@ public class PotionRepository {
      * @return the list of all potions
      */
     public List<Potion> findAll() {
-        return session.createQuery("FROM Potion", Potion.class).getResultList();
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Potion", Potion.class).getResultList();
+        }
     }
 }

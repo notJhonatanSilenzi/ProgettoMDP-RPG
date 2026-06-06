@@ -1,0 +1,27 @@
+.main-container {
+    -fx-background-image: url("/images/map-wallpaper.jpg");
+    -fx-background-color: #3a3a3a;
+    -fx-padding: 20;
+    -fx-spacing: 10;
+}
+
+.title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.primary-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.primary-button:hover {
+    -fx-background-color: #45a049;
+}
+
+.secondary-button {
+    -fx-background-color: #8b4513;
+    -fx-text-fill: white;
+}

@@ -18,12 +18,13 @@ public class PotionSeeder implements Seeder {
         seedWeaknessPotions(session);
         seedDefenseBoostPotions(session);
         seedDefenseDebuffPotions(session);
+        session.flush();
     }
 
     private void seedHealingPotions(Session session) {
         session.persist(new Potion("Health Potion I", "This potion heals you, giving extra hp", 5, 60, PotionTargetType.SELF, StatsType.HEALTH, 20));
         session.persist(new Potion("Health Potion II", "This potion heals you, giving extra hp", 4, 120, PotionTargetType.SELF, StatsType.HEALTH, 35));
-        session.persist(new Potion("Health potion III", "This potion heals you, giving extra hp", 3, 180, PotionTargetType.SELF, StatsType.HEALTH, 50));
+        session.persist(new Potion("Health Potion III", "This potion heals you, giving extra hp", 3, 180, PotionTargetType.SELF, StatsType.HEALTH, 50));
     }
 
     private void seedHarmingPotions(Session session) {

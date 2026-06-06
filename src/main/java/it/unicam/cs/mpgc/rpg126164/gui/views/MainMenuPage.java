@@ -31,7 +31,7 @@ public class MainMenuPage {
         Label title = new Label("WELCOME");
         title.setStyle(
                 "-fx-font-family: sans-serif;" +
-                "-fx-text-fill: white;" +
+                "-fx-text-fill: black;" +
                 "-fx-font-size: 50px;"
         );
         title.setAlignment(Pos.CENTER);
@@ -77,6 +77,6 @@ public class MainMenuPage {
         // WALLPAPER
         root.setStyle("-fx-background-color: #8b6f47;");
 
-        return new Scene(root, 600, 500);
+        return new Scene(root, 800, 600);
     }
 }

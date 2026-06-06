@@ -12,15 +12,12 @@ import org.hibernate.Session;
  */
 public class EnemySeeder implements Seeder {
 
-    private WeaponRepository weaponRepository;
-
     @Override
     public void seed(Session session) {
-        weaponRepository = new WeaponRepository(session);
-
         seedNormalEnemies(session);
         seedMediumEnemies(session);
         seedLargeAndBoss(session);
+        session.flush();
     }
 
     /**
@@ -28,10 +25,10 @@ public class EnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedNormalEnemies(Session session) {
-        Weapon ironSpear = weaponRepository.findByName("Iron Spear");
-        Weapon ironSword = weaponRepository.findByName("Iron Sword");
-        Weapon simpleSpell = weaponRepository.findByName("Simple Spell");
-        Weapon fireSpell = weaponRepository.findByName("Fire Spell");
+        Weapon ironSpear = getWeapon(session, "Iron Spear");
+        Weapon ironSword = getWeapon(session, "Iron Sword");
+        Weapon simpleSpell = getWeapon(session, "Simple Spell");
+        Weapon fireSpell = getWeapon(session, "Fire Spell");
 
         session.persist(new Enemy("Bandit", "a thief lurking in the woods", ironSword, Archetype.BERSERKER, EnemyType.NORMAL));
         session.persist(new Enemy("Militia Guard", "a poorly trained warrior", ironSpear, Archetype.WARRIOR, EnemyType.NORMAL));
@@ -44,8 +41,8 @@ public class EnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedMediumEnemies(Session session) {
-        Weapon heavySpear = weaponRepository.findByName("Heavy Spear");
-        Weapon ironAxe = weaponRepository.findByName("Iron Axe");
+        Weapon heavySpear = getWeapon(session, "Heavy Spear");
+        Weapon ironAxe = getWeapon(session, "Iron Axe");
 
         session.persist(new Enemy("Orc Veteran", "a strong orc", heavySpear, Archetype.WARRIOR, EnemyType.MEDIUM));
         session.persist(new Enemy("Assassin", "A dangerous thief", ironAxe, Archetype.BERSERKER, EnemyType.MEDIUM));
@@ -56,10 +53,22 @@ public class EnemySeeder implements Seeder {
      * @param session the session used to persist the data
      */
     private void seedLargeAndBoss(Session session) {
-        Weapon lightSpell = weaponRepository.findByName("Light Spell");
-        Weapon lightning = weaponRepository.findByName("Lightning Spell");
+        Weapon lightSpell = getWeapon(session, "Light Spell");
+        Weapon lightning = getWeapon(session, "Lightning Spell");
 
         session.persist(new Enemy("High Priest", "A powerful cleric", lightSpell, Archetype.CLERIC, EnemyType.LARGE));
         session.persist(new Enemy("Archmage", "A powerful sorcerer", lightning, Archetype.SORCERER, EnemyType.BOSS));
+    }
+
+    /**
+     * Queries the weapon, given the name
+     * @param session the session to query
+     * @param name the name
+     * @return the complete weapon
+     */
+    private Weapon getWeapon(Session session, String name) {
+        return session.createQuery("FROM Weapon WHERE name = :name", Weapon.class)
+                .setParameter("name", name)
+                .uniqueResult();
     }
 }

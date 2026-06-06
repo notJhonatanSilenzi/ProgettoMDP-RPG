@@ -69,7 +69,7 @@ public class WorldService {
         LevelManager adventure = new BaseAdventure(levels);
         for (Level level : levels) {
             LevelPrize entry = levelPrizeRepository.findByLevel(level);
-            level.setPrize(new ItemStack(entry.getPrize(), entry.getQuantity()));
+            if (entry != null) level.setPrize(new ItemStack(entry.getPrize(), entry.getQuantity()));
         }
         return adventure;
     }

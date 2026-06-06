@@ -35,7 +35,7 @@ public class LevelEnemy {
      * @param quantity the amount of the given enemy in this level
      */
     public LevelEnemy(BaseLevel level, Enemy enemy, int quantity) {
-        if (level == null || enemy == null || quantity < 0)
+        if (level == null || enemy == null || quantity <= 0)
             throw new IllegalArgumentException("Level, Enemy and quantity must be valid");
 
         this.id = UUID.randomUUID().toString();

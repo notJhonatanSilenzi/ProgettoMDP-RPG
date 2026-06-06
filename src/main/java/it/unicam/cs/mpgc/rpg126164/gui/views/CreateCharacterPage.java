@@ -32,7 +32,7 @@ public class CreateCharacterPage {
         Label title = new Label("Create Your Character");
         title.setStyle(
                 "-fx-font-family: sans-serif;" +
-                "-fx-text-fill: white;" +
+                "-fx-text-fill: black;" +
                 "-fx-font-size: 50px;" +
                 "-fx-alignment: center;"
         );
@@ -73,6 +73,6 @@ public class CreateCharacterPage {
         // WALLPAPER
         root.setStyle("-fx-background-color: #8b6f47;");
 
-        return new Scene(root, 600, 500);
+        return new Scene(root, 800, 600);
     }
 }

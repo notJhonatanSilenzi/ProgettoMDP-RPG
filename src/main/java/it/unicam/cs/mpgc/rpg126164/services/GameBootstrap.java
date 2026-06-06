@@ -26,12 +26,12 @@ public class GameBootstrap {
 
     public GameBootstrap() {
         this.session = HibernateUtil.getSessionFactory().openSession(); // Create a session
-        this.weaponRepository = new WeaponRepository(session);
-        this.potionRepository = new PotionRepository(session);
-        this.enemyRepository = new EnemyRepository(session);
-        this.levelRepository = new LevelRepository(session);
-        this.levelEnemyRepository = new LevelEnemyRepository(session);
-        this.levelPrizeRepository = new LevelPrizeRepository(session);
+        this.weaponRepository = new WeaponRepository();
+        this.potionRepository = new PotionRepository();
+        this.enemyRepository = new EnemyRepository();
+        this.levelRepository = new LevelRepository();
+        this.levelEnemyRepository = new LevelEnemyRepository();
+        this.levelPrizeRepository = new LevelPrizeRepository();
         this.saveManager = new SaveSlot();
     }
 
@@ -51,7 +51,7 @@ public class GameBootstrap {
      * @param session the session to seed the database with
      */
     private void runSeeders(Session session) {
-        try (session; session) {
+        try {
             Transaction tx = session.beginTransaction(); // Create a transaction
 
             // Seeds the database through a seeder manager and commits the transaction
@@ -60,7 +60,8 @@ public class GameBootstrap {
                     new PotionSeeder(),
                     new EnemySeeder(),
                     new LevelSeeder(),
-                    new LevelEnemySeeder()
+                    new LevelEnemySeeder(),
+                    new LevelPrizeSeeder()
             ));
             seederManager.seedIfNecessary(session);
             tx.commit();

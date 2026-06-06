@@ -59,4 +59,7 @@ public class MenuController {
      * allows the user to quit the game hub, and return to the main menu
      */
     public void exitGame() { gameService.exit(session.getWorldGame()); }
+
+    public WorldGame getWorldGame() { return session.getWorldGame(); }
+
 }

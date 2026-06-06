@@ -13,14 +13,8 @@ import org.hibernate.Session;
  */
 public class LevelEnemySeeder implements Seeder {
 
-    private EnemyRepository enemyRepository;
-    private LevelRepository levelRepository;
-
     @Override
-    public void seed(org.hibernate.Session session) {
-        enemyRepository = new EnemyRepository(session);
-        levelRepository = new LevelRepository(session);
-
+    public void seed(Session session) {
         seedLevel1(session);
         seedLevel2(session);
         seedLevel3(session);
@@ -33,10 +27,11 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel1(Session session) {
-        BaseLevel level1 = levelRepository.findByName("Level 1 - Waterfall");
-        Enemy enemy1 = enemyRepository.findByName("Bandit");
+        BaseLevel level1 = getLevel(session, "Level 1 - Waterfall");
+        Enemy enemy1 = getEnemy(session, "Bandit");
 
         session.persist(new LevelEnemy(level1, enemy1, 1));
+        session.flush();
     }
 
     /**
@@ -44,12 +39,13 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel2(Session session) {
-        BaseLevel level2 = levelRepository.findByName("Level 2 - Mineshaft");
-        Enemy enemy1 = enemyRepository.findByName("Orc Veteran");
-        Enemy enemy2 = enemyRepository.findByName("Cultist");
+        BaseLevel level2 = getLevel(session, "Level 2 - Mineshaft");
+        Enemy enemy1 = getEnemy(session, "Orc Veteran");
+        Enemy enemy2 = getEnemy(session, "Cultist");
 
         session.persist(new LevelEnemy(level2, enemy1, 1));
         session.persist(new LevelEnemy(level2, enemy2, 1));
+        session.flush();
     }
 
     /**
@@ -57,10 +53,11 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel3(Session session) {
-        BaseLevel level3 = levelRepository.findByName("Level 3 - Cave");
-        Enemy enemy1 = enemyRepository.findByName("High Priest");
+        BaseLevel level3 = getLevel(session, "Level 3 - Cave");
+        Enemy enemy1 = getEnemy(session, "High Priest");
 
         session.persist(new LevelEnemy(level3, enemy1, 1));
+        session.flush();
     }
 
     /**
@@ -68,14 +65,15 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel4(Session session) {
-        BaseLevel level4 = levelRepository.findByName("Level 4 - Forest");
-        Enemy enemy1 = enemyRepository.findByName("Militia Guard");
-        Enemy enemy2 = enemyRepository.findByName("Assassin");
-        Enemy enemy3 = enemyRepository.findByName("Apprentice Sorcerer");
+        BaseLevel level4 = getLevel(session, "Level 4 - Forest");
+        Enemy enemy1 = getEnemy(session, "Militia Guard");
+        Enemy enemy2 = getEnemy(session, "Assassin");
+        Enemy enemy3 = getEnemy(session, "Apprentice Sorcerer");
 
         session.persist(new LevelEnemy(level4, enemy1, 1));
         session.persist(new LevelEnemy(level4, enemy2, 1));
         session.persist(new LevelEnemy(level4, enemy3, 1));
+        session.flush();
     }
 
     /**
@@ -83,9 +81,34 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel5(Session session) {
-        BaseLevel level5 = levelRepository.findByName("Level 5 - Mountain");
-        Enemy boss = enemyRepository.findByName("Archmage");
+        BaseLevel level5 = getLevel(session, "Level 5 - Mountain");
+        Enemy boss = getEnemy(session, "Archmage");
 
         session.persist(new LevelEnemy(level5, boss, 1));
+        session.flush();
+    }
+
+    /**
+     * Queries the level, given the name
+     * @param session the session to query
+     * @param name the name
+     * @return the complete level
+     */
+    private BaseLevel getLevel(Session session, String name) {
+        return session.createQuery("FROM BaseLevel WHERE name = :name", BaseLevel.class)
+                .setParameter("name", name)
+                .uniqueResult();
+    }
+
+    /**
+     * Queries the enemy, given the name
+     * @param session the session to query
+     * @param name the name
+     * @return the complete enemy
+     */
+    private Enemy getEnemy(Session session, String name) {
+        return session.createQuery("FROM Enemy WHERE name = :name", Enemy.class)
+                .setParameter("name", name)
+                .uniqueResult();
     }
 }

@@ -21,5 +21,6 @@ public class WeaponSeeder implements Seeder {
         // Powerful weapons
         session.persist(new Weapon("Light Spell", "A powerful spell, used by clerics", 1, 280, 7));
         session.persist(new Weapon("Lightning Spell", "A powerful spell, used by sorcerers", 1, 350, 12));
+        session.flush();
     }
 }

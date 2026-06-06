@@ -15,5 +15,6 @@ public class LevelSeeder implements Seeder {
         session.persist(new BaseLevel("Level 3 - Cave", 1));
         session.persist(new BaseLevel("Level 4 - Forest", 3));
         session.persist(new BaseLevel("Level 5 - Mountain", 1));
+        session.flush();
     }
 }

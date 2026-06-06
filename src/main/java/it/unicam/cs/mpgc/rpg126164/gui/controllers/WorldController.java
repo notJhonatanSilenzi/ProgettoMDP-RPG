@@ -43,4 +43,6 @@ public class WorldController {
         WorldGame world = worldService.buildSavedWorldGame(gameState);
         session.setWorldGame(world);
     }
+
+    public WorldGame getWorldGame() { return session.getWorldGame(); }
 }
