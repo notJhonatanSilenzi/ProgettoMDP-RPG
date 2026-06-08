@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.LevelManager;
+import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
 
 public interface WorldGame {
 
@@ -31,4 +33,22 @@ public interface WorldGame {
      * This method allows to exit the game and return to the home page
      */
     void exit();
+
+    /**
+     * Returns the player's character in this world
+     * @return the player's character
+     */
+    PlayableCharacter getPlayer();
+
+    /**
+     * Returns the level manager of this world
+     * @return the level manager
+     */
+    LevelManager getLevelManager();
+
+    /**
+     * Returns the market of this world
+     * @return the market
+     */
+    Market getMarket();
 }

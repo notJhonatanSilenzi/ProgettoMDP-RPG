@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.gui.views;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
+import it.unicam.cs.mpgc.rpg126164.gui.controllers.MarketController;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.MenuController;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.WorldController;
 import javafx.geometry.Insets;
@@ -11,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * This class works as a view for the creation of a playable character
@@ -19,15 +21,17 @@ public class CreateCharacterPage {
 
     private final MenuController menuController;
     private final WorldController worldController;
+    private final MarketController marketController;
     private final Runnable onBack;
 
-    public CreateCharacterPage(MenuController mc, WorldController wc, Runnable onBack) {
+    public CreateCharacterPage(MenuController mc, WorldController wc, MarketController mkc, Runnable onBack) {
         this.menuController = mc;
         this.worldController = wc;
+        this.marketController = mkc;
         this.onBack = onBack;
     }
 
-    public Scene createScene() {
+    public Scene createScene(Stage stage) {
         // TITLE
         Label title = new Label("Create Your Character");
         title.setStyle(
@@ -62,6 +66,12 @@ public class CreateCharacterPage {
         createButton.setOnAction(e -> {
             PlayableCharacter player = menuController.createNewGame(nameBox.getText(), descriptionBox.getText(), archetypes.getValue());
             worldController.createWorld(player);
+            WorldGameHubMenu gameHub = new WorldGameHubMenu(
+                    menuController,
+                    worldController,
+                    marketController,
+                    onBack);
+            stage.setScene(gameHub.createScene(stage));
         });
         goBack.setOnAction(e -> onBack.run());
 
@@ -71,7 +81,11 @@ public class CreateCharacterPage {
         root.setCenter(createMenu);
 
         // WALLPAPER
-        root.setStyle("-fx-background-color: #8b6f47;");
+        root.setStyle(
+                "-fx-background-image: url('/images/map-wallpaper-2.jpg');" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: center;" +
+                        "-fx-background-size: cover;");
 
         return new Scene(root, 800, 600);
     }

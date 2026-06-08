@@ -52,11 +52,5 @@ public class GameService {
      * Deletes the game state saved in the last game session
      */
     public void deleteSaveSlot() { saveManager.delete(); }
-
-    /**
-     * Closes the current game play
-     * @param worldGame the world to close
-     */
-    public void exit(WorldGame worldGame) { worldGame.exit(); }
 }
 

@@ -44,5 +44,14 @@ public class WorldController {
         session.setWorldGame(world);
     }
 
+    /**
+     * allows the user to quit the game hub, and return to the main menu
+     */
+    public void exitGame() { worldService.exit(session.getWorldGame()); }
+
+    /**
+     * Returns the current world game
+     * @return the current world game
+     */
     public WorldGame getWorldGame() { return session.getWorldGame(); }
 }

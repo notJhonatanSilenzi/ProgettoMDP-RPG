@@ -110,4 +110,10 @@ public class WorldService {
      * @param worldGame the world game
      */
     public void enterAdventure(WorldGame worldGame) { worldGame.enterAdventure(); }
+
+    /**
+     * Closes the current game play
+     * @param worldGame the world to close
+     */
+    public void exit(WorldGame worldGame) { worldGame.exit(); }
 }

@@ -56,10 +56,8 @@ public class MenuController {
     public void clearSaveSlot() { gameService.deleteSaveSlot(); }
 
     /**
-     * allows the user to quit the game hub, and return to the main menu
+     * Returns the current world game
+     * @return the current world game
      */
-    public void exitGame() { gameService.exit(session.getWorldGame()); }
-
     public WorldGame getWorldGame() { return session.getWorldGame(); }
-
 }

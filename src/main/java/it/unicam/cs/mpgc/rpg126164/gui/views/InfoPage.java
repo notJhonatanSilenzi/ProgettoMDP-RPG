@@ -39,7 +39,11 @@ public class InfoPage {
         back.setOnAction(e -> onBack.run());
 
         VBox root = new VBox(20, title, info, back);
-        root.setStyle("-fx-background-color: #8b6f47;");
+        root.setStyle(
+                "-fx-background-image: url('/images/map-wallpaper-2.jpg');" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: center;" +
+                        "-fx-background-size: cover;");
         root.setAlignment(Pos.CENTER);
         return new Scene(root, 800, 600);
     }

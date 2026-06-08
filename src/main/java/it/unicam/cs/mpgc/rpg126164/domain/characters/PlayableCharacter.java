@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.domain.characters;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.CharacterSheet;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
@@ -11,6 +12,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBuilder;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.MoneyCollector;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * This class represents a playable character in the game, and it's represented by:
@@ -43,6 +45,10 @@ public class PlayableCharacter extends Character implements Fighter, Serializabl
         this.inventory = archetype.getInventory();
         this.equipmentManager = new EquipmentManager();
         this.wallet = InventoryBuilder.getWallet();
+
+        for (Map.Entry<Item, ItemStack> entry : inventory.getItems().entrySet())
+            if (entry.getKey() instanceof Equipment)
+                equipmentManager.equip((Equipment) entry.getKey());
     }
 
     /**

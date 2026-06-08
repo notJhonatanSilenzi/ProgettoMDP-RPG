@@ -77,10 +77,13 @@ public class BaseWorldGame implements WorldGame {
 
     // GETTERS
 
+    @Override
     public PlayableCharacter getPlayer() { return player; }
 
+    @Override
     public LevelManager getLevelManager() { return levelManager; }
 
+    @Override
     public Market getMarket() { return market; }
 
     public SaveManager getSaveManager() { return saveManager; }

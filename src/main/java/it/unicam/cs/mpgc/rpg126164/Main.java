@@ -1,9 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164;
 
 import it.unicam.cs.mpgc.rpg126164.gui.GameSession;
-import it.unicam.cs.mpgc.rpg126164.services.GameBootstrap;
-import it.unicam.cs.mpgc.rpg126164.services.GameService;
-import it.unicam.cs.mpgc.rpg126164.services.WorldService;
+import it.unicam.cs.mpgc.rpg126164.services.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -26,13 +24,16 @@ public class Main {
         GameBootstrap bootstrap = new GameBootstrap();
         GameService gameService = bootstrap.initGamePlay();
         WorldService worldService = bootstrap.initWorldGame();
+        MarketService marketService = bootstrap.initMarket();
+        LevelService levelService = bootstrap.initLevelManager();
+        CombatService combatService = bootstrap.initCombat();
         GameSession session = new GameSession();
-
-        System.out.println("GameService instance: " + gameService);
-        System.out.println("WorldService instance: " + worldService);
 
         RPGApplication.setGameService(gameService);
         RPGApplication.setWorldService(worldService);
+        RPGApplication.setMarketService(marketService);
+        RPGApplication.setLevelService(levelService);
+        RPGApplication.setCombatService(combatService);
         RPGApplication.setGameSession(session);
 
         Application.launch(RPGApplication.class, args);
