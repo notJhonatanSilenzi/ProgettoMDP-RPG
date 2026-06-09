@@ -26,4 +26,22 @@ public interface MoneyCollector {
      * @return true if the getPlayer can afford this buying, false otherwise
      */
     boolean canAfford(int n);
+
+    /**
+     * Returns the name of the coin collected in the wallet
+     * @return the coin's name of this wallet
+     */
+    String getMoneyName();
+
+    /**
+     * Returns the current amount of money in this wallet
+     * @return the current amount
+     */
+    int getCurrentAmount();
+
+    /**
+     * Returns the max amount of money reachable for this wallet
+     * @return the max amount of money reachable
+     */
+    int getMaxAmount();
 }

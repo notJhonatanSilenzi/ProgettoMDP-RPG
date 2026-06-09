@@ -41,12 +41,13 @@ public class CombatService {
      * Allows the player to consume a potion during the fight
      * @param fight the fight to process
      * @param potion the potion to consume
-     * @param target the fighter that receives the effects of the potion
+     * @param index the index of the fighter that receives the effects of the potion. If it's below
+     *              zero, the player receives the effects
      */
-    public void playerConsumesPotion(Fight fight, Consumable potion, Fighter target) {
-        if (fight == null || potion == null || target == null) throw new IllegalArgumentException("Invalid parameters");
+    public void playerConsumesPotion(Fight fight, Consumable potion, int index) {
+        if (fight == null || potion == null) throw new IllegalArgumentException("Invalid parameters");
 
-        fight.consumeItem(target, potion);
+        fight.consumeItem(index, potion);
         fight.enemyCounterAttack(0);
     }
 

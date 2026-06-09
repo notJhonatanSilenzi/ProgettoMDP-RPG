@@ -43,7 +43,7 @@ public class GameBootstrap {
 
         runSeeders(session); // Seeds the database
 
-        return new GameService(saveManager);
+        return new GameService(saveManager, potionRepository, weaponRepository);
     }
 
     /**

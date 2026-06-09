@@ -31,4 +31,10 @@ public interface InventoryBehaviour {
      * @return the items currently in the inventory
      */
     Map<Item, ItemStack> getItems();
+
+    /**
+     * Returns the number of equippable items in the inventory
+     * @return the number of equippable items in the inventory
+     */
+    int getWeaponCount();
 }

@@ -110,10 +110,11 @@ public class BaseFight implements Fight {
     }
 
     @Override
-    public void consumeItem(Fighter target, Consumable consumable) {
-        if (target == null || consumable == null)
+    public void consumeItem(int index, Consumable consumable) {
+        if (index >= currentEnemies.size() || consumable == null)
             throw new IllegalArgumentException("Invalid parameters");
 
+        Fighter target = (index < 0) ? this.player : currentEnemies.get(index);
         consumable.consume(target);
         this.updateFightStatus();
     }

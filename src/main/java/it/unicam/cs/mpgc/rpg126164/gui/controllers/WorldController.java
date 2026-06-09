@@ -45,6 +45,16 @@ public class WorldController {
     }
 
     /**
+     * Makes the player enter the adventure mode of this game
+     */
+    public void enterAdventure() { this.worldService.enterAdventure(this.getWorldGame()); }
+
+    /**
+     * Makes the player enter the market of this game
+     */
+    public void enterMarket() { this.worldService.enterMarket(this.getWorldGame()); }
+
+    /**
      * allows the user to quit the game hub, and return to the main menu
      */
     public void exitGame() { worldService.exit(session.getWorldGame()); }

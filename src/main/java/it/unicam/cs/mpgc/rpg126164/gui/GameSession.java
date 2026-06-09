@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.gui;
 
+import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 
 /**
@@ -8,6 +9,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 public class GameSession {
 
     private WorldGame worldGame;
+    private Fight currentFight;
 
     /**
      * Returns the world game of this session
@@ -20,4 +22,21 @@ public class GameSession {
      * @param worldGame the world game that has been built
      */
     public void setWorldGame(WorldGame worldGame) { this.worldGame = worldGame; }
+
+    /**
+     * Returns the current fight during this game
+     * @return the current fight
+     */
+    public Fight getCurrentFight() { return currentFight; }
+
+    /**
+     * Updates the current fight of this game session
+     * @param currentFight the new current fight
+     */
+    public void setCurrentFight(Fight currentFight) { this.currentFight = currentFight; }
+
+    /**
+     * clears the current fight field from any value
+     */
+    public void clearCurrentFight() { this.currentFight = null; }
 }

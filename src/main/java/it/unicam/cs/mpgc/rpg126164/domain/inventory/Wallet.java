@@ -45,9 +45,12 @@ public class Wallet implements MoneyCollector, Serializable {
 
     // GETTERS
 
+    @Override
     public String getMoneyName() { return moneyName; }
 
-    public int getAmount() { return amount; }
+    @Override
+    public int getCurrentAmount() { return amount; }
 
+    @Override
     public int getMaxAmount() { return maxAmount; }
 }

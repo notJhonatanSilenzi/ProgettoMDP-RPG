@@ -30,10 +30,9 @@ public class MarketController {
 
     /**
      * Shows the item stacks in the market's inventory
-     * @param market the market of this session
      * @return the item stacks in stock in the market
      */
-    public Map<Item, ItemStack> showMarketItems(Market market) { return service.showMarketItems(market); }
+    public Map<Item, ItemStack> showMarketItems() { return service.showMarketItems(this.getWorldGame().getMarket()); }
 
     /**
      * Shows the item stacks in the player's inventory

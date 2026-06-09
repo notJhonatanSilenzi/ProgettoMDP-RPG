@@ -53,40 +53,12 @@ public class InventoryView {
                     protected void updateItem(ItemStack stack, boolean empty) {
                         super.updateItem(stack, empty);
                         if (empty || stack == null) setText(null);
-                        else setText(stack.getItem().getName() + " (" + stack.getCount() + ")");
+                        else setText(stack.getItem().infoToString() + " " + player.getMoneyCollector().getMoneyName());
                     }
                 });
+        Label details = new Label();
 
-        // DETAILS
-        Label details = new Label("Select an item");
-        details.setWrapText(true);
-        inventoryList.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((obs, oldValue, newValue) -> {
-                    if (newValue == null) {
-                        details.setText("Select an item");
-                        return;
-                    }
-
-                    Item item = newValue.getItem();
-
-                    details.setText(
-                            item.getName()
-                                    + "\n\n"
-                                    + item.getDescription()
-                                    + "\n\nQuantity: "
-                                    + newValue.getCount()
-                                    + "\nValue: "
-                                    + item.getTradeValue()
-                                    + "\n"
-                                    + getStatDesc(item)
-                    );
-                });
-
-        VBox centerContent = new VBox(15,
-                        inventoryList,
-                        details
-                );
+        VBox centerContent = new VBox(15, inventoryList, details);
 
         // BUTTONS
         Button backButton = new Button("Back");
@@ -96,22 +68,7 @@ public class InventoryView {
         HBox buttons = new HBox(20);
 
         if (marketMode) {
-            Button sellButton = new Button("Sell Selected");
-            sellButton.setOnAction(e -> {
-                ItemStack selected = inventoryList.getSelectionModel().getSelectedItem();
-
-                if (selected == null) return;
-
-                marketController.sellItem(selected);
-
-                inventoryList.getItems().setAll(
-                        player.getInventory()
-                                .getItems()
-                                .values()
-                );
-
-                details.setText("Item sold.");
-            });
+            Button sellButton = getButton(inventoryList, player, details);
             buttons.getChildren().addAll(sellButton, backButton);
         } else buttons.getChildren().add(backButton);
 
@@ -132,6 +89,28 @@ public class InventoryView {
         root.getStyleClass().add("root");
 
         return new Scene(root, 800, 600);
+    }
+
+    private Button getButton(ListView<ItemStack> inventoryList, PlayableCharacter player, Label details) {
+        Button sellButton = new Button("Sell Selected");
+        sellButton.setOnAction(e -> {
+            try {
+                ItemStack selected = inventoryList.getSelectionModel().getSelectedItem();
+
+                if (selected == null) return;
+
+                marketController.sellItem(selected);
+                inventoryList.getItems().setAll(
+                        player.getInventory()
+                                .getItems()
+                                .values()
+                );
+                details.setText("Item sold");
+            } catch (Exception ex) {
+                details.setText("Cannot sell this weapon, cause it's the only one in your inventory.");
+            }
+        });
+        return sellButton;
     }
 
     private String getStatDesc(Item item) {

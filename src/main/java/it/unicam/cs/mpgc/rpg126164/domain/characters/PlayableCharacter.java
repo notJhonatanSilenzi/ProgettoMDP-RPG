@@ -8,7 +8,6 @@ import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.EquipmentManager;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
-import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBuilder;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.MoneyCollector;
 
 import java.io.Serializable;
@@ -38,17 +37,13 @@ public class PlayableCharacter extends Character implements Fighter, Serializabl
      * @param description its description
      * @param archetype the chosen archetype
      */
-    public PlayableCharacter(String name, String description, Archetype archetype) {
+    public PlayableCharacter(String name, String description, Archetype archetype, InventoryBehaviour inv, EquipmentManager manager, MoneyCollector wallet) {
         super(name, description);
         this.archetype =  archetype;
         this.sheet = archetype.getSheet();
-        this.inventory = archetype.getInventory();
-        this.equipmentManager = new EquipmentManager();
-        this.wallet = InventoryBuilder.getWallet();
-
-        for (Map.Entry<Item, ItemStack> entry : inventory.getItems().entrySet())
-            if (entry.getKey() instanceof Equipment)
-                equipmentManager.equip((Equipment) entry.getKey());
+        this.inventory = inv;
+        this.equipmentManager = manager;
+        this.wallet = wallet;
     }
 
     /**

@@ -27,7 +27,7 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel1(Session session) {
-        BaseLevel level1 = getLevel(session, "Level 1 - Waterfall");
+        BaseLevel level1 = getLevel(session, "Level 1 - Old Ruins");
         Enemy enemy1 = getEnemy(session, "Bandit");
 
         session.persist(new LevelEnemy(level1, enemy1, 1));
@@ -39,7 +39,7 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel2(Session session) {
-        BaseLevel level2 = getLevel(session, "Level 2 - Mineshaft");
+        BaseLevel level2 = getLevel(session, "Level 2 - Dry Desert");
         Enemy enemy1 = getEnemy(session, "Orc Veteran");
         Enemy enemy2 = getEnemy(session, "Cultist");
 
@@ -53,7 +53,7 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel3(Session session) {
-        BaseLevel level3 = getLevel(session, "Level 3 - Cave");
+        BaseLevel level3 = getLevel(session, "Level 3 - Lava Cave");
         Enemy enemy1 = getEnemy(session, "High Priest");
 
         session.persist(new LevelEnemy(level3, enemy1, 1));
@@ -65,7 +65,7 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel4(Session session) {
-        BaseLevel level4 = getLevel(session, "Level 4 - Forest");
+        BaseLevel level4 = getLevel(session, "Level 4 - Mystic Forest");
         Enemy enemy1 = getEnemy(session, "Militia Guard");
         Enemy enemy2 = getEnemy(session, "Assassin");
         Enemy enemy3 = getEnemy(session, "Apprentice Sorcerer");
@@ -81,7 +81,7 @@ public class LevelEnemySeeder implements Seeder {
      * @param session the session used to persist data
      */
     private void seedLevel5(Session session) {
-        BaseLevel level5 = getLevel(session, "Level 5 - Mountain");
+        BaseLevel level5 = getLevel(session, "Level 5 - Snow Mountain");
         Enemy boss = getEnemy(session, "Archmage");
 
         session.persist(new LevelEnemy(level5, boss, 1));

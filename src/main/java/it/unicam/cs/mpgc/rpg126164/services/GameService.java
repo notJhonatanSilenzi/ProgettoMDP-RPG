@@ -2,6 +2,10 @@ package it.unicam.cs.mpgc.rpg126164.services;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
+import it.unicam.cs.mpgc.rpg126164.domain.inventory.EquipmentManager;
+import it.unicam.cs.mpgc.rpg126164.domain.inventory.Inventory;
+import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.GameState;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.SaveManager;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
@@ -13,16 +17,20 @@ import it.unicam.cs.mpgc.rpg126164.persistance.repositories.*;
 public class GameService {
 
     private final SaveManager saveManager;
+    private final PotionRepository potionRepository;
+    private final WeaponRepository weaponRepository;
 
     /**
      * Creates a game service
      * @param saveManager the save slot
      */
-    public GameService(SaveManager saveManager) {
-        if (saveManager == null)
+    public GameService(SaveManager saveManager, PotionRepository pr, WeaponRepository wr) {
+        if (saveManager == null || pr == null || wr == null)
             throw new IllegalArgumentException("Invalid parameters");
 
         this.saveManager = saveManager;
+        this.potionRepository = pr;
+        this.weaponRepository = wr;
     }
 
     /**
@@ -33,7 +41,17 @@ public class GameService {
      * @return the new world game
      */
     public PlayableCharacter createNewGame(String name, String description, Archetype archetype) {
-        return new PlayableCharacter(name, description, archetype);
+        PlayerBuilder builder = new PlayerBuilder(potionRepository, weaponRepository);
+        PlayableCharacter player = new PlayableCharacter(
+                name,
+                description,
+                archetype,
+                builder.buildInventory(archetype),
+                builder.buildEquipmentManager(archetype),
+                builder.buildWallet()
+        );
+        player.getInventory().collect(new ItemStack(player.getCurrentEquipment(), 1));
+        return player;
     }
 
     /**

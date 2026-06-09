@@ -46,4 +46,10 @@ public interface Level {
      * @return the id of this level
      */
     String getId();
+
+    /**
+     * Returns the name of the level
+     * @return the name of the level
+     */
+    String getName();
 }

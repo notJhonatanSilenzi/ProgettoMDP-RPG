@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.gameplay;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 
@@ -47,6 +48,11 @@ public class Emporium implements Market {
         if (itemStack == null) throw new IllegalArgumentException("Item stack cannot be null");
         if (this.player == null) throw new IllegalStateException("No getPlayer is in the emporium");
 
+        if (itemStack.getItem() instanceof Equipment)
+            if (player.getInventory().getWeaponCount() <= 1)
+                throw new RuntimeException("Cannot remain with no weapons");
+
+        // Sell the item, if you have more than a weapon
         player.dropItem(itemStack);
         player.getMoneyCollector().cash(itemStack.getCount() * itemStack.getItem().getTradeValue() / 2);
     }

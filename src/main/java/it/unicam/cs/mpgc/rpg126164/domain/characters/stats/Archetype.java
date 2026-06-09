@@ -1,8 +1,5 @@
 package it.unicam.cs.mpgc.rpg126164.domain.characters.stats;
 
-import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
-import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBuilder;
-
 import java.io.Serializable;
 
 /**
@@ -79,10 +76,4 @@ public enum Archetype implements Serializable {
                 (int) (this.DEF * multiplier),
                 0.0);
     }
-
-    /**
-     * Returns a specific inventory for this character, given the archetype
-     * @return the initial inventory for this character
-     */
-    public InventoryBehaviour getInventory() { return InventoryBuilder.getInitialInventory(this); }
 }

@@ -42,6 +42,17 @@ public class WorldGameHubMenu {
         Button exit = new Button("Exit");
 
         Label gameSaved = new Label();
+
+        market.setOnAction(_ -> {
+            worldController.enterMarket();
+            EmporiumView emp = new EmporiumView(
+                    worldController,
+                    marketController,
+                    () -> stage.setScene(createScene(stage))
+            );
+            stage.setScene(emp.createScene(stage));
+        });
+
         sheet.setOnAction(_ -> {
             CharacterSheetView csv = new CharacterSheetView(
                     worldController,

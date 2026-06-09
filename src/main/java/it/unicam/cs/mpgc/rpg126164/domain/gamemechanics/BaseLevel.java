@@ -93,6 +93,7 @@ public class BaseLevel implements Level {
 
     public String getId() { return id; }
 
+    @Override
     public String getName() { return name; }
 
     public int getEnemyCount() { return enemyCount; }

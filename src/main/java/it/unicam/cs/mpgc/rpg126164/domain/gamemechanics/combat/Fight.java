@@ -41,10 +41,11 @@ public interface Fight {
     /**
      * Simulates the action of consuming a consumable item, applying the effects to the given character.
      * The target must be a fighter, which can be the getPlayer or an enemy
-     * @param target the fighter that receives the effects of the potion
+     * @param index the index ot the target that receives the effects of the potion. If it's below zero,
+     *              the player receives the effects.
      * @param consumable the consumable item to consume
      */
-    void consumeItem(Fighter target, Consumable consumable);
+    void consumeItem(int index, Consumable consumable);
 
     /**
      * Simulates the action of equipping an equipable item. This action doesn't waste turns in the fight

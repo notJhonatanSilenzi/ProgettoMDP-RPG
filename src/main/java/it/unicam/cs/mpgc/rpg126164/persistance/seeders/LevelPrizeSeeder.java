@@ -24,7 +24,7 @@ public class LevelPrizeSeeder implements Seeder {
      * @param session the session to seed data with
      */
     private void seedLevel1(Session session) {
-        BaseLevel level1 = this.getLevel(session, "Level 1 - Waterfall");
+        BaseLevel level1 = this.getLevel(session, "Level 1 - Old Ruins");
         Potion potion1 = this.getPotion(session, "Attack Boost Potion I");
 
         session.persist(new LevelPrize(level1, potion1, 1));
@@ -36,7 +36,7 @@ public class LevelPrizeSeeder implements Seeder {
      * @param session the session to seed data with
      */
     private void seedLevel2(Session session) {
-        BaseLevel level2 = this.getLevel(session, "Level 2 - Mineshaft");
+        BaseLevel level2 = this.getLevel(session, "Level 2 - Dry Desert");
         Potion potion2 = this.getPotion(session, "Defense Boost Potion I");
 
         System.out.println("LOOK HERE: " + level2 + " - " + potion2);
@@ -50,7 +50,7 @@ public class LevelPrizeSeeder implements Seeder {
      * @param session the session to seed data with
      */
     private void seedLevel3(Session session) {
-        BaseLevel level3 = this.getLevel(session, "Level 3 - Cave");
+        BaseLevel level3 = this.getLevel(session, "Level 3 - Lava Cave");
         Potion potion3 = this.getPotion(session, "Health Potion III");
 
         session.persist(new LevelPrize(level3, potion3, 1));
@@ -62,7 +62,7 @@ public class LevelPrizeSeeder implements Seeder {
      * @param session the session to seed data with
      */
     private void seedLevel4(Session session) {
-        BaseLevel level4 = this.getLevel(session, "Level 4 - Forest");
+        BaseLevel level4 = this.getLevel(session, "Level 4 - Mystic Forest");
         Potion potion4 = this.getPotion(session, "Defense Boost Potion II");
 
         session.persist(new LevelPrize(level4, potion4, 1));

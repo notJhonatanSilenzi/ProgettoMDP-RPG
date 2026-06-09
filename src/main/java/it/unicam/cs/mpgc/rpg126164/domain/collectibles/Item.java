@@ -42,4 +42,10 @@ public interface Item {
      * @return the trade value of this item
      */
     int getTradeValue();
+
+    /**
+     * Returns a string that describes this item
+     * @return a string description
+     */
+    String infoToString();
 }
