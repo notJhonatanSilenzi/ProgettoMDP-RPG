@@ -37,15 +37,15 @@ public class FighterSheet implements CharacterSheet, Serializable {
     @Override
     public void damage(int damage) {
         checkNotBelowZero(damage);
-        if (damage >= this.HP) this.HP = 0;
-        this.HP -= damage;
+        if (damage > this.HP) this.HP = 0;
+        else this.HP -= damage;
     }
 
     @Override
     public void heal(int heal) {
         checkNotBelowZero(heal);
         if (heal + this.HP > this.HP_MAX) this.HP = this.HP_MAX;
-        this.HP += heal;
+        else this.HP += heal;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class FighterSheet implements CharacterSheet, Serializable {
     }
 
     @Override
-    public boolean isAlive() { return this.getHP() != 0; }
+    public boolean isAlive() { return this.getHP() > 0; }
 
     @Override
     public boolean hasEvaded() {

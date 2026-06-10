@@ -45,11 +45,6 @@ public class WorldController {
     }
 
     /**
-     * Makes the player enter the adventure mode of this game
-     */
-    public void enterAdventure() { this.worldService.enterAdventure(this.getWorldGame()); }
-
-    /**
      * Makes the player enter the market of this game
      */
     public void enterMarket() { this.worldService.enterMarket(this.getWorldGame()); }

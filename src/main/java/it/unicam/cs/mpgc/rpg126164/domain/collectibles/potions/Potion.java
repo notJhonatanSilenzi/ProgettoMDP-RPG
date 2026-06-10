@@ -122,6 +122,7 @@ public class Potion implements Consumable, Serializable {
     @Override
     public StatsType getStatsType() { return statsType; }
 
+    @Override
     public int getStatsModifier() { return statsModifier; }
 
     @Override

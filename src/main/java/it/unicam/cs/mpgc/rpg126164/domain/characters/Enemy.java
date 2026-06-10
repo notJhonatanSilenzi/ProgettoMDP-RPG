@@ -47,6 +47,13 @@ public class Enemy extends Character implements Fighter {
 
     public Enemy() { super(); }
 
+    /**
+     * Recreates the enemy sheet, after querying an enemy in the database through the repository in
+     * a hibernate session
+     */
+    @PostLoad
+    public void rebuildSheet() { this.sheet = archetype.getSheet(type.getMultiplier()); }
+
 
     // GETTERS AND SETTERS
 

@@ -27,4 +27,10 @@ public interface Fighter {
      * @return the bonus attack given by the current equipable item
      */
     int getWeaponAttack();
+
+    /**
+     * Returns the name of this fighter
+     * @return the name of this fighter
+     */
+    String getName();
 }

@@ -38,16 +38,19 @@ public class LevelController {
      * Makes the player move to the next level of the game
      */
     public void moveToNextLevel() {
-        levelService.moveToNextLevel(
+        levelService.moveToNextLevel(this.getWorldGame().getLevelManager());
+    }
+
+    /**
+     * Gives to the player the prize for completing the current level
+     * @return the output string for the UI
+     */
+    public String playerReceivesPrize() {
+        return levelService.playerReceivesPrice(
                 this.getWorldGame().getPlayer(),
                 this.getWorldGame().getLevelManager()
         );
     }
-
-    /**
-     * Makes the player exit the level, so it must return to the world game hub
-     */
-    public void exit() { levelService.exit(this.getWorldGame().getLevelManager()); }
 
     /**
      * Returns the world game of this game session

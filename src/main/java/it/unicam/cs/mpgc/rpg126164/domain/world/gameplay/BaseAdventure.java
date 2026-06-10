@@ -12,7 +12,6 @@ import java.util.List;
  */
 public class BaseAdventure implements LevelManager {
 
-    private PlayableCharacter player;
     private final List<Level> levels;
     private Level currentLevel;
     private int progressionPercentage;
@@ -24,17 +23,9 @@ public class BaseAdventure implements LevelManager {
     public BaseAdventure(List<Level> levels) {
         if (levels == null || levels.isEmpty()) throw new IllegalArgumentException("Levels cannot be null or empty.");
 
-        this.player = null;
         this.levels = levels;
         this.currentLevel = levels.getFirst();
         this.progressionPercentage = 0;
-    }
-
-    @Override
-    public void enter(PlayableCharacter character) {
-        if (this.player != null) throw new IllegalArgumentException("An adventure is already in progress.");
-
-        this.player = character;
     }
 
     @Override
@@ -53,16 +44,10 @@ public class BaseAdventure implements LevelManager {
     }
 
     @Override
-    public void exit() {
-        if (this.player == null) throw new IllegalArgumentException("No adventure in progress.");
-
-        this.player = null;
-    }
+    public boolean isLastLevel() { return this.levels.getLast().equals(currentLevel); }
 
 
     // GETTERS
-
-    public PlayableCharacter getPlayer() { return player; }
 
     public List<Level> getLevels() { return levels; }
 

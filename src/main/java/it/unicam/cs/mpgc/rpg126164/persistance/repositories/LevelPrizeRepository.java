@@ -34,8 +34,8 @@ public class LevelPrizeRepository {
      */
     public LevelPrize findByLevel(Level level) {
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM LevelPrize WHERE level = :level_id", LevelPrize.class)
-                    .setParameter("level_id", level)
+            return session.createQuery("FROM LevelPrize lp WHERE lp.level.id = :id", LevelPrize.class)
+                    .setParameter("id", level.getId())
                     .uniqueResult();
         }
     }

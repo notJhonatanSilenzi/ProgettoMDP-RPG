@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 
@@ -16,8 +17,8 @@ import java.util.Objects;
 public class BaseFight implements Fight {
 
     private final PlayableCharacter player;
-    private final List<Fighter> defaultEnemies;
-    private List<Fighter> currentEnemies;
+    private final List<Enemy> defaultEnemies;
+    private List<Enemy> currentEnemies;
     private FightResult result;
 
     /**
@@ -25,7 +26,7 @@ public class BaseFight implements Fight {
      * @param player the getPlayer character
      * @param enemies the enemies to defeat
      */
-    public BaseFight(PlayableCharacter player, List<Fighter> enemies) {
+    public BaseFight(PlayableCharacter player, List<Enemy> enemies) {
         if (player == null || enemies == null || enemies.isEmpty())
             throw new IllegalArgumentException("Invalid parameters");
 
@@ -40,36 +41,43 @@ public class BaseFight implements Fight {
         if (result != null) throw new IllegalStateException("Attempt to start an already started fight");
 
         this.result = FightResult.ON_GOING;
+        player.getSheet().reset();
     }
-
 
     @Override
     public FightResult getFinalResult() { return this.result; }
 
     @Override
-    public void playerAttackEnemy(int index) {
-        if (index < 0 || index >= currentEnemies.size())
-            throw new IllegalArgumentException("Invalid enemy index");
+    public String playerAttackEnemy(Fighter target) {
+        if (target == null) throw new IllegalArgumentException("Invalid enemy index");
 
-        Fighter enemy = currentEnemies.get(index);
-        this.applyDamage(player, enemy);
-        if (!enemy.getSheet().isAlive() && enemy instanceof Enemy) {
-            player.getMoneyCollector().cash(((Enemy) enemy).getEnemyType().getGoldForDefeat());
-            currentEnemies.remove(index);
+        Enemy enemy = (Enemy) target;
+        int damage = this.applyDamage(player, enemy);
+        if (!enemy.getSheet().isAlive()) {
+            player.getMoneyCollector().cash(enemy.getEnemyType().getGoldForDefeat());
+            currentEnemies.remove(enemy);
         }
 
         updateFightStatus();
+        return player.getName() + " dealt " + damage + " damage to " + enemy.getName() + " with "
+                + player.getCurrentEquipment().getName();
     }
 
     @Override
-    public void enemyCounterAttack(int index) {
-        if (index < 0 || index >= currentEnemies.size())
-            throw new IllegalArgumentException("Invalid enemy index");
+    public String enemyCounterAttack(Fighter enemy) {
+        if (currentEnemies.isEmpty()) return "All enemies defeated!";
 
-        Fighter enemy = currentEnemies.get(index);
-        if (!player.getSheet().hasEvaded()) this.applyDamage(enemy, player);
+        if (enemy == null) throw new IllegalArgumentException("Invalid enemy index");
+
+        if (!enemy.getSheet().isAlive()) return "This enemy got defeated";
+
+        Enemy enemy1 = (Enemy) enemy;
+        int damage = (!player.getSheet().hasEvaded()) ? this.applyDamage(enemy, player) : 0;
 
         updateFightStatus();
+        return (damage == 0) ? player.getName() + " has evaded the counterattack!" :
+                enemy1.getName() + " dealt " + damage + " damage to " + player.getName() + " with "
+                + enemy1.getEquipment().getName();
     }
 
     /**
@@ -78,7 +86,7 @@ public class BaseFight implements Fight {
      */
     private void updateFightStatus() {
         if (!player.getSheet().isAlive()) this.setResult(FightResult.LOSE);
-        else if (currentEnemies.stream().noneMatch(e -> e.getSheet().isAlive()))
+        else if (currentEnemies.isEmpty())
             this.setResult(FightResult.WIN);
     }
 
@@ -88,12 +96,13 @@ public class BaseFight implements Fight {
      * @param attacker the fighter that causes the damage
      * @param target the fighter that receives the damage
      */
-    private void applyDamage(Fighter attacker, Fighter target) {
+    private int applyDamage(Fighter attacker, Fighter target) {
         if (attacker == null || target == null)
             throw new IllegalArgumentException("Invalid arguments");
 
         int damage = calculateDamage(attacker, target);
         target.getSheet().damage(damage);
+        return damage;
     }
 
     /**
@@ -110,13 +119,15 @@ public class BaseFight implements Fight {
     }
 
     @Override
-    public void consumeItem(int index, Consumable consumable) {
-        if (index >= currentEnemies.size() || consumable == null)
+    public String consumeItem(Fighter target, Consumable consumable) {
+        if (target == null || consumable == null)
             throw new IllegalArgumentException("Invalid parameters");
 
-        Fighter target = (index < 0) ? this.player : currentEnemies.get(index);
         consumable.consume(target);
+        player.getInventory().drop(new ItemStack(consumable, 1));
         this.updateFightStatus();
+        return player.getName() + " consumed " + consumable.getName() + " and applied " +
+                consumable.getStatsType() + " to " + target.getName();
     }
 
     @Override
@@ -157,18 +168,14 @@ public class BaseFight implements Fight {
 
     // GETTERS
 
-    public Fighter getPlayer() { return player; }
+    public PlayableCharacter getPlayer() { return player; }
 
-    public List<Fighter> getDefaultEnemies() { return defaultEnemies; }
+    public List<Enemy> getDefaultEnemies() { return defaultEnemies; }
 
-    public List<Fighter> getCurrentEnemies() { return currentEnemies; }
+    @Override
+    public List<Enemy> getCurrentEnemies() { return currentEnemies; }
 
     public FightResult getResult() { return result; }
 
-    public void setResult(FightResult result) {
-        if (result == null) throw new IllegalArgumentException("Invalid argument");
-        if (result != FightResult.ON_GOING) throw new IllegalArgumentException("Attempt to update an ended fight");
-
-        this.result = result;
-    }
+    public void setResult(FightResult result) { this.result = result; }
 }

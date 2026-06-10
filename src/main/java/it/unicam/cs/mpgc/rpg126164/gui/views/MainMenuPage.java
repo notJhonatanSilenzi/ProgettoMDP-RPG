@@ -1,9 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.GameState;
-import it.unicam.cs.mpgc.rpg126164.gui.controllers.MarketController;
-import it.unicam.cs.mpgc.rpg126164.gui.controllers.MenuController;
-import it.unicam.cs.mpgc.rpg126164.gui.controllers.WorldController;
+import it.unicam.cs.mpgc.rpg126164.gui.controllers.*;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,11 +22,15 @@ public class MainMenuPage {
     private final MenuController menuController;
     private final WorldController worldController;
     private final MarketController marketController;
+    private final LevelController levelController;
+    private final CombatController combatController;
 
-    public MainMenuPage(MenuController menuController, WorldController worldController, MarketController marketController) {
+    public MainMenuPage(MenuController menuController, WorldController worldController, MarketController marketController, LevelController levelController, CombatController combatController) {
         this.menuController = menuController;
         this.worldController = worldController;
         this.marketController = marketController;
+        this.levelController = levelController;
+        this.combatController = combatController;
     }
 
     public Scene createScene(Stage stage) {
@@ -63,6 +65,8 @@ public class MainMenuPage {
                     menuController,
                     worldController,
                     marketController,
+                    levelController,
+                    combatController,
                     () -> stage.setScene(createScene(stage)));
             stage.setScene(ccp.createScene(stage));
         });
@@ -74,6 +78,8 @@ public class MainMenuPage {
                         menuController,
                         worldController,
                         marketController,
+                        levelController,
+                        combatController,
                         () -> stage.setScene(createScene(stage)));
                 stage.setScene(gameHub.createScene(stage));
             } catch (Exception ex) {

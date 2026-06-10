@@ -29,4 +29,10 @@ public interface Consumable extends Item {
      * @return the type of stats
      */
     StatsType getStatsType();
+
+    /**
+     * Returns the stats modifier of this consumable item
+     * @return the stats modifier
+     */
+    int getStatsModifier();
 }

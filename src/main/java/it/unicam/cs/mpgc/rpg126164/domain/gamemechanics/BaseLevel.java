@@ -55,12 +55,7 @@ public class BaseLevel implements Level {
     }
 
     @Override
-    public void checkLevelStatus(PlayableCharacter player) {
-        if (playerHasWon()) {
-            givePrizeToPlayer(player);
-            completed = true;
-        }
-    }
+    public void enterLevel(Fight fight) { this.fight = fight; }
 
     @Override
     public boolean playerHasWon() { return fight.getFinalResult() == FightResult.WIN; }
@@ -78,11 +73,15 @@ public class BaseLevel implements Level {
      * Gives a price to the getPlayer, if they completed the level by winning the fight
      * @param player the getPlayer that receives the price
      */
-    private void givePrizeToPlayer(PlayableCharacter player) {
+    @Override
+    public String givePrizeToPlayer(PlayableCharacter player) {
         if (player == null)
             throw new IllegalArgumentException("Invalid parameters");
 
-        if (playerHasWon() && !(prize == null)) player.collectItem(prize);
+        if (prize == null) throw new RuntimeException("No prize for this level");
+
+        if (playerHasWon()) player.collectItem(prize);
+        return "You received: " + prize.getItem().getName() + " (x" + prize.getCount() + ")";
     }
 
     @Override

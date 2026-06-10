@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.domain.gamemechanics;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
+import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 
 /**
  * This interface represents a generic level in the world game, and it refers to a fight. It contains different
@@ -11,12 +12,10 @@ import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 public interface Level {
 
     /**
-     * Checks if the fight has ended. In particular:
-     * - it gives the price to the getPlayer, if they won the fight, and signs the level as completed
-     * - it resets the level if the getPlayer lost the fight
-     * - otherwise it doesn't do anything
+     * Allows the player to enter the level
+     * @param fight the fight that starts at the enter of the level
      */
-    void checkLevelStatus(PlayableCharacter player);
+    void enterLevel(Fight fight);
 
     /**
      * Checks if the getPlayer has won the fight
@@ -34,6 +33,12 @@ public interface Level {
      * Resets the level to the initial status, in case of loss
      */
     void reset();
+
+    /**
+     * Gives a price to the getPlayer, if they completed the level by winning the fight
+     * @param player the getPlayer that receives the price
+     */
+    String givePrizeToPlayer(PlayableCharacter player);
 
     /**
      * Sets the given item stack as a prize for completing the level

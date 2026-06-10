@@ -1,8 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
-import it.unicam.cs.mpgc.rpg126164.gui.controllers.MarketController;
-import it.unicam.cs.mpgc.rpg126164.gui.controllers.MenuController;
-import it.unicam.cs.mpgc.rpg126164.gui.controllers.WorldController;
+import it.unicam.cs.mpgc.rpg126164.gui.controllers.*;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,12 +19,16 @@ public class WorldGameHubMenu {
     private final MenuController menuController;
     private final WorldController worldController;
     private final MarketController marketController;
+    private final LevelController levelController;
+    private final CombatController combatController;
     private final Runnable onExit;
 
-    public WorldGameHubMenu(MenuController menuController, WorldController worldController, MarketController marketController, Runnable onExit) {
+    public WorldGameHubMenu(MenuController menuController, WorldController worldController, MarketController marketController, LevelController levelController, CombatController combatController, Runnable onExit) {
         this.menuController = menuController;
         this.worldController = worldController;
         this.marketController = marketController;
+        this.levelController = levelController;
+        this.combatController = combatController;
         this.onExit = onExit;
     }
 
@@ -42,6 +44,8 @@ public class WorldGameHubMenu {
         Button exit = new Button("Exit");
 
         Label gameSaved = new Label();
+
+        adventure.setOnAction(event -> openCombat(stage));
 
         market.setOnAction(_ -> {
             worldController.enterMarket();
@@ -91,5 +95,54 @@ public class WorldGameHubMenu {
         gameSaved.setStyle("-fx-text-fill: white");
 
         return scene;
+    }
+
+    private void openCombat(Stage stage) {
+        System.out.println("UI LEVEL HASH = " +
+                System.identityHashCode(levelController.getWorldGame().getLevelManager().getCurrentLevel())
+        );
+        levelController.enterLevel();
+        combatController.startFight();
+
+        LevelCombatView combatView = new LevelCombatView(
+                levelController,
+                combatController,
+                () -> openVictory(stage),
+                () -> openDefeat(stage)
+        );
+
+        stage.setScene(combatView.createScene(stage));
+    }
+
+    private void openVictory(Stage stage) {
+        ResultView type = levelController.getWorldGame().getLevelManager().isLastLevel()
+                        ? ResultView.GAME_COMPLETED
+                        : ResultView.LEVEL_COMPLETED;
+
+        FightResultView view = new FightResultView(
+                combatController,
+                levelController,
+                // pulsante principale
+                () -> openCombat(stage),
+                // pulsante secondario
+                () -> stage.setScene(createScene(stage)),
+                type
+        );
+
+        stage.setScene(view.createScene(stage));
+    }
+
+    private void openDefeat(Stage stage) {
+        FightResultView view = new FightResultView(
+                combatController,
+                levelController,
+                // retry
+                () -> openCombat(stage),
+                // hub
+                () -> stage.setScene(createScene(stage)),
+                ResultView.LEVEL_FAILED
+        );
+
+        stage.setScene(view.createScene(stage));
     }
 }

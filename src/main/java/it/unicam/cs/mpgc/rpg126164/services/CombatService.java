@@ -28,27 +28,30 @@ public class CombatService {
     /**
      * Allows the player to attack the given enemy
      * @param fight the fight to process
-     * @param index the index of the enemy to attack
+     * @param enemy the enemy to attack
+     * @return the output string for the UI
      */
-    public void playerAttackEnemy(Fight fight, int index) {
-        if (fight == null || index < 0) throw new IllegalArgumentException("Invalid parameters");
+    public String playerAttackEnemy(Fight fight, Fighter enemy) {
+        if (fight == null || enemy == null) throw new IllegalArgumentException("Invalid parameters");
 
-        fight.playerAttackEnemy(index);
-        fight.enemyCounterAttack(index);
+        return fight.playerAttackEnemy(enemy) + "\n" + fight.enemyCounterAttack(enemy);
     }
 
     /**
      * Allows the player to consume a potion during the fight
-     * @param fight the fight to process
+     *
+     * @param fight  the fight to process
      * @param potion the potion to consume
-     * @param index the index of the fighter that receives the effects of the potion. If it's below
-     *              zero, the player receives the effects
+     * @param target  the index of the fighter that receives the effects of the potion. If it's below
+     *               zero, the player receives the effects
+     * @return the output string for the UI
      */
-    public void playerConsumesPotion(Fight fight, Consumable potion, int index) {
+    public String playerConsumesPotion(Fight fight, Consumable potion, Fighter target) {
         if (fight == null || potion == null) throw new IllegalArgumentException("Invalid parameters");
 
-        fight.consumeItem(index, potion);
-        fight.enemyCounterAttack(0);
+        return (target instanceof PlayableCharacter)
+                ? fight.consumeItem(target, potion) + "\n" + fight.enemyCounterAttack(fight.getCurrentEnemies().getFirst())
+                : fight.consumeItem(target, potion) + "\n" + fight.enemyCounterAttack(target);
     }
 
     /**

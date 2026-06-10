@@ -2,9 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.gui.views;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
-import it.unicam.cs.mpgc.rpg126164.gui.controllers.MarketController;
-import it.unicam.cs.mpgc.rpg126164.gui.controllers.MenuController;
-import it.unicam.cs.mpgc.rpg126164.gui.controllers.WorldController;
+import it.unicam.cs.mpgc.rpg126164.gui.controllers.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,12 +20,16 @@ public class CreateCharacterPage {
     private final MenuController menuController;
     private final WorldController worldController;
     private final MarketController marketController;
+    private final LevelController levelController;
+    private final CombatController combatController;
     private final Runnable onBack;
 
-    public CreateCharacterPage(MenuController mc, WorldController wc, MarketController mkc, Runnable onBack) {
+    public CreateCharacterPage(MenuController mc, WorldController wc, MarketController mkc, LevelController lc, CombatController cc, Runnable onBack) {
         this.menuController = mc;
         this.worldController = wc;
         this.marketController = mkc;
+        this.levelController = lc;
+        this.combatController = cc;
         this.onBack = onBack;
     }
 
@@ -70,6 +72,8 @@ public class CreateCharacterPage {
                     menuController,
                     worldController,
                     marketController,
+                    levelController,
+                    combatController,
                     onBack);
             stage.setScene(gameHub.createScene(stage));
         });

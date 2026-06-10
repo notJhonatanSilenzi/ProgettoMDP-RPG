@@ -40,13 +40,6 @@ public class BaseWorldGame implements WorldGame {
     }
 
     @Override
-    public void enterAdventure() {
-        if (this.player == null) throw new IllegalArgumentException("Game not started");
-
-        this.levelManager.enter(player);
-    }
-
-    @Override
     public void enterMarket() {
         if (this.player == null) throw new IllegalArgumentException("Game not started");;
 

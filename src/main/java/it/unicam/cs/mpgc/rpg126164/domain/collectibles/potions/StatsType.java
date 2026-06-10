@@ -43,6 +43,7 @@ public enum StatsType {
      * @return true if this target cannot receive the given effect, false otherwise
      */
     public boolean invalidTarget(Fighter target, PotionTargetType targetType) {
+        System.out.println("LOOK HERE: " + target + " - " + targetType);
         return switch (target) {
             case null -> true;
             case PlayableCharacter _ when targetType == PotionTargetType.ENEMY -> true;

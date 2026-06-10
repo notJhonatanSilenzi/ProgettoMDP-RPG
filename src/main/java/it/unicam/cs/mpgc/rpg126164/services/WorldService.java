@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg126164.services;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
+import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.BaseLevel;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.*;
 import it.unicam.cs.mpgc.rpg126164.persistance.LevelPrize;
@@ -56,6 +57,7 @@ public class WorldService {
         LevelManager adventure = buildAdventure();
         adventure.setCurrentLevel(levelRepository.findById(gameState.currentLevelId()));
         WorldGame worldGame = new BaseWorldGame(adventure, buildSavedEmporium(gameState), new SaveSlot());
+        gameState.player().getSheet().reset();
         worldGame.enter(gameState.player());
         return worldGame;
     }
@@ -70,6 +72,9 @@ public class WorldService {
         for (Level level : levels) {
             LevelPrize entry = levelPrizeRepository.findByLevel(level);
             if (entry != null) level.setPrize(new ItemStack(entry.getPrize(), entry.getQuantity()));
+            System.out.println("BUILD LEVEL HASH = " +
+                    System.identityHashCode(level)
+            );
         }
         return adventure;
     }
@@ -104,12 +109,6 @@ public class WorldService {
      * @param worldGame the world game
      */
     public void enterMarket(WorldGame worldGame) { worldGame.enterMarket(); }
-
-    /**
-     * Makes the player enter into the adventure mode of the given world game
-     * @param worldGame the world game
-     */
-    public void enterAdventure(WorldGame worldGame) { worldGame.enterAdventure(); }
 
     /**
      * Closes the current game play

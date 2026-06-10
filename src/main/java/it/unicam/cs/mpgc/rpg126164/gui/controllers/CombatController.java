@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.gui.controllers;
 
+import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
@@ -36,26 +37,23 @@ public class CombatController {
 
     /**
      * Makes the player attack the enemy, and then the player may receive a counterattack by the target
-     * @param index the index of the selected enemy as target
      */
-    public void playerAttackEnemy(int index) {
-        this.service.playerAttackEnemy(
+    public String playerAttackEnemy(Fighter enemy) {
+        return this.service.playerAttackEnemy(
                 this.getCurrentFight(),
-                index
+                enemy
         );
     }
 
     /**
      * Makes the player consume a potion
      * @param potion the potion to consume
-     * @param index the index of the target that receives the effects. If it's below zero, the player
-     *              receives the effects of the consumed potion
      */
-    public void playerConsumesPotion(Consumable potion, int index) {
-        this.service.playerConsumesPotion(
+    public String playerConsumesPotion(Consumable potion, Fighter target) {
+        return this.service.playerConsumesPotion(
                 this.getCurrentFight(),
                 potion,
-                index
+                target
         );
     }
 

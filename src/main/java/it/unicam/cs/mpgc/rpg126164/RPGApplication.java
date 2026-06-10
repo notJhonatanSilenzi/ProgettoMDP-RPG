@@ -40,8 +40,7 @@ public class RPGApplication extends Application {
         LevelController levelController =  new LevelController(levelService, gameSession);
         CombatController combatController = new CombatController(combatService, gameSession);
 
-        // TODO - to complete
-        MainMenuPage menu = new MainMenuPage(menuController, worldController, marketController);
+        MainMenuPage menu = new MainMenuPage(menuController, worldController, marketController, levelController, combatController);
         stage.setScene(menu.createScene(stage));
         stage.setTitle("RPG Game");
         stage.show();

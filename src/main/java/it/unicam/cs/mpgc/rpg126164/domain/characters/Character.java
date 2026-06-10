@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.domain.characters;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
  * more specifications to be initialized.
  */
 @MappedSuperclass
-public abstract class Character {
+public abstract class Character implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false, unique = true)
