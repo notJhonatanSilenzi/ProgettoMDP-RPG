@@ -1,9 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.gui.controllers;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.GameState;
-import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.SaveManager;
-import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.SaveSlot;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 import it.unicam.cs.mpgc.rpg126164.gui.GameSession;
 import it.unicam.cs.mpgc.rpg126164.services.WorldService;
@@ -30,7 +28,7 @@ public class WorldController {
      * Creates a new world game
      * @param player the player that has been created recently
      */
-    public void createWorld(PlayableCharacter player) {
+    public void createWorld(PlayerFighter player) {
         WorldGame world = worldService.buildNewWorldGame(player);
         session.setWorldGame(world);
     }
@@ -48,11 +46,6 @@ public class WorldController {
      * Makes the player enter the market of this game
      */
     public void enterMarket() { this.worldService.enterMarket(this.getWorldGame()); }
-
-    /**
-     * allows the user to quit the game hub, and return to the main menu
-     */
-    public void exitGame() { worldService.exit(session.getWorldGame()); }
 
     /**
      * Returns the current world game

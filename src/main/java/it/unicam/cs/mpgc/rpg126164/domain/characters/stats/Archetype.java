@@ -11,22 +11,22 @@ public enum Archetype implements Serializable {
     /**
      * The archetype that works as a tank. High HP, High DF, cannot evade
      */
-    WARRIOR(120, 14, 10, 0.0),
+    WARRIOR(130, 14, 11, 0.0),
 
     /**
      * The archetype that works as a rogue or an assassin. High ATK, low DF and HP, can avoid enemies attack
      */
-    BERSERKER(95, 20, 5, 0.10),
+    BERSERKER(90, 22, 4, 0.10),
 
     /**
      * The archetype that works as a utility and support. Balanced stats, can evade more difficulty
      */
-    CLERIC(110, 12, 8, 0.05),
+    CLERIC(115, 12, 9, 0.05),
 
     /**
      * The archetype that works as the magician. High ATK, low DF and HP, can evade more easily
      */
-    SORCERER(80, 24, 3, 0.15);
+    SORCERER(85, 22, 3, 0.12);
 
     private final int HP;
     private final int ATK;

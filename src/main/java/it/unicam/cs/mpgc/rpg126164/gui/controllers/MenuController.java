@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.gui.controllers;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.GameState;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
@@ -32,7 +33,7 @@ public class MenuController {
      * @param archetype the chosen archetype
      * @return the created player's character
      */
-    public PlayableCharacter createNewGame(String name, String description, Archetype archetype) {
+    public PlayerFighter createNewGame(String name, String description, Archetype archetype) {
         if (name == null || name.isBlank() || description == null || description.isBlank() || archetype == null)
             throw new IllegalArgumentException("Invalid parameters for creating a new game");
 

@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.services;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.EquipmentManager;
@@ -40,9 +41,9 @@ public class GameService {
      * @param archetype its chosen archetype
      * @return the new world game
      */
-    public PlayableCharacter createNewGame(String name, String description, Archetype archetype) {
+    public PlayerFighter createNewGame(String name, String description, Archetype archetype) {
         PlayerBuilder builder = new PlayerBuilder(potionRepository, weaponRepository);
-        PlayableCharacter player = new PlayableCharacter(
+        PlayerFighter player = new PlayableCharacter(
                 name,
                 description,
                 archetype,

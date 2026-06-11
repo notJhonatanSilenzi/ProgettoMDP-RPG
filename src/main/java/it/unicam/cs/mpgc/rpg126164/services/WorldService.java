@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.services;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
@@ -41,7 +41,7 @@ public class WorldService {
      * @param player the player's character
      * @return a new world game
      */
-    public WorldGame buildNewWorldGame(PlayableCharacter player) {
+    public WorldGame buildNewWorldGame(PlayerFighter player) {
         WorldGame worldGame = new BaseWorldGame(buildAdventure(), buildNewEmporium(), new SaveSlot());
         worldGame.enter(player);
         return worldGame;
@@ -105,10 +105,4 @@ public class WorldService {
      * @param worldGame the world game
      */
     public void enterMarket(WorldGame worldGame) { worldGame.enterMarket(); }
-
-    /**
-     * Closes the current game play
-     * @param worldGame the world to close
-     */
-    public void exit(WorldGame worldGame) { worldGame.exit(); }
 }

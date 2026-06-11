@@ -1,7 +1,9 @@
 package it.unicam.cs.mpgc.rpg126164.services;
 
+import it.unicam.cs.mpgc.rpg126164.domain.characters.EnemyFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
@@ -31,7 +33,7 @@ public class CombatService {
      * @param enemy the enemy to attack
      * @return the output string for the UI
      */
-    public String playerAttackEnemy(Fight fight, Fighter enemy) {
+    public String playerAttackEnemy(Fight fight, EnemyFighter enemy) {
         if (fight == null || enemy == null) throw new IllegalArgumentException("Invalid parameters");
 
         return fight.playerAttackEnemy(enemy) + "\n" + fight.enemyCounterAttack(enemy);
@@ -49,9 +51,9 @@ public class CombatService {
     public String playerConsumesPotion(Fight fight, Consumable potion, Fighter target) {
         if (fight == null || potion == null) throw new IllegalArgumentException("Invalid parameters");
 
-        return (target instanceof PlayableCharacter)
+        return (target instanceof PlayerFighter)
                 ? fight.consumeItem(target, potion) + "\n" + fight.enemyCounterAttack(fight.getCurrentEnemies().getFirst())
-                : fight.consumeItem(target, potion) + "\n" + fight.enemyCounterAttack(target);
+                : fight.consumeItem(target, potion) + "\n" + fight.enemyCounterAttack((EnemyFighter) target);
     }
 
     /**
@@ -59,7 +61,7 @@ public class CombatService {
      * @param player the player that is fighting
      * @return the collection of items currently in the player's inventory
      */
-    public Map<Item, ItemStack> showInventory(PlayableCharacter player) {
+    public Map<Item, ItemStack> showInventory(PlayerFighter player) {
         if (player == null) throw new IllegalArgumentException("Player cannot be null");
 
         return player.getInventory().getItems();
@@ -71,7 +73,7 @@ public class CombatService {
      * @param fight the fight to process
      * @param weapon the weapon chosen by the player
      */
-    public void changeEquipment(PlayableCharacter player, Fight fight, Equipment weapon) {
+    public void changeEquipment(PlayerFighter player, Fight fight, Equipment weapon) {
         if (player == null || fight == null || weapon == null)
             throw new IllegalArgumentException("Invalid parameters");
 

@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.*;
 import javafx.geometry.Insets;
@@ -34,39 +35,68 @@ public class CreateCharacterPage {
     }
 
     public Scene createScene(Stage stage) {
-        // TITLE
+        // ===================================== TITLE =====================================
         Label title = new Label("Create Your Character");
-        title.setStyle(
-                "-fx-font-family: sans-serif;" +
-                "-fx-text-fill: black;" +
-                "-fx-font-size: 50px;" +
-                "-fx-alignment: center;"
-        );
-        title.setPadding(new Insets(40));
 
-        // FORM ELEMENTS
+        // ===================================== FORM =====================================
         TextField nameBox = new TextField();
         TextArea descriptionBox = new TextArea();
         ComboBox<Archetype> archetypes = new ComboBox<>();
         archetypes.getItems().addAll(Archetype.values());
-        Button createButton = new Button("Create");
+        Button createButton = createActionButton(stage, nameBox, descriptionBox, archetypes);
         Button goBack = new Button("Go Back");
+        goBack.setOnAction(e -> onBack.run());
 
         HBox hBox = new HBox(createButton, goBack);
         hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(10);
 
+        Label name = new Label("Name:");
+        Label description = new Label("Description:");
+        Label archetype = new Label("Archetype:");
+
         VBox createMenu = new VBox(10,
-                new Label("Name: "), nameBox,
-                new Label("Description: "), descriptionBox,
-                new Label("Archetype: "), archetypes,
+                name, nameBox,
+                description, descriptionBox,
+                archetype, archetypes,
                 hBox
         );
-        createMenu.setPadding(new Insets(20));
 
-        // ACTIONS
+        // ===================================== ROOT =====================================
+        BorderPane root = new BorderPane();
+        root.setTop(title);
+        BorderPane.setAlignment(title, Pos.CENTER);
+        root.setCenter(createMenu);
+
+        // ===================================== STYLE =====================================
+        Scene scene = new Scene(root, 800, 600);
+        scene.getStylesheets().add("/css/style.css");
+        root.getStyleClass().add("root");
+        title.getStyleClass().add("title");
+        name.getStyleClass().add("normal-text");
+        description.getStyleClass().add("normal-text");
+        archetype.getStyleClass().add("normal-text");
+        createButton.getStyleClass().add("button");
+        goBack.getStyleClass().add("button");
+        nameBox.getStyleClass().add("text-field");
+        descriptionBox.getStyleClass().add("text-area");
+        archetypes.getStyleClass().add("combo-box");
+
+        return scene;
+    }
+
+    /**
+     * Sets up the button to create a new character and a new world game
+     * @param stage the current stage
+     * @param name the text field with the name
+     * @param desc the text area with the description
+     * @param archetype the combo box with the archetypes
+     * @return the create button
+     */
+    private Button createActionButton(Stage stage, TextField name, TextArea desc, ComboBox<Archetype> archetype) {
+        Button createButton = new Button("Create");
         createButton.setOnAction(e -> {
-            PlayableCharacter player = menuController.createNewGame(nameBox.getText(), descriptionBox.getText(), archetypes.getValue());
+            PlayerFighter player = menuController.createNewGame(name.getText(), desc.getText(), archetype.getValue());
             worldController.createWorld(player);
             WorldGameHubMenu gameHub = new WorldGameHubMenu(
                     menuController,
@@ -77,20 +107,6 @@ public class CreateCharacterPage {
                     onBack);
             stage.setScene(gameHub.createScene(stage));
         });
-        goBack.setOnAction(e -> onBack.run());
-
-        BorderPane root = new BorderPane();
-        root.setTop(title);
-        BorderPane.setAlignment(title, Pos.CENTER);
-        root.setCenter(createMenu);
-
-        // WALLPAPER
-        root.setStyle(
-                "-fx-background-image: url('/images/map-wallpaper-2.jpg');" +
-                        "-fx-background-repeat: no-repeat;" +
-                        "-fx-background-position: center;" +
-                        "-fx-background-size: cover;");
-
-        return new Scene(root, 800, 600);
+        return createButton;
     }
 }

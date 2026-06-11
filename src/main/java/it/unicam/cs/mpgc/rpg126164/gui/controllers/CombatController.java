@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.gui.controllers;
 
+import it.unicam.cs.mpgc.rpg126164.domain.characters.EnemyFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
@@ -38,7 +39,7 @@ public class CombatController {
     /**
      * Makes the player attack the enemy, and then the player may receive a counterattack by the target
      */
-    public String playerAttackEnemy(Fighter enemy) {
+    public String playerAttackEnemy(EnemyFighter enemy) {
         return this.service.playerAttackEnemy(
                 this.getCurrentFight(),
                 enemy

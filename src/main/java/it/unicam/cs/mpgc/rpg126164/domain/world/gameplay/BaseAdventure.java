@@ -29,11 +29,14 @@ public class BaseAdventure implements LevelManager {
 
     @Override
     public void nextLevel() {
-        if (this.currentLevel.playerHasWon()) this.currentLevel = levels.get(currentLevelIndex);
+        if (this.currentLevel.isCompleted()) {
+            currentLevelIndex += 1;
+            this.currentLevel = levels.get(currentLevelIndex);
+        }
     }
 
     @Override
-    public boolean isLastLevel() { return this.levels.getLast().equals(currentLevel); }
+    public boolean isLastLevel() { return this.currentLevelIndex == levels.size() - 1; }
 
 
     // GETTERS

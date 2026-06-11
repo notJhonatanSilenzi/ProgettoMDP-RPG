@@ -116,10 +116,11 @@ public class WorldGameHubMenu {
         ResultView type = levelController.getWorldGame().getLevelManager().isLastLevel()
                         ? ResultView.GAME_COMPLETED
                         : ResultView.LEVEL_COMPLETED;
+        System.out.println("RESULT VIEW = " + type);
 
         FightResultView view = new FightResultView(
-                combatController,
                 levelController,
+                combatController,
                 // pulsante principale
                 () -> openCombat(stage),
                 // pulsante secondario
@@ -132,8 +133,8 @@ public class WorldGameHubMenu {
 
     private void openDefeat(Stage stage) {
         FightResultView view = new FightResultView(
-                combatController,
                 levelController,
+                combatController,
                 // retry
                 () -> openCombat(stage),
                 // hub

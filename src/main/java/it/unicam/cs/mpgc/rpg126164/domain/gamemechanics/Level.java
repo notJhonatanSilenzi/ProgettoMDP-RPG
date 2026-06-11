@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.domain.gamemechanics;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 
@@ -38,7 +39,7 @@ public interface Level {
      * Gives a price to the getPlayer, if they completed the level by winning the fight
      * @param player the getPlayer that receives the price
      */
-    String givePrizeToPlayer(PlayableCharacter player);
+    void givePrizeToPlayer(PlayerFighter player);
 
     /**
      * Sets the given item stack as a prize for completing the level

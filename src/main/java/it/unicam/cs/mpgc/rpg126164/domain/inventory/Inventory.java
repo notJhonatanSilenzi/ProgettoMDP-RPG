@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * This class represents a concrete inventory for a playable character or a market. It implements InventoryBehaviour and
+ * This class represents a concrete inventory for a playable character or a market. It implements InventoryBehaviour, and
  * it contains all the items that the object has currently stored in
  */
 public class Inventory implements InventoryBehaviour, Serializable {

@@ -2,8 +2,6 @@ package it.unicam.cs.mpgc.rpg126164.domain.characters;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.CharacterSheet;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.EquipmentManager;
@@ -11,7 +9,6 @@ import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.MoneyCollector;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * This class represents a playable character in the game, and it's represented by:
@@ -23,7 +20,7 @@ import java.util.Map;
  * - A money collector to spend and cash in money
  * The starting sheet and inventory are built according to the chosen archetype.
  */
-public class PlayableCharacter extends Character implements Fighter, Serializable {
+public class PlayableCharacter extends Character implements PlayerFighter, Serializable {
 
     private final CharacterSheet sheet;
     private final Archetype archetype;
@@ -57,41 +54,6 @@ public class PlayableCharacter extends Character implements Fighter, Serializabl
         this.equipmentManager.equip(equipment);
     }
 
-    /**
-     * This method represents the possibility to use a consumable item to give himself some extra advantages.
-     * Consuming an item causes the getPlayer to lose one turn
-     * @param consumable the item to consume
-     */
-    public void consumeItem(Consumable consumable, Fighter target) {
-        if (consumable == null)
-            throw new IllegalArgumentException("Null parameter");
-
-        consumable.consume(target);
-        inventory.drop(new ItemStack(consumable, 1));
-    }
-
-    /**
-     * This method represents for this getPlayer the possibility to collect a certain amount of an item
-     * @param stack the stack of items to collect
-     */
-    public void collectItem(ItemStack stack) {
-        if (stack == null)
-            throw new IllegalArgumentException("Null parameter");
-
-        inventory.collect(stack);
-    }
-
-    /**
-     * This method represents the possibility to drop a certain amount of an item
-     * @param stack the stack of items to drop
-     */
-    public void dropItem(ItemStack stack) {
-        if (stack == null)
-            throw new IllegalArgumentException("Null parameter");
-
-        inventory.drop(stack);
-    }
-
 
     // GETTERS AND SETTERS
 
@@ -104,11 +66,12 @@ public class PlayableCharacter extends Character implements Fighter, Serializabl
     @Override
     public int getWeaponAttack() { return this.getCurrentEquipment().useEquipment(); }
 
+    @Override
     public Equipment getCurrentEquipment() { return this.equipmentManager.getCurrentEquipment(); }
 
+    @Override
     public InventoryBehaviour getInventory() { return this.inventory; }
 
-    public EquipmentManager getEquipmentManager() { return this.equipmentManager; }
-
+    @Override
     public MoneyCollector getMoneyCollector() { return this.wallet; }
 }

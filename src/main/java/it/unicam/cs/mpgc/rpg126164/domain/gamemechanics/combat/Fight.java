@@ -1,10 +1,8 @@
 package it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.*;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 
 import java.util.List;
 
@@ -34,14 +32,14 @@ public interface Fight {
      * @param target the index of the enemy to attack
      * @return the output string for the UI
      */
-    String playerAttackEnemy(Fighter target);
+    String playerAttackEnemy(EnemyFighter target);
 
     /**
      * Simulates the counterattack action of an enemy towards the player
      * @param target the index of the enemy that counterattacks
      * @return the output string for the UI
      */
-    String enemyCounterAttack(Fighter target);
+    String enemyCounterAttack(EnemyFighter target);
 
     /**
      * Simulates the action of consuming a consumable item, applying the effects to the given character.
@@ -51,14 +49,14 @@ public interface Fight {
      * @param consumable the consumable item to consume
      * @return the output string for the UI
      */
-    public String consumeItem(Fighter target, Consumable consumable);
+    String consumeItem(Fighter target, Consumable consumable);
 
     /**
      * Simulates the action of equipping an equipable item. This action doesn't waste turns in the fight
      * @param player the getPlayer that equips the item
      * @param equipment the item to equip
      */
-    void equipItem(PlayableCharacter player, Equipment equipment);
+    void equipItem(PlayerFighter player, Equipment equipment);
 
     /**
      * Resets the current fight, means the getPlayer stats and enemies' stats get reset to the initial values,
@@ -70,11 +68,11 @@ public interface Fight {
      * Returns the player of this fight
      * @return the player of this fight
      */
-    PlayableCharacter getPlayer();
+    PlayerFighter getPlayer();
 
     /**
      * Returns the current enemies in this fight
      * @return the enemies in this fight
      */
-    List<Enemy> getCurrentEnemies();
+    List<EnemyFighter> getCurrentEnemies();
 }

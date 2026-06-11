@@ -1,8 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.services;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.*;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
 import it.unicam.cs.mpgc.rpg126164.persistance.LevelEnemy;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.BaseFight;
@@ -42,10 +40,10 @@ public class LevelService {
      * @param adventure the adventure game mode
      * @return the fight for the current level
      */
-    public Fight enterLevel(PlayableCharacter player, LevelManager adventure) {
+    public Fight enterLevel(PlayerFighter player, LevelManager adventure) {
         Level currentLevel = adventure.getCurrentLevel();
         List<LevelEnemy> entries = levelEnemyRepository.findByLevel(currentLevel);
-        List<Enemy> enemies = new ArrayList<>();
+        List<EnemyFighter> enemies = new ArrayList<>();
         for (LevelEnemy entry : entries)
             enemies.add(enemyRepository.findById(entry.getEnemy().getId()));
         Fight fight = new BaseFight(player, enemies);
@@ -58,18 +56,16 @@ public class LevelService {
      * @param adventure the adventure mode of the game
      */
     public void moveToNextLevel(LevelManager adventure) {
-        if (adventure.getCurrentLevel().isCompleted()) adventure.nextLevel();
+        adventure.nextLevel();
     }
 
     /**
      * Gives the prize of this level to the player
-     * @param player the player's character
+     *
+     * @param player    the player's character
      * @param adventure the adventure mode of this game
-     * @return the output string for the UI
      */
-    public String playerReceivesPrice(PlayableCharacter player, LevelManager adventure) {
-        String result = adventure.getCurrentLevel().givePrizeToPlayer(player);
-        adventure.setCurrentLevel(adventure.getCurrentLevelIndex() + 1);
-        return result;
+    public void playerReceivesPrice(PlayerFighter player, LevelManager adventure) {
+        adventure.getCurrentLevel().givePrizeToPlayer(player);
     }
 }

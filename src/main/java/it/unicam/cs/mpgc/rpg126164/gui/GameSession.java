@@ -34,9 +34,4 @@ public class GameSession {
      * @param currentFight the new current fight
      */
     public void setCurrentFight(Fight currentFight) { this.currentFight = currentFight; }
-
-    /**
-     * clears the current fight field from any value
-     */
-    public void clearCurrentFight() { this.currentFight = null; }
 }

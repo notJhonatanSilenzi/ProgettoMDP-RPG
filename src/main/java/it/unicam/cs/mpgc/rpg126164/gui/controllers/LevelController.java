@@ -43,10 +43,9 @@ public class LevelController {
 
     /**
      * Gives to the player the prize for completing the current level
-     * @return the output string for the UI
      */
-    public String playerReceivesPrize() {
-        return levelService.playerReceivesPrice(
+    public void playerReceivesPrize() {
+        levelService.playerReceivesPrice(
                 this.getWorldGame().getPlayer(),
                 this.getWorldGame().getLevelManager()
         );

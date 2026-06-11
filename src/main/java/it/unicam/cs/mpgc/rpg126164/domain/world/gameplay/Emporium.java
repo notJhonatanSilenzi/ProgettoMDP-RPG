@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.gameplay;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
@@ -12,7 +13,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
  */
 public class Emporium implements Market {
 
-    private PlayableCharacter player;
+    private PlayerFighter player;
     private final InventoryBehaviour itemsForSale;
 
     /**
@@ -26,7 +27,7 @@ public class Emporium implements Market {
     }
 
     @Override
-    public void enter(PlayableCharacter player) {
+    public void enter(PlayerFighter player) {
         if (player == null) throw new IllegalArgumentException("Player cannot be null");
 
         this.player = player;
@@ -39,7 +40,7 @@ public class Emporium implements Market {
         if (this.player == null) throw new IllegalStateException("No getPlayer is in the emporium");
 
         itemsForSale.drop(itemStack);
-        player.collectItem(itemStack);
+        player.getInventory().collect(itemStack);
         player.getMoneyCollector().spend(itemStack.getCount() * itemStack.getItem().getTradeValue());;
     }
 
@@ -53,7 +54,7 @@ public class Emporium implements Market {
                 throw new RuntimeException("Cannot remain with no weapons");
 
         // Sell the item, if you have more than a weapon
-        player.dropItem(itemStack);
+        player.getInventory().drop(itemStack);
         player.getMoneyCollector().cash(itemStack.getCount() * itemStack.getItem().getTradeValue() / 2);
     }
 

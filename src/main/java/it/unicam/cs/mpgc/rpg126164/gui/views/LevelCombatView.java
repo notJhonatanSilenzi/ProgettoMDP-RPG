@@ -1,14 +1,11 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.*;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.PotionTargetType;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.FightResult;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.CombatController;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.LevelController;
 import javafx.geometry.Insets;
@@ -33,7 +30,7 @@ public class LevelCombatView {
     private final CombatController combatController;
     private final Runnable onVictory;
     private final Runnable onDefeat;
-    private Enemy selectedEnemy;
+    private EnemyFighter selectedEnemy;
 
     public LevelCombatView(LevelController levelController, CombatController combatController, Runnable onVictory, Runnable onLoss) {
         this.levelController = levelController;
@@ -44,7 +41,7 @@ public class LevelCombatView {
 
     public Scene createScene(Stage stage) {
         Fight fight = combatController.getCurrentFight();
-        PlayableCharacter player = fight.getPlayer();
+        PlayerFighter player = fight.getPlayer();
 
         // ======================
         // TITLE
@@ -78,9 +75,9 @@ public class LevelCombatView {
         enemiesContainer.setAlignment(Pos.CENTER);
 
         HBox enemiesBox = new HBox(20);
-        List<Enemy> enemies = fight.getCurrentEnemies();
+        List<EnemyFighter> enemies = fight.getCurrentEnemies();
 
-        for (Enemy enemy : enemies) {
+        for (EnemyFighter enemy : enemies) {
 
             VBox enemyCard = new VBox(5);
             enemyCard.setAlignment(Pos.CENTER);
@@ -139,7 +136,7 @@ public class LevelCombatView {
             String result = combatController.playerAttackEnemy(selectedEnemy);
             logView.getItems().add(result);
             selectedEnemy = null;
-            refreshScene(stage, logView); // IMPORTANTISSIMO
+            refreshScene(stage, logView);
             if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasWon()) {
                 levelController.playerReceivesPrize();
                 onVictory.run();
@@ -238,7 +235,7 @@ public class LevelCombatView {
             case "Level 4 - Mystic Forest" -> battleField.setStyle("-fx-background-image: url('/images/forest-arena.jpg');");
             case "Level 5 - Snow Mountain" -> battleField.setStyle("-fx-background-image: url('/images/mountain-arena.jpg');");
             default -> throw new IllegalStateException("Unexpected value: " + name);
-        };
+        }
     }
 
 

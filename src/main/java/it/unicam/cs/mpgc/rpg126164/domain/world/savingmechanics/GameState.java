@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import java.io.Serializable;
  *                          to be saved in the game state
  */
 public record GameState(
-        PlayableCharacter player,
+        PlayerFighter player,
         String currentLevelId,
         int currentLevelIndex,
         InventoryBehaviour emporiumInventory

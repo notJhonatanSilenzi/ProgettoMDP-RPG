@@ -18,36 +18,35 @@ public class InfoPage {
     public InfoPage(Runnable onBack) { this.onBack = onBack; }
 
     public Scene createScene() {
+        // ===================================== TITLE =====================================
         Label title = new javafx.scene.control.Label("HOW TO PLAY");
-        title.setStyle(
-                "-fx-text-fill: black;" +
-                "-fx-font-size: 50px;" +
-                "-fx-font-style: bold;" +
-                "-fx-font-family: sans-serif;"
-        );
 
+        // ===================================== INFO =====================================
         Text info = new Text(this.getInfo());
-        info.setStyle(
-                "-fx-text-fill: black;" +
-                "-fx-font-size: 20px;" +
-                "-fx-font-family: sans-serif;" +
-                "-fx-padding: 20px;"
-        );
         info.setTextAlignment(TextAlignment.CENTER);
 
+        // ===================================== BUTTON =====================================
         Button back = new Button("Back");
         back.setOnAction(e -> onBack.run());
 
+        // ===================================== ROOT =====================================
         VBox root = new VBox(20, title, info, back);
-        root.setStyle(
-                "-fx-background-image: url('/images/map-wallpaper-2.jpg');" +
-                        "-fx-background-repeat: no-repeat;" +
-                        "-fx-background-position: center;" +
-                        "-fx-background-size: cover;");
         root.setAlignment(Pos.CENTER);
-        return new Scene(root, 800, 600);
+
+        // ===================================== STYLE =====================================
+        Scene scene = new Scene(root, 800, 600);
+        scene.getStylesheets().add("/css/style.css");
+        root.getStyleClass().add("root");
+        title.getStyleClass().add("title");
+        info.getStyleClass().add("normal-text");
+        back.getStyleClass().add("button");
+        return scene;
     }
 
+    /**
+     * Returns the basic info about this game
+     * @return the basic info
+     */
     private String getInfo() {
         return "This game allows you to create a new game, or to load a saved one. Entering the\n" +
                 "world game, you can see four options: starting the adventure, entering the market\n" +

@@ -1,8 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.*;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
@@ -16,9 +14,9 @@ import java.util.Objects;
  */
 public class BaseFight implements Fight {
 
-    private final PlayableCharacter player;
-    private final List<Enemy> defaultEnemies;
-    private List<Enemy> currentEnemies;
+    private final PlayerFighter player;
+    private final List<EnemyFighter> defaultEnemies;
+    private List<EnemyFighter> currentEnemies;
     private FightResult result;
 
     /**
@@ -26,7 +24,7 @@ public class BaseFight implements Fight {
      * @param player the getPlayer character
      * @param enemies the enemies to defeat
      */
-    public BaseFight(PlayableCharacter player, List<Enemy> enemies) {
+    public BaseFight(PlayerFighter player, List<EnemyFighter> enemies) {
         if (player == null || enemies == null || enemies.isEmpty())
             throw new IllegalArgumentException("Invalid parameters");
 
@@ -48,7 +46,7 @@ public class BaseFight implements Fight {
     public FightResult getFinalResult() { return this.result; }
 
     @Override
-    public String playerAttackEnemy(Fighter target) {
+    public String playerAttackEnemy(EnemyFighter target) {
         if (target == null) throw new IllegalArgumentException("Invalid enemy index");
 
         Enemy enemy = (Enemy) target;
@@ -64,20 +62,19 @@ public class BaseFight implements Fight {
     }
 
     @Override
-    public String enemyCounterAttack(Fighter enemy) {
+    public String enemyCounterAttack(EnemyFighter enemy) {
         if (currentEnemies.isEmpty()) return "All enemies defeated!";
 
         if (enemy == null) throw new IllegalArgumentException("Invalid enemy index");
 
         if (!enemy.getSheet().isAlive()) return "This enemy got defeated";
 
-        Enemy enemy1 = (Enemy) enemy;
         int damage = (!player.getSheet().hasEvaded()) ? this.applyDamage(enemy, player) : 0;
 
         updateFightStatus();
         return (damage == 0) ? player.getName() + " has evaded the counterattack!" :
-                enemy1.getName() + " dealt " + damage + " damage to " + player.getName() + " with "
-                + enemy1.getEquipment().getName();
+                enemy.getName() + " dealt " + damage + " damage to " + player.getName() + " with "
+                + enemy.getCurrentEquipment().getName();
     }
 
     /**
@@ -134,7 +131,7 @@ public class BaseFight implements Fight {
     }
 
     @Override
-    public void equipItem(PlayableCharacter player, Equipment equipment) {
+    public void equipItem(PlayerFighter player, Equipment equipment) {
         if (player == null || equipment == null || player != this.player)
             throw new IllegalArgumentException("Invalid parameters");
 
@@ -171,14 +168,10 @@ public class BaseFight implements Fight {
 
     // GETTERS
 
-    public PlayableCharacter getPlayer() { return player; }
-
-    public List<Enemy> getDefaultEnemies() { return defaultEnemies; }
+    public PlayerFighter getPlayer() { return player; }
 
     @Override
-    public List<Enemy> getCurrentEnemies() { return currentEnemies; }
-
-    public FightResult getResult() { return result; }
+    public List<EnemyFighter> getCurrentEnemies() { return currentEnemies; }
 
     public void setResult(FightResult result) { this.result = result; }
 }

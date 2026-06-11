@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.MarketController;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.WorldController;
@@ -29,7 +30,7 @@ public class CharacterSheetView {
     }
 
     public Scene createScene(Stage stage) {
-        PlayableCharacter player = worldController.getWorldGame().getPlayer();
+        PlayerFighter player = worldController.getWorldGame().getPlayer();
 
         // TITLE
         Label title = new Label("YOUR CHARACTER");

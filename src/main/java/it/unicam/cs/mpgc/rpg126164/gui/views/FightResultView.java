@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.CombatController;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.LevelController;
 import javafx.geometry.Insets;
@@ -17,15 +16,15 @@ import java.util.Objects;
 
 public class FightResultView {
 
-    private final CombatController combatController;
     private final LevelController levelController;
+    private final CombatController combatController;
     private final Runnable primaryAction;
     private final Runnable secondaryAction;
     private final ResultView resultView;
 
-    public FightResultView(CombatController cc, LevelController lc, Runnable primaryAction, Runnable secondaryAction, ResultView resultView) {
-        this.combatController = cc;
+    public FightResultView(LevelController lc, CombatController cc, Runnable primaryAction, Runnable secondaryAction, ResultView resultView) {
         this.levelController = lc;
+        this.combatController = cc;
         this.primaryAction = primaryAction;
         this.secondaryAction = secondaryAction;
         this.resultView = resultView;
@@ -38,7 +37,22 @@ public class FightResultView {
 
         Button primaryButton = new Button();
         Button secondaryButton = new Button();
+        System.out.println("======== VICTORY ========");
+        System.out.println("Current level: " +
+                levelController.getWorldGame()
+                        .getLevelManager()
+                        .getCurrentLevel()
+                        .getName());
 
+        System.out.println("Current index: " +
+                levelController.getWorldGame()
+                        .getLevelManager()
+                        .getCurrentLevelIndex());
+
+        System.out.println("isLastLevel: " +
+                levelController.getWorldGame()
+                        .getLevelManager()
+                        .isLastLevel());
         switch(resultView) {
 
             case ResultView.LEVEL_COMPLETED -> {
@@ -51,7 +65,9 @@ public class FightResultView {
                 primaryButton.setOnAction(_ -> {
                     primaryAction.run();
                 });
-                secondaryButton.setOnAction(_ -> secondaryAction.run());
+                secondaryButton.setOnAction(_ -> {
+                    secondaryAction.run();
+                });
             }
 
             case ResultView.LEVEL_FAILED -> {
@@ -77,7 +93,7 @@ public class FightResultView {
                 description.setText("You defeated the final boss.\n\n");
 
                 primaryButton.setText("Hub");
-                primaryButton.setOnAction(_ -> primaryAction.run());
+                primaryButton.setOnAction(_ -> secondaryAction.run());
             }
         }
 

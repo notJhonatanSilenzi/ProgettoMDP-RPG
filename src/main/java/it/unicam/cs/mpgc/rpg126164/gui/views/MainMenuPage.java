@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.control.Label;
@@ -34,33 +35,59 @@ public class MainMenuPage {
     }
 
     public Scene createScene(Stage stage) {
-        // TITLE
+        // ===================================== TITLE =====================================
         Label title = new Label("WELCOME");
-        title.setStyle(
-                "-fx-font-family: sans-serif;" +
-                "-fx-text-fill: black;" +
-                "-fx-font-size: 50px;"
-        );
         title.setAlignment(Pos.CENTER);
-        title.setPadding(new Insets(40));
 
-        // BUTTONS
-        Button newGameButton = new Button("New Game");
-        Button loadButton = new Button("Load Game");
-        Button deleteButton = new Button("Delete Game");
+        // ===================================== BUTTONS =====================================
+        Label deletedGame = new Label();
+        Button newGameButton = newGameActionButton(stage);
+        Button loadButton = loadGameActionButton(stage, deletedGame);
+        Button deleteButton = deleteGameActionButton(stage, deletedGame);
+
         Button infoButton = new Button("Info");
         Button exitButton = new Button("Exit");
+        infoButton.setOnAction(_ -> {
+            InfoPage infoPage = new InfoPage(() -> stage.setScene(createScene(stage)));
+            stage.setScene(infoPage.createScene());
+        });
+        exitButton.setOnAction(e -> stage.close());
 
-        newGameButton.setPrefWidth(200);
-        loadButton.setPrefWidth(200);
-        deleteButton.setPrefWidth(200);
-        infoButton.setPrefWidth(200);
-        exitButton.setPrefWidth(200);
+        VBox menuBox = new VBox(15, newGameButton, loadButton, deleteButton, infoButton, exitButton);
+        menuBox.setAlignment(Pos.CENTER);
 
-        Label deletedGame = new Label();
+        // ===================================== ROOT =====================================
+        BorderPane root = new BorderPane();
+        root.setTop(title);
+        BorderPane.setAlignment(title, Pos.CENTER);
+        root.setCenter(menuBox);
+        root.setBottom(deletedGame);
+        BorderPane.setAlignment(deletedGame, Pos.CENTER);
 
-        // ACTIONS
-        newGameButton.setOnAction(e -> {
+        // ===================================== STYLE =====================================
+        Scene scene = new Scene(root, 800, 600);
+        scene.getStylesheets().add("/css/style.css");
+
+        title.getStyleClass().add("title");
+        root.getStyleClass().add("root");
+        newGameButton.getStyleClass().add("button");
+        loadButton.getStyleClass().add("button");
+        deleteButton.getStyleClass().add("button");
+        infoButton.getStyleClass().add("button");
+        exitButton.getStyleClass().add("button");
+        deletedGame.getStyleClass().add("floating-text");
+
+        return scene;
+    }
+
+    /**
+     * Sets up the button to create a new game
+     * @param stage the current stage
+     * @return the new game button
+     */
+    Button newGameActionButton(Stage stage) {
+        Button button = new Button("New Game");
+        button.setOnAction(e -> {
             CreateCharacterPage ccp = new CreateCharacterPage(
                     menuController,
                     worldController,
@@ -70,7 +97,18 @@ public class MainMenuPage {
                     () -> stage.setScene(createScene(stage)));
             stage.setScene(ccp.createScene(stage));
         });
-        loadButton.setOnAction(e -> {
+        return button;
+    }
+
+    /**
+     * Sets up the load button
+     * @param stage the current stage
+     * @param deletedGame the floating label for the message
+     * @return the load button
+     */
+    Button loadGameActionButton(Stage stage, Label deletedGame) {
+        Button button = new Button("Load Game");
+        button.setOnAction(e -> {
             try {
                 GameState gameState = menuController.loadGame();
                 worldController.loadWorldGame(gameState);
@@ -83,35 +121,21 @@ public class MainMenuPage {
                         () -> stage.setScene(createScene(stage)));
                 stage.setScene(gameHub.createScene(stage));
             } catch (Exception ex) {
-                deletedGame.setText(ex.getMessage());
+                deletedGame.setText("No save file found");
             }
         });
-        deleteButton.setOnAction(_ -> {
+        return button;
+    }
+
+    Button deleteGameActionButton(Stage stage, Label deletedGame) {
+        Button button = new Button("Delete Game");
+        button.setOnAction(_ -> {
             menuController.clearSaveSlot();
             deletedGame.setText("Game deleted successfully");
             PauseTransition pause = new PauseTransition(Duration.seconds(3));
             pause.setOnFinished(_ -> deletedGame.setText(""));
             pause.play();
         });
-        infoButton.setOnAction(_ -> {
-            InfoPage infoPage = new InfoPage(() -> stage.setScene(createScene(stage)));
-            stage.setScene(infoPage.createScene());
-        });
-        exitButton.setOnAction(e -> stage.close());
-
-        VBox menuBox = new VBox(15, newGameButton, loadButton, deleteButton, infoButton, exitButton);
-        menuBox.setAlignment(Pos.CENTER);
-
-        BorderPane root = new BorderPane();
-        root.setTop(title);
-        BorderPane.setAlignment(title, Pos.CENTER);
-        root.setCenter(menuBox);
-        root.setBottom(deletedGame);
-        deletedGame.getStyleClass().add("pauseText");
-
-        // WALLPAPER
-        root.setStyle("-fx-background-image: url('/images/map-wallpaper-2.jpg');");
-
-        return new Scene(root, 800, 600);
+        return button;
     }
 }

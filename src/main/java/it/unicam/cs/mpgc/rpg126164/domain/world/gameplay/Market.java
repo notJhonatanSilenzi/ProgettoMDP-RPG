@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.gameplay;
 
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
@@ -14,7 +15,7 @@ public interface Market {
      * Allows the getPlayer to enter in this area of the game
      * @param player the getPlayer that enters the market
      */
-    void enter(PlayableCharacter player);
+    void enter(PlayerFighter player);
 
     /**
      * This method allows the getPlayer to buy a certain amount of an item, specified in the item stack, from the market.

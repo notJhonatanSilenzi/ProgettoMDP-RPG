@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.LevelManager;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
 
@@ -10,7 +10,7 @@ public interface WorldGame {
      * This method allows the getPlayer to enter the game world, and start playing.
      * @param character the getPlayer that enters the game world
      */
-    void enter(PlayableCharacter character);
+    void enter(PlayerFighter character);
 
     /**
      * This method allows the getPlayer to enter the market, where they can buy and sell items,
@@ -24,15 +24,10 @@ public interface WorldGame {
     void save();
 
     /**
-     * This method allows to exit the game and return to the home page
-     */
-    void exit();
-
-    /**
      * Returns the player's character in this world
      * @return the player's character
      */
-    PlayableCharacter getPlayer();
+    PlayerFighter getPlayer();
 
     /**
      * Returns the level manager of this world

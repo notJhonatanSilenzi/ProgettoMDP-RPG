@@ -8,13 +8,13 @@ public enum EnemyType {
     /**
      * The standard type of enemies, a bit weaker than the getPlayer. The most common in the game
      */
-    NORMAL(0.4, 50),
+    NORMAL(0.5, 40),
 
     /**
      * A type of enemy stronger than the normal one, with a bit higher stats than the getPlayer. They're rare in
      * the game, more rare than normal enemies
      */
-    MEDIUM(0.6, 80),
+    MEDIUM(0.75, 80),
 
     /**
      * A type of enemy stronger than the medium one, and even more rare than the medium ones
@@ -24,7 +24,7 @@ public enum EnemyType {
      * The strongest type of enemy, it has very high stats, and it's the rarest type in the game. It only appears
      * in the last level of the game
      */
-    BOSS(1.5, 300);
+    BOSS(1.15, 200);
 
     private final double multiplier;
     private final int goldForDefeat;

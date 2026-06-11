@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.domain.characters;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.CharacterSheet;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 
 /**
  * This interface allows to any character that implements this interface to fight with other characters able to
@@ -29,8 +30,20 @@ public interface Fighter {
     int getWeaponAttack();
 
     /**
+     * Returns the current equipment of this fighter
+     * @return the current equipment
+     */
+    Equipment getCurrentEquipment();
+
+    /**
      * Returns the name of this fighter
      * @return the name of this fighter
      */
     String getName();
+
+    /**
+     * Returns the description of this fighter
+     * @return the description of this fighter
+     */
+    String getDescription();
 }

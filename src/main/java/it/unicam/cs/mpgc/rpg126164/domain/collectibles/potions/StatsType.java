@@ -1,8 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.*;
 
 /**
  * This enum represents the type of stat that a potion can modify. It is used to determine which stat
@@ -43,11 +41,10 @@ public enum StatsType {
      * @return true if this target cannot receive the given effect, false otherwise
      */
     public boolean invalidTarget(Fighter target, PotionTargetType targetType) {
-        System.out.println("LOOK HERE: " + target + " - " + targetType);
         return switch (target) {
             case null -> true;
-            case PlayableCharacter _ when targetType == PotionTargetType.ENEMY -> true;
-            case Enemy _ when targetType == PotionTargetType.SELF -> true;
+            case PlayerFighter _ when targetType == PotionTargetType.ENEMY -> true;
+            case EnemyFighter _ when targetType == PotionTargetType.SELF -> true;
             default -> false;
         };
     }

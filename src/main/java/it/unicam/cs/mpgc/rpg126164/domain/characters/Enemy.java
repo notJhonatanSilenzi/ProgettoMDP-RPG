@@ -13,7 +13,7 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "enemies")
-public class Enemy extends Character implements Fighter {
+public class Enemy extends Character implements EnemyFighter {
 
     @ManyToOne
     private Weapon equipment;
@@ -66,7 +66,12 @@ public class Enemy extends Character implements Fighter {
     @Override
     public int getWeaponAttack() { return this.equipment.useEquipment(); }
 
-    public Equipment getEquipment() { return this.equipment; }
+    @Override
+    public Equipment getCurrentEquipment() { return this.equipment; }
 
+    @Override
     public EnemyType getEnemyType()  { return this.type; }
+
+    @Override
+    public int getGoldForDefeat() { return this.type.getGoldForDefeat(); }
 }

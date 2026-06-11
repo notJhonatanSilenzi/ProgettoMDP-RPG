@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
@@ -33,7 +34,7 @@ public class EmporiumView {
     }
 
     public Scene createScene(Stage stage) {
-        PlayableCharacter player = marketController.getWorldGame().getPlayer();
+        PlayerFighter player = marketController.getWorldGame().getPlayer();
 
         // TITLE
         Label title = new Label("EMPORIUM");

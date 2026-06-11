@@ -1,9 +1,9 @@
 package it.unicam.cs.mpgc.rpg126164.gui.controllers;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
-import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 import it.unicam.cs.mpgc.rpg126164.gui.GameSession;
 import it.unicam.cs.mpgc.rpg126164.services.MarketService;
@@ -39,7 +39,7 @@ public class MarketController {
      * @param player the player of this session
      * @return the item stacks of the player
      */
-    public Map<Item, ItemStack> showPlayerItems(PlayableCharacter player) { return service.showPlayerItems(player); }
+    public Map<Item, ItemStack> showPlayerItems(PlayerFighter player) { return service.showPlayerItems(player); }
 
     /**
      * Buys the given item stack for the player

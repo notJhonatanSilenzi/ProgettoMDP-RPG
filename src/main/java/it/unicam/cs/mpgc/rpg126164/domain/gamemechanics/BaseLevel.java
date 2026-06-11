@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.domain.gamemechanics;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.FightResult;
@@ -74,17 +74,15 @@ public class BaseLevel implements Level {
      * @param player the getPlayer that receives the price
      */
     @Override
-    public String givePrizeToPlayer(PlayableCharacter player) {
-        if (player == null)
-            throw new IllegalArgumentException("Invalid parameters");
+    public void givePrizeToPlayer(PlayerFighter player) {
+        if (player == null) throw new IllegalArgumentException("Invalid parameters");
 
-        if (prize == null) throw new RuntimeException("No prize for this level");
+        if (prize == null) return;
 
         if (playerHasWon()) {
-            player.collectItem(prize);
+            player.getInventory().collect(prize);
             completed = true;
         }
-        return "You received: " + prize.getItem().getName() + " (x" + prize.getCount() + ")";
     }
 
     @Override
@@ -101,9 +99,5 @@ public class BaseLevel implements Level {
     @Override
     public String getName() { return name; }
 
-    public int getEnemyCount() { return enemyCount; }
-
     public Fight getFight() { return fight; }
-
-    public ItemStack getPrize() { return prize; }
 }

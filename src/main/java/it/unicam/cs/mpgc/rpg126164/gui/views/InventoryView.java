@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
@@ -38,7 +39,7 @@ public class InventoryView {
 
     public Scene createScene(Stage stage) {
 
-        PlayableCharacter player = worldController.getWorldGame().getPlayer();
+        PlayerFighter player = worldController.getWorldGame().getPlayer();
 
         // TITLE
         Label title = new Label("INVENTORY");
@@ -91,7 +92,7 @@ public class InventoryView {
         return new Scene(root, 800, 600);
     }
 
-    private Button getButton(ListView<ItemStack> inventoryList, PlayableCharacter player, Label details) {
+    private Button getButton(ListView<ItemStack> inventoryList, PlayerFighter player, Label details) {
         Button sellButton = new Button("Sell Selected");
         sellButton.setOnAction(e -> {
             try {

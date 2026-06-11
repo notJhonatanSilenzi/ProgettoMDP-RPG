@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.services;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
@@ -27,7 +28,7 @@ public class MarketService {
      * @param player the player
      * @return the collection of items currently in the player's inventory
      */
-    public Map<Item, ItemStack> showPlayerItems(PlayableCharacter player) { return player.getInventory().getItems(); }
+    public Map<Item, ItemStack> showPlayerItems(PlayerFighter player) { return player.getInventory().getItems(); }
 
     /**
      * Buys the given item stack for the player, so it sells it for the market

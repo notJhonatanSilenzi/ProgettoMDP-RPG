@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.LevelManager;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
 
@@ -13,7 +14,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
  */
 public class BaseWorldGame implements WorldGame {
 
-    private PlayableCharacter player;
+    private PlayerFighter player;
     private final LevelManager levelManager;
     private final Market market;
     private final SaveManager saveManager;
@@ -32,7 +33,7 @@ public class BaseWorldGame implements WorldGame {
     }
 
     @Override
-    public void enter(PlayableCharacter character) {
+    public void enter(PlayerFighter character) {
         if (character == null) throw new IllegalArgumentException("Game already started");
         if (this.player != null) throw new IllegalStateException("Game already started");
 
@@ -60,24 +61,15 @@ public class BaseWorldGame implements WorldGame {
         );
     }
 
-    @Override
-    public void exit() {
-        if (this.player == null) throw new IllegalArgumentException("Game not started");
-
-        this.player = null;
-    }
-
 
     // GETTERS
 
     @Override
-    public PlayableCharacter getPlayer() { return player; }
+    public PlayerFighter getPlayer() { return player; }
 
     @Override
     public LevelManager getLevelManager() { return levelManager; }
 
     @Override
     public Market getMarket() { return market; }
-
-    public SaveManager getSaveManager() { return saveManager; }
 }
