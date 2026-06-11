@@ -140,7 +140,10 @@ public class LevelCombatView {
             logView.getItems().add(result);
             selectedEnemy = null;
             refreshScene(stage, logView); // IMPORTANTISSIMO
-            if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasWon()) onVictory.run();
+            if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasWon()) {
+                levelController.playerReceivesPrize();
+                onVictory.run();
+            }
             else if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasLost()) onDefeat.run();
         });
 
@@ -168,11 +171,16 @@ public class LevelCombatView {
                         logView.getItems().add(result);
                         selectedEnemy = null;
                         refreshScene(stage, logView);
+                        if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasWon()) {
+                            levelController.playerReceivesPrize();
+                            onVictory.run();
+                        }
+                        else if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasLost())
+                            onDefeat.run();
                     },
                     () -> stage.setScene(createScene(stage))
             );
             stage.setScene(fiv.createScene(stage));
-            if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasWon()) onVictory.run();
         });
 
         // ======================

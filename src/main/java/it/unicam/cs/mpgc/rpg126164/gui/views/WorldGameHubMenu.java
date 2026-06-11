@@ -98,9 +98,7 @@ public class WorldGameHubMenu {
     }
 
     private void openCombat(Stage stage) {
-        System.out.println("UI LEVEL HASH = " +
-                System.identityHashCode(levelController.getWorldGame().getLevelManager().getCurrentLevel())
-        );
+        levelController.moveToNextLevel();
         levelController.enterLevel();
         combatController.startFight();
 

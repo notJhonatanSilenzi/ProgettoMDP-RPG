@@ -43,18 +43,12 @@ public class FightResultView {
 
             case ResultView.LEVEL_COMPLETED -> {
 
-                Level level = levelController.getWorldGame().getLevelManager().getCurrentLevel();
                 title.setText("LEVEL COMPLETED");
-                String rewardMessage = levelController.playerReceivesPrize();
-                System.out.println("REWARD LEVEL HASH = " +
-                        System.identityHashCode(level)
-                );
-                description.setText("You defeated all enemies.\n\n" + rewardMessage);
+                description.setText("You defeated all enemies.\n\n");
 
-                primaryButton.setText("Next Level");
+                primaryButton.setText("Continue");
                 secondaryButton.setText("Hub");
                 primaryButton.setOnAction(_ -> {
-                    levelController.moveToNextLevel();
                     primaryAction.run();
                 });
                 secondaryButton.setOnAction(_ -> secondaryAction.run());

@@ -80,12 +80,18 @@ public class BaseLevel implements Level {
 
         if (prize == null) throw new RuntimeException("No prize for this level");
 
-        if (playerHasWon()) player.collectItem(prize);
+        if (playerHasWon()) {
+            player.collectItem(prize);
+            completed = true;
+        }
         return "You received: " + prize.getItem().getName() + " (x" + prize.getCount() + ")";
     }
 
     @Override
     public void setPrize(ItemStack prize) { this.prize = prize; }
+
+    @Override
+    public boolean isCompleted() { return completed; }
 
 
     // GETTERS
@@ -100,6 +106,4 @@ public class BaseLevel implements Level {
     public Fight getFight() { return fight; }
 
     public ItemStack getPrize() { return prize; }
-
-    public boolean isCompleted() { return completed; }
 }

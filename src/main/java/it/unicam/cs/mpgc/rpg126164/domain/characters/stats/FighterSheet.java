@@ -10,10 +10,13 @@ import java.io.Serializable;
 public class FighterSheet implements CharacterSheet, Serializable {
 
     private int HP;
-    private final int HP_MAX;
     private int ATK;
     private int DF;
     private final double evadeChance;
+
+    private final int HP_MAX;
+    private final int ATK_BASE;
+    private final int DF_BASE;
 
     /**
      * Creates a Fighter Sheet for a character able to fight
@@ -28,10 +31,12 @@ public class FighterSheet implements CharacterSheet, Serializable {
             throw new IllegalArgumentException("Arguments are invalid");
 
         this.HP = HP;
-        this.HP_MAX = HP_MAX;
         this.ATK = ATK;
         this.DF = DF;
         this.evadeChance = evadeChance;
+        this.HP_MAX = HP_MAX;
+        this.ATK_BASE = ATK;
+        this.DF_BASE = DF;
     }
 
     @Override
@@ -91,8 +96,11 @@ public class FighterSheet implements CharacterSheet, Serializable {
     }
 
     @Override
-    public void reset() { this.HP = this.HP_MAX; }
-
+    public void reset() {
+        this.HP = this.HP_MAX;
+        this.ATK = this.ATK_BASE;
+        this.DF = this.DF_BASE;
+    }
 
 
     // GETTERS

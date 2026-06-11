@@ -35,8 +35,6 @@ public class FightItemsView {
     }
 
     public Scene createScene(Stage stage) {
-        PlayableCharacter player = combatController.getWorldGame().getPlayer();
-
         Label title = new Label(
                 mode == InventoryMode.POTION
                         ? "SELECT A POTION"
@@ -92,29 +90,20 @@ public class FightItemsView {
     }
 
     private HBox getHBox(ListView<ItemStack> inventoryList) {
-        Button actionButton = new Button(mode == InventoryMode.POTION ? "Consume" : "Equip"
-        );
+        Button actionButton = new Button(mode == InventoryMode.POTION ? "Consume" : "Equip");
 
         Button backButton = new Button("Back");
 
         actionButton.setOnAction(e -> {
 
-            ItemStack selected =
-                    inventoryList.getSelectionModel()
-                            .getSelectedItem();
-
-            if (selected == null)
-                return;
-
+            ItemStack selected = inventoryList.getSelectionModel().getSelectedItem();
+            if (selected == null) return;
             itemSelected.accept(selected);
-
-            onBack.run();
         });
 
         backButton.setOnAction(e -> onBack.run());
 
-        HBox buttons =
-                new HBox(20, actionButton, backButton);
+        HBox buttons = new HBox(20, actionButton, backButton);
 
         buttons.setAlignment(Pos.CENTER);
         return buttons;

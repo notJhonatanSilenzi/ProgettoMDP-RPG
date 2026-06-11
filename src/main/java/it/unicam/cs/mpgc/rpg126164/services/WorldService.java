@@ -3,7 +3,6 @@ package it.unicam.cs.mpgc.rpg126164.services;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
-import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.BaseLevel;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.*;
 import it.unicam.cs.mpgc.rpg126164.persistance.LevelPrize;
@@ -55,7 +54,7 @@ public class WorldService {
      */
     public WorldGame buildSavedWorldGame(GameState gameState) {
         LevelManager adventure = buildAdventure();
-        adventure.setCurrentLevel(levelRepository.findById(gameState.currentLevelId()));
+        adventure.setCurrentLevel(gameState.currentLevelIndex());
         WorldGame worldGame = new BaseWorldGame(adventure, buildSavedEmporium(gameState), new SaveSlot());
         gameState.player().getSheet().reset();
         worldGame.enter(gameState.player());
@@ -72,9 +71,6 @@ public class WorldService {
         for (Level level : levels) {
             LevelPrize entry = levelPrizeRepository.findByLevel(level);
             if (entry != null) level.setPrize(new ItemStack(entry.getPrize(), entry.getQuantity()));
-            System.out.println("BUILD LEVEL HASH = " +
-                    System.identityHashCode(level)
-            );
         }
         return adventure;
     }

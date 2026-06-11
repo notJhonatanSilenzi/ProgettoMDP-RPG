@@ -11,7 +11,7 @@ import java.io.Serializable;
  * This record is used to save the game state, and to recreate the game state when loading the game.
  * @param player the player's character
  * @param currentLevelId the id of the current level
- * @param progressPercentage the percentage of progression in the game
+ * @param currentLevelIndex the percentage of progression in the game
  * @param emporiumInventory the inventory of the emporium, which is needed to save the game state,
  *                          since the player can buy items from the emporium, and those items need
  *                          to be saved in the game state
@@ -19,7 +19,7 @@ import java.io.Serializable;
 public record GameState(
         PlayableCharacter player,
         String currentLevelId,
-        int progressPercentage,
+        int currentLevelIndex,
         InventoryBehaviour emporiumInventory
 ) implements Serializable {
 }

@@ -47,6 +47,12 @@ public interface Level {
     void setPrize(ItemStack prize);
 
     /**
+     * Checks if this level has been completed by the player
+     * @return true if the level is completed, false otherwise
+     */
+    boolean isCompleted();
+
+    /**
      * Returns the id of this level
      * @return the id of this level
      */
@@ -57,4 +63,5 @@ public interface Level {
      * @return the name of the level
      */
     String getName();
+
 }

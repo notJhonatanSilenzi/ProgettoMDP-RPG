@@ -21,9 +21,9 @@ public interface LevelManager {
 
     /**
      * Sets the current level to the given one
-     * @param level the current level to set
+     * @param progress the progression percentage of the game
      */
-    void setCurrentLevel(Level level);
+    void setCurrentLevel(int progress);
 
     /**
      * Checks if the current level is the last one
@@ -35,5 +35,5 @@ public interface LevelManager {
      * Returns the current progression percentage of the game
      * @return the current progression percentage of the game
      */
-    int getProgressionPercentage();
+    int getCurrentLevelIndex();
 }

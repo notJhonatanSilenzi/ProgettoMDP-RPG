@@ -54,7 +54,7 @@ public class BaseWorldGame implements WorldGame {
                 new GameState(
                         this.player,
                         this.levelManager.getCurrentLevel().getId(),
-                        this.levelManager.getProgressionPercentage(),
+                        this.levelManager.getCurrentLevelIndex(),
                         this.market.getWarehouse()
                 )
         );

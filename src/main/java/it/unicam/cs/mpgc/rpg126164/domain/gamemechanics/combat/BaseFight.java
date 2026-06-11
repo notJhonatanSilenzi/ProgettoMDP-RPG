@@ -86,8 +86,7 @@ public class BaseFight implements Fight {
      */
     private void updateFightStatus() {
         if (!player.getSheet().isAlive()) this.setResult(FightResult.LOSE);
-        else if (currentEnemies.isEmpty())
-            this.setResult(FightResult.WIN);
+        else if (currentEnemies.isEmpty()) this.setResult(FightResult.WIN);
     }
 
     /**
@@ -125,6 +124,10 @@ public class BaseFight implements Fight {
 
         consumable.consume(target);
         player.getInventory().drop(new ItemStack(consumable, 1));
+        if (!target.getSheet().isAlive() && target instanceof Enemy) {
+            player.getMoneyCollector().cash(((Enemy) target).getEnemyType().getGoldForDefeat());
+            this.currentEnemies.remove(target);
+        }
         this.updateFightStatus();
         return player.getName() + " consumed " + consumable.getName() + " and applied " +
                 consumable.getStatsType() + " to " + target.getName();

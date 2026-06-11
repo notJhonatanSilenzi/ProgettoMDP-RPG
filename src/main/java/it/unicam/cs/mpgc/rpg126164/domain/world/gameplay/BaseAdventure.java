@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.gameplay;
 
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class BaseAdventure implements LevelManager {
 
     private final List<Level> levels;
     private Level currentLevel;
-    private int progressionPercentage;
+    private int currentLevelIndex;
 
     /**
      * Creates a basic adventure for a world game
@@ -25,22 +24,12 @@ public class BaseAdventure implements LevelManager {
 
         this.levels = levels;
         this.currentLevel = levels.getFirst();
-        this.progressionPercentage = 0;
+        this.currentLevelIndex = 0;
     }
 
     @Override
     public void nextLevel() {
-        if (this.currentLevel.playerHasWon()) {
-            this.updateProgression();
-            this.currentLevel = levels.get(levels.indexOf(currentLevel) + 1);
-        }
-    }
-
-    /**
-     * Updates the progression of the getPlayer in this mode, according to the completed levels
-     */
-    private void updateProgression() {
-        this.progressionPercentage = this.levels.indexOf(currentLevel) * 100 / this.levels.size();
+        if (this.currentLevel.playerHasWon()) this.currentLevel = levels.get(currentLevelIndex);
     }
 
     @Override
@@ -55,8 +44,13 @@ public class BaseAdventure implements LevelManager {
     public Level getCurrentLevel() { return currentLevel; }
 
     @Override
-    public int getProgressionPercentage() { return progressionPercentage; }
+    public int getCurrentLevelIndex() { return currentLevelIndex; }
 
     @Override
-    public void setCurrentLevel(Level level)  { this.currentLevel = level; }
+    public void setCurrentLevel(int progress) {
+        if (progress < 0 || progress >= levels.size()) throw new IllegalArgumentException("Invalid progress.");
+
+        this.currentLevelIndex = progress;
+        this.currentLevel = levels.get(currentLevelIndex);
+    }
 }

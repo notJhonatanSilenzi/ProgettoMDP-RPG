@@ -58,11 +58,7 @@ public class LevelService {
      * @param adventure the adventure mode of the game
      */
     public void moveToNextLevel(LevelManager adventure) {
-        Level currentLevel = adventure.getCurrentLevel();
-        if (currentLevel.playerHasWon())
-            adventure.nextLevel();
-        else if (currentLevel.playerHasLost())
-            currentLevel.reset();
+        if (adventure.getCurrentLevel().isCompleted()) adventure.nextLevel();
     }
 
     /**
@@ -72,6 +68,8 @@ public class LevelService {
      * @return the output string for the UI
      */
     public String playerReceivesPrice(PlayableCharacter player, LevelManager adventure) {
-        return adventure.getCurrentLevel().givePrizeToPlayer(player);
+        String result = adventure.getCurrentLevel().givePrizeToPlayer(player);
+        adventure.setCurrentLevel(adventure.getCurrentLevelIndex() + 1);
+        return result;
     }
 }
