@@ -1,13 +1,11 @@
 package it.unicam.cs.mpgc.rpg126164.services;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.EnemyFighter;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.*;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.PotionTargetType;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 
 import java.util.Map;
@@ -31,12 +29,19 @@ public class CombatService {
      * Allows the player to attack the given enemy
      * @param fight the fight to process
      * @param enemy the enemy to attack
-     * @return the output string for the UI
+     * @return the combat turn result
      */
-    public String playerAttackEnemy(Fight fight, EnemyFighter enemy) {
+    public CombatTurnResult playerAttackEnemy(Fight fight, EnemyFighter enemy) {
         if (fight == null || enemy == null) throw new IllegalArgumentException("Invalid parameters");
 
-        return fight.playerAttackEnemy(enemy) + "\n" + fight.enemyCounterAttack(enemy);
+        String enemyTurn = (enemy.getSheet().isAlive())
+                ? enemy.getName() + " dealt " + fight.enemyCounterAttack(enemy) + " damage to " + fight.getPlayer().getName()
+                : enemy.getName() + " has been defeated!";
+        return new CombatTurnResult(
+                fight.getPlayer().getName() + " dealt " + fight.playerAttackEnemy(enemy) + " damage to " + enemy.getName(),
+                enemyTurn,
+                enemy.getSheet().isAlive()
+        );
     }
 
     /**
@@ -48,12 +53,24 @@ public class CombatService {
      *               zero, the player receives the effects
      * @return the output string for the UI
      */
-    public String playerConsumesPotion(Fight fight, Consumable potion, Fighter target) {
+    public CombatTurnResult playerConsumesPotion(Fight fight, Consumable potion, Fighter target) {
         if (fight == null || potion == null) throw new IllegalArgumentException("Invalid parameters");
 
-        return (target instanceof PlayerFighter)
-                ? fight.consumeItem(target, potion) + "\n" + fight.enemyCounterAttack(fight.getCurrentEnemies().getFirst())
-                : fight.consumeItem(target, potion) + "\n" + fight.enemyCounterAttack((EnemyFighter) target);
+        String playerTurn = (potion.getTargetType() == PotionTargetType.SELF)
+                ? fight.getPlayer().getName() + " consumed " + potion.getName() + " and gained " +
+                fight.consumeItem(target, potion) + " " + potion.getStatsType()
+                : fight.getPlayer().getName() + " consumed " + potion.getName() + " and reduced " +
+                target.getName() + " " + potion.getStatsType() + " by " + fight.consumeItem(target, potion) + "!";
+
+        EnemyFighter enemy = (potion.getTargetType() == PotionTargetType.SELF) ? fight.getCurrentEnemies().getFirst() : (EnemyFighter) target;
+        String enemyTurn = (!enemy.getSheet().isAlive())
+                ? enemy.getName() + " has been defeated!"
+                : enemy + " dealt " + fight.enemyCounterAttack(enemy) + " damage to " + fight.getPlayer().getName();
+        return new CombatTurnResult(
+                playerTurn,
+                enemyTurn,
+                target.getSheet().isAlive()
+        );
     }
 
     /**

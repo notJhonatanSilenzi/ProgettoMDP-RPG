@@ -1,12 +1,9 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Potion;
+import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.MarketController;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.WorldController;
 import javafx.geometry.Insets;
@@ -14,126 +11,120 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * This class works as an emporium view
+ */
 public class EmporiumView {
 
     private final WorldController worldController;
     private final MarketController marketController;
     private final Runnable onBack;
 
+    /**
+     * Creates an emporium view
+     * @param worldController the world controller
+     * @param marketController the market controller
+     * @param onBack the callback to the world game hub menu
+     */
     public EmporiumView(WorldController worldController, MarketController marketController, Runnable onBack) {
         this.worldController = worldController;
         this.marketController = marketController;
         this.onBack = onBack;
     }
 
+    /**
+     * Creates an emporium scene for the given stage
+     * @param stage the current stage
+     * @return the emporium scene
+     */
     public Scene createScene(Stage stage) {
         PlayerFighter player = marketController.getWorldGame().getPlayer();
 
-        // TITLE
+        // ===================================== TITLE =====================================
         Label title = new Label("EMPORIUM");
+        title.setAlignment(Pos.CENTER);
 
-        // GOLD INFO
-        Label goldLabel = new Label(
-                "Unit: " + player.getMoneyCollector().getCurrentAmount()
-                        + " / " + player.getMoneyCollector().getMaxAmount()
+        // ===================================== GOLD INFO =====================================
+        Label goldLabel = new Label("Unit: " + player.getMoneyCollector().getCurrentAmount() + " / " + player.getMoneyCollector().getMaxAmount());
+
+        // ===================================== EMPORIUM INVENTORY =====================================
+        InventoryComponentBuilder builder =  new InventoryComponentBuilder();
+        InventoryComponent center = builder.buildInventoryComponent(
+                marketController.getWorldGame().getMarket(),
+                player.getMoneyCollector().getMoneyName()
         );
 
-        // MARKET LIST
-        ListView<Item> marketList = new ListView<>();
-        marketList.getItems().addAll(marketController.showMarketItems().keySet());
-        marketList.setCellFactory(list -> new ListCell<>() {
-            @Override
-            protected void updateItem(Item item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || item == null) setText(null);
-                else setText(item.getName() + " - " + item.getTradeValue() + " " + player.getMoneyCollector().getMoneyName());
-            }
-        });
-
-        // DETAILS
-        Label details = new Label("Select an item");
-        details.setWrapText(true);
-        marketList.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((obs, oldVal, newVal) -> {
-                    if (newVal == null) {
-                        details.setText("Select an item");
-                        return;
-                    }
-                    details.setText(newVal.infoToString() + " " + player.getMoneyCollector().getMoneyName() + " - ");
-                });
-
-        VBox center = new VBox(15,
-                        marketList,
-                        details
-                );
-
-        // BUTTONS
-        Button buyButton = new Button("Buy Selected");
-        Button inventoryButton = new Button("Inventory");
+        // ===================================== BUTTONS =====================================
+        Button buyButton = purchaseOnAction(center, player, marketController.getWorldGame().getMarket(), goldLabel);
+        Button inventoryButton = inventoryOnAction(stage);
         Button backButton = new Button("Back");
-        HBox buttons = new HBox(20);
-        buttons.setAlignment(Pos.CENTER);
-        buttons.setPadding(new Insets(20));
-
-        // BUY
-        buyButton.setOnAction(e -> {
-            Item selected = marketList.getSelectionModel().getSelectedItem();
-
-            if (selected == null) return;
-
-            marketController.buyItem(new ItemStack(selected, 1));
-
-            goldLabel.setText(
-                    "Unit: " + player.getMoneyCollector().getCurrentAmount()
-                            + " / " + player.getMoneyCollector().getMaxAmount()
-            );
-        });
-
-        // INVENTORY (SELL MODE)
-
-        inventoryButton.setOnAction(e -> {
-
-            InventoryView inventoryView = new InventoryView(
-                worldController,
-                marketController,
-                () -> stage.setScene(this.createScene(stage)),
-                true
-            );
-            stage.setScene(inventoryView.createScene(stage));
-        });
-
-        // BACK
-        backButton.setOnAction(e -> {
+        backButton.setOnAction(_ -> {
             marketController.exit();
             onBack.run();
         });
+
+        HBox buttons = new HBox(20);
+        buttons.setAlignment(Pos.CENTER);
         buttons.getChildren().addAll(buyButton, inventoryButton, backButton);
 
-        // ROOT
+        // ===================================== ROOT =====================================
         BorderPane root = new BorderPane();
-        VBox top = new VBox(10,
-            title,
-            goldLabel
-        );
+        VBox top = new VBox(10, title, goldLabel);
         root.setTop(top);
-        root.setCenter(center);
+        root.setCenter(center.root());
+        BorderPane.setMargin(center.root(), new Insets(0, 0, 20, 0));
         root.setBottom(buttons);
         BorderPane.setAlignment(title, Pos.CENTER);
-        root.setPadding(new Insets(20));
-        root.setStyle("-fx-background-image: url('/images/map-wallpaper-2.jpg');");
 
-        title.getStyleClass().add("title");
-        root.getStyleClass().add("root");
+        // ===================================== STYLE =====================================
+        Scene scene = builder.setStyles(title, buyButton, inventoryButton, backButton, root);
+        goldLabel.getStyleClass().add("floating-text");
 
-        return new Scene(root, 800, 600);
+        return scene;
+    }
+
+    /**
+     * Sets up the buy button
+     * @param inventory the inventory component for this scene
+     * @param player the player's character
+     * @param market the market
+     * @param goldLabel the floating label to update
+     * @return the buy button
+     */
+    private Button purchaseOnAction(InventoryComponent inventory, PlayerFighter player, Market market, Label goldLabel) {
+        Button purchaseButton = new Button("Buy");
+        purchaseButton.setOnAction(_ -> {
+            Item selected = inventory.getSelectedItem().getItem();
+
+            if (selected == null) return;
+            marketController.buyItem(new ItemStack(selected, 1));
+            inventory.refresh(market);
+            goldLabel.setText("Unit: " + player.getMoneyCollector().getCurrentAmount() + " / " + player.getMoneyCollector().getMaxAmount());
+        });
+        return purchaseButton;
+    }
+
+    /**
+     * Sets up the open inventory button
+     * @param stage the current stage
+     * @return the open inventory button
+     */
+    private Button inventoryOnAction(Stage stage) {
+        Button inventoryButton = new Button("Inventory");
+        inventoryButton.setOnAction(_ -> {
+            InventoryView inventoryView = new InventoryView(
+                    worldController,
+                    marketController,
+                    () -> stage.setScene(this.createScene(stage)),
+                    true
+            );
+            stage.setScene(inventoryView.createScene());
+        });
+        return inventoryButton;
     }
 }

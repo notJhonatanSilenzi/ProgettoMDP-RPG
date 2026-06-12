@@ -1,25 +1,21 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
+import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.CombatController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ * This class works as a view for specific categories of items during a fight
+ */
 public class FightItemsView {
 
     private final CombatController combatController;
@@ -27,6 +23,13 @@ public class FightItemsView {
     private final Consumer<ItemStack> itemSelected;
     private final Runnable onBack;
 
+    /**
+     * Creates a fight items view
+     * @param combatController the combat controller
+     * @param itemToShow the inventory mode required
+     * @param consumer the selected item to consume or use
+     * @param onBack the callback to the level combat view
+     */
     public FightItemsView(CombatController combatController, InventoryMode itemToShow, Consumer<ItemStack> consumer, Runnable onBack) {
         this.combatController = combatController;
         this.mode = itemToShow;
@@ -34,78 +37,66 @@ public class FightItemsView {
         this.onBack = onBack;
     }
 
-    public Scene createScene(Stage stage) {
-        Label title = new Label(
-                mode == InventoryMode.POTION
-                        ? "SELECT A POTION"
-                        : "SELECT A WEAPON"
-        );
+    /**
+     * Creates a scene to view potions or weapons
+     * @return the fight items scene
+     */
+    public Scene createScene() {
+        PlayerFighter player = combatController.getWorldGame().getPlayer();
 
-        ListView<ItemStack> inventoryList = new ListView<>();
+        // ===================================== TITLE =====================================
+        Label title = new Label(mode == InventoryMode.POTION ? "SELECT A POTION" : "SELECT A WEAPON");
+        title.setAlignment(Pos.CENTER);
 
-        for (ItemStack stack : combatController.showInventory().values()) {
-            Item item = stack.getItem();
-            if (mode == InventoryMode.POTION && !(item instanceof Consumable)) continue;
-            if (mode == InventoryMode.WEAPON && !(item instanceof Equipment)) continue;
-            inventoryList.getItems().add(stack);
-        }
+        // ===================================== INVENTORY =====================================
+        InventoryComponentBuilder builder = new  InventoryComponentBuilder();
+        InventoryComponent centerContent = builder.buildInventoryComponent(player, mode);
+        HBox center = centerContent.root();
+        center.setAlignment(Pos.CENTER);
 
-        inventoryList.setCellFactory(param ->
-                new ListCell<>() {
-                    @Override
-                    protected void updateItem(ItemStack stack, boolean empty) {
-                        super.updateItem(stack, empty);
-                        if (empty || stack == null) {
-                            setText(null);
-                            return;
-                        }
-                        Item item = stack.getItem();
-                        setText(item.getName()
-                                        + " (x"
-                                        + stack.getCount()
-                                        + ") - "
-                                        + item.getDescription()
-                        );
-                    }
-                });
+        // ===================================== BUTTONS =====================================
+        HBox buttons = getHBox(centerContent);
 
-        HBox buttons = getHBox(inventoryList);
-
+        // ===================================== ROOT =====================================
         BorderPane root = new BorderPane();
-
         root.setTop(title);
-        root.setCenter(inventoryList);
-        root.setBottom(buttons);
-
         BorderPane.setAlignment(title, Pos.CENTER);
+        root.setCenter(center);
+        root.setBottom(buttons);
+        BorderPane.setAlignment(buttons, Pos.CENTER);
+        BorderPane.setAlignment(center, Pos.CENTER);
+        BorderPane.setMargin(center, new Insets(0, 0, 20, 0));
 
-        root.setPadding(new Insets(20));
-
-        root.setStyle("-fx-background-image: url('/images/map-wallpaper-2.jpg');");
+        // ===================================== STYLE =====================================
         Scene scene = new Scene(root, 800, 600);
-        scene.getStylesheets().add(Objects.requireNonNull(FightItemsView.class.getResource("/css/style.css")).toExternalForm());
+        scene.getStylesheets().add("/css/style.css");
         root.getStyleClass().add("root");
         title.getStyleClass().add("title");
+
         return scene;
     }
 
-    private HBox getHBox(ListView<ItemStack> inventoryList) {
+    /**
+     * Sets up the buttons for this view
+     * @param inventory the inventory component to show
+     * @return the button box
+     */
+    private HBox getHBox(InventoryComponent inventory) {
+        // ===================================== BUTTONS =====================================
         Button actionButton = new Button(mode == InventoryMode.POTION ? "Consume" : "Equip");
-
         Button backButton = new Button("Back");
-
-        actionButton.setOnAction(e -> {
-
-            ItemStack selected = inventoryList.getSelectionModel().getSelectedItem();
+        actionButton.setOnAction(_ -> {
+            ItemStack selected = inventory.getSelectedItem();
             if (selected == null) return;
             itemSelected.accept(selected);
         });
-
-        backButton.setOnAction(e -> onBack.run());
+        backButton.setOnAction(_ -> onBack.run());
 
         HBox buttons = new HBox(20, actionButton, backButton);
-
         buttons.setAlignment(Pos.CENTER);
+        buttons.getStylesheets().add("/css/style.css");
+        actionButton.getStyleClass().add("button");
+        backButton.getStyleClass().add("button");
         return buttons;
     }
 }

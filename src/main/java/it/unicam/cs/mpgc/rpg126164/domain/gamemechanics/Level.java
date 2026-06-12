@@ -39,7 +39,7 @@ public interface Level {
      * Gives a price to the getPlayer, if they completed the level by winning the fight
      * @param player the getPlayer that receives the price
      */
-    void givePrizeToPlayer(PlayerFighter player);
+    ItemStack givePrizeToPlayer(PlayerFighter player);
 
     /**
      * Sets the given item stack as a prize for completing the level

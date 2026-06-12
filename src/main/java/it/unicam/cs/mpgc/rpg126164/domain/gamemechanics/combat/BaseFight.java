@@ -46,35 +46,29 @@ public class BaseFight implements Fight {
     public FightResult getFinalResult() { return this.result; }
 
     @Override
-    public String playerAttackEnemy(EnemyFighter target) {
+    public int playerAttackEnemy(EnemyFighter target) {
         if (target == null) throw new IllegalArgumentException("Invalid enemy index");
 
-        Enemy enemy = (Enemy) target;
-        int damage = this.applyDamage(player, enemy);
-        if (!enemy.getSheet().isAlive()) {
-            player.getMoneyCollector().cash(enemy.getEnemyType().getGoldForDefeat());
-            currentEnemies.remove(enemy);
+        int damage = this.applyDamage(player, target);
+        if (!target.getSheet().isAlive()) {
+            player.getMoneyCollector().cash(target.getEnemyType().getGoldForDefeat());
+            currentEnemies.remove(target);
         }
-
         updateFightStatus();
-        return player.getName() + " dealt " + damage + " damage to " + enemy.getName() + " with "
-                + player.getCurrentEquipment().getName();
+        return damage;
     }
 
     @Override
-    public String enemyCounterAttack(EnemyFighter enemy) {
-        if (currentEnemies.isEmpty()) return "All enemies defeated!";
+    public int enemyCounterAttack(EnemyFighter enemy) {
+        if (currentEnemies.isEmpty()) return -1;
 
         if (enemy == null) throw new IllegalArgumentException("Invalid enemy index");
 
-        if (!enemy.getSheet().isAlive()) return "This enemy got defeated";
+        if (!enemy.getSheet().isAlive()) return -1;
 
         int damage = (!player.getSheet().hasEvaded()) ? this.applyDamage(enemy, player) : 0;
-
         updateFightStatus();
-        return (damage == 0) ? player.getName() + " has evaded the counterattack!" :
-                enemy.getName() + " dealt " + damage + " damage to " + player.getName() + " with "
-                + enemy.getCurrentEquipment().getName();
+        return damage;
     }
 
     /**
@@ -115,7 +109,7 @@ public class BaseFight implements Fight {
     }
 
     @Override
-    public String consumeItem(Fighter target, Consumable consumable) {
+    public int consumeItem(Fighter target, Consumable consumable) {
         if (target == null || consumable == null)
             throw new IllegalArgumentException("Invalid parameters");
 
@@ -126,8 +120,7 @@ public class BaseFight implements Fight {
             this.currentEnemies.remove(target);
         }
         this.updateFightStatus();
-        return player.getName() + " consumed " + consumable.getName() + " and applied " +
-                consumable.getStatsType() + " to " + target.getName();
+        return consumable.getStatsModifier();
     }
 
     @Override

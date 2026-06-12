@@ -10,6 +10,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 import it.unicam.cs.mpgc.rpg126164.gui.GameSession;
 import it.unicam.cs.mpgc.rpg126164.services.CombatService;
+import it.unicam.cs.mpgc.rpg126164.services.CombatTurnResult;
 
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class CombatController {
     /**
      * Makes the player attack the enemy, and then the player may receive a counterattack by the target
      */
-    public String playerAttackEnemy(EnemyFighter enemy) {
+    public CombatTurnResult playerAttackEnemy(EnemyFighter enemy) {
         return this.service.playerAttackEnemy(
                 this.getCurrentFight(),
                 enemy
@@ -50,20 +51,12 @@ public class CombatController {
      * Makes the player consume a potion
      * @param potion the potion to consume
      */
-    public String playerConsumesPotion(Consumable potion, Fighter target) {
+    public CombatTurnResult playerConsumesPotion(Consumable potion, Fighter target) {
         return this.service.playerConsumesPotion(
                 this.getCurrentFight(),
                 potion,
                 target
         );
-    }
-
-    /**
-     * Shows the player's inventory
-     * @return the item stacks in the player's inventory
-     */
-    public Map<Item, ItemStack> showInventory() {
-        return this.service.showInventory(this.getWorldGame().getPlayer());
     }
 
     /**

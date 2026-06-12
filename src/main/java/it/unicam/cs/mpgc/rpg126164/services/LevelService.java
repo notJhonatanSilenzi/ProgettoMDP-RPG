@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg126164.services;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.*;
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.Level;
 import it.unicam.cs.mpgc.rpg126164.persistance.LevelEnemy;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.BaseFight;
@@ -65,7 +66,7 @@ public class LevelService {
      * @param player    the player's character
      * @param adventure the adventure mode of this game
      */
-    public void playerReceivesPrice(PlayerFighter player, LevelManager adventure) {
-        adventure.getCurrentLevel().givePrizeToPlayer(player);
+    public ItemStack playerReceivesPrice(PlayerFighter player, LevelManager adventure) {
+        return adventure.getCurrentLevel().givePrizeToPlayer(player);
     }
 }

@@ -74,15 +74,16 @@ public class BaseLevel implements Level {
      * @param player the getPlayer that receives the price
      */
     @Override
-    public void givePrizeToPlayer(PlayerFighter player) {
+    public ItemStack givePrizeToPlayer(PlayerFighter player) {
         if (player == null) throw new IllegalArgumentException("Invalid parameters");
 
-        if (prize == null) return;
+        if (prize == null) return null;
 
         if (playerHasWon()) {
             player.getInventory().collect(prize);
             completed = true;
         }
+        return prize;
     }
 
     @Override

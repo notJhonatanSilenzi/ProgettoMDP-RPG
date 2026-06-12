@@ -76,14 +76,8 @@ public class MainMenuPage {
         BorderPane.setAlignment(deletedGame, Pos.CENTER);
 
         // ===================================== STYLE =====================================
-        Scene scene = new Scene(root, 800, 600);
-        scene.getStylesheets().add("/css/style.css");
-
-        title.getStyleClass().add("title");
-        root.getStyleClass().add("root");
-        newGameButton.getStyleClass().add("button");
-        loadButton.getStyleClass().add("button");
-        deleteButton.getStyleClass().add("button");
+        InventoryComponentBuilder builder = new InventoryComponentBuilder();
+        Scene scene = builder.setStyles(title, newGameButton, loadButton, deleteButton, root);
         infoButton.getStyleClass().add("button");
         exitButton.getStyleClass().add("button");
         deletedGame.getStyleClass().add("floating-text");

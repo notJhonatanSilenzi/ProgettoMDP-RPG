@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.gui.controllers;
 
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 import it.unicam.cs.mpgc.rpg126164.gui.GameSession;
@@ -44,8 +45,8 @@ public class LevelController {
     /**
      * Gives to the player the prize for completing the current level
      */
-    public void playerReceivesPrize() {
-        levelService.playerReceivesPrice(
+    public ItemStack playerReceivesPrize() {
+        return levelService.playerReceivesPrice(
                 this.getWorldGame().getPlayer(),
                 this.getWorldGame().getLevelManager()
         );

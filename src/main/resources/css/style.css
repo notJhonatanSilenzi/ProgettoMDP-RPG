@@ -223,6 +223,7 @@
     -fx-border-width: 2px;
     -fx-background-radius: 6;
     -fx-border-radius: 6;
+    -fx-padding: 15;
 }
 .list-cell { /* List View Cells style */
     -fx-background-color: transparent;
@@ -238,6 +239,10 @@
     -fx-background-color: #6b4b21;
     -fx-text-fill: white;
 }
+.list-cell:empty {
+    -fx-background-color: transparent;
+    -fx-mouse-transparent: true;
+}
 .inventory-details { /* Text Details style */
     -fx-background-color: rgba(42, 33, 22, 0.75);
     -fx-border-color: #c2a76b;
@@ -245,4 +250,11 @@
     -fx-background-radius: 6;
     -fx-border-radius: 6;
     -fx-padding: 15;
+}
+.inventory-text {
+    -fx-font-family: "Palatino Linotype", cursive;
+    -fx-text-fill: #fff4d6;
+    -fx-padding: 5px;
+    -fx-alignment: center;
+    -fx-font-size: 15px;
 }

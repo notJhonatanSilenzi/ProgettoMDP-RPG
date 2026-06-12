@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
+import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.*;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
@@ -118,14 +119,19 @@ public class WorldGameHubMenu {
         ResultView type = levelController.getWorldGame().getLevelManager().isLastLevel()
                         ? ResultView.GAME_COMPLETED
                         : ResultView.LEVEL_COMPLETED;
+        ItemStack prize = levelController.playerReceivesPrize();
         FightResultView view = new FightResultView(
-                levelController,
                 combatController,
                 () -> openCombat(stage),
                 () -> stage.setScene(createScene(stage)),
-                type
+                new ResultContext(
+                        type,
+                        type.name(),
+                        (type == ResultView.LEVEL_COMPLETED) ? "You defeated all enemies" : "You defeated the final boss",
+                        prize
+                )
         );
-        stage.setScene(view.createScene(stage));
+        stage.setScene(view.createScene());
     }
 
     /**
@@ -134,13 +140,17 @@ public class WorldGameHubMenu {
      */
     private void openDefeat(Stage stage) {
         FightResultView view = new FightResultView(
-                levelController,
                 combatController,
                 () -> openCombat(stage),
                 () -> stage.setScene(createScene(stage)),
-                ResultView.LEVEL_FAILED
+                new ResultContext(
+                        ResultView.LEVEL_FAILED,
+                        "LEVEL FAILED",
+                        "You've been defeated",
+                        null
+                )
         );
-        stage.setScene(view.createScene(stage));
+        stage.setScene(view.createScene());
     }
 
     /**

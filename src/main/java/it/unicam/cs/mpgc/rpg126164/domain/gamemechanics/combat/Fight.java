@@ -30,16 +30,16 @@ public interface Fight {
      * Simulates the attack action from the player to the selected target. It calculates the amount of damage
      * that the target receives, if he doesn't evade the attack
      * @param target the index of the enemy to attack
-     * @return the output string for the UI
+     * @return the damage dealt to the enemy
      */
-    String playerAttackEnemy(EnemyFighter target);
+    int playerAttackEnemy(EnemyFighter target);
 
     /**
      * Simulates the counterattack action of an enemy towards the player
      * @param target the index of the enemy that counterattacks
-     * @return the output string for the UI
+     * @return the damage dealt to the player
      */
-    String enemyCounterAttack(EnemyFighter target);
+    int enemyCounterAttack(EnemyFighter target);
 
     /**
      * Simulates the action of consuming a consumable item, applying the effects to the given character.
@@ -47,9 +47,9 @@ public interface Fight {
      * @param target the index ot the target that receives the effects of the potion. If it's below zero,
      *              the player receives the effects.
      * @param consumable the consumable item to consume
-     * @return the output string for the UI
+     * @return the amount of stat applied to the target
      */
-    String consumeItem(Fighter target, Consumable consumable);
+    int consumeItem(Fighter target, Consumable consumable);
 
     /**
      * Simulates the action of equipping an equipable item. This action doesn't waste turns in the fight
