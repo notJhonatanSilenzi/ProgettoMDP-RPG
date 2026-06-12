@@ -1,12 +1,8 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Potion;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.MarketController;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.WorldController;
 import javafx.geometry.Insets;
@@ -19,9 +15,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-import java.util.Objects;
 
 public class InventoryView {
 
@@ -37,64 +30,104 @@ public class InventoryView {
         this.marketMode = marketMode;
     }
 
-    public Scene createScene(Stage stage) {
-
+    public Scene createScene() {
         PlayerFighter player = worldController.getWorldGame().getPlayer();
 
-        // TITLE
+        // ===================================== TITLE =====================================
         Label title = new Label("INVENTORY");
+        title.setAlignment(Pos.CENTER);
 
-        // INVENTORY LIST
+        // ===================================== DETAILS =====================================
+        Label detailsTitle = new Label("ITEM DETAILS");
+        Label nameLabel = new Label();
+        Label descriptionLabel = new Label();
+        Label quantityLabel = new Label();
+        Label valueLabel = new Label();
+        descriptionLabel.setWrapText(true);
+        VBox detailsPane = new VBox(10, detailsTitle, nameLabel, descriptionLabel, quantityLabel, valueLabel);
+        detailsPane.setPrefWidth(350);
+
+        Label sellingDetails = new Label();
+
+        // ===================================== LIST VIEW =====================================
         ListView<ItemStack> inventoryList = new ListView<>();
-        inventoryList.getItems().addAll(marketController.showPlayerItems(player).values());
+        inventoryList.getItems().addAll(player.getInventory().getItems().values());
+        inventoryList.setPrefWidth(350);
 
-        inventoryList.setCellFactory(_ ->
-                new ListCell<>() {
-                    @Override
-                    protected void updateItem(ItemStack stack, boolean empty) {
-                        super.updateItem(stack, empty);
-                        if (empty || stack == null) setText(null);
-                        else setText(stack.getItem().infoToString() + " " + player.getMoneyCollector().getMoneyName());
+        inventoryList.setCellFactory(_ -> new ListCell<>() {
+            @Override
+            protected void updateItem(ItemStack stack, boolean empty) {
+                super.updateItem(stack, empty);
+                if (empty || stack == null) {
+                    setText(null);
+                    return;
+                }
+                Item item = stack.getItem();
+                setText(item.getName() + " (x" + stack.getCount() + ")");
+            }
+        });
+
+        inventoryList.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((_, _, selected) -> {
+                    if (selected == null) {
+                        nameLabel.setText("");
+                        descriptionLabel.setText("");
+                        quantityLabel.setText("");
+                        valueLabel.setText("");
+                        return;
                     }
+                    Item item = selected.getItem();
+                    nameLabel.setText("Name: " + item.getName());
+                    descriptionLabel.setText("Description: " + item.getDescription());
+                    quantityLabel.setText("Quantity: " + selected.getCount());
+                    valueLabel.setText("Value: " + item.getTradeValue() + " " + player.getMoneyCollector().getMoneyName());
                 });
-        Label details = new Label();
 
-        VBox centerContent = new VBox(15, inventoryList, details);
 
-        // BUTTONS
+        HBox centerContent = new HBox(15, inventoryList, detailsPane);
+        centerContent.setAlignment(Pos.CENTER);
+
+        // ===================================== BUTTONS =====================================
         Button backButton = new Button("Back");
-
-        backButton.setOnAction(e -> onBack.run());
-
+        backButton.setOnAction(_ -> onBack.run());
         HBox buttons = new HBox(20);
 
         if (marketMode) {
-            Button sellButton = getButton(inventoryList, player, details);
+            Button sellButton = getButton(inventoryList, player, sellingDetails);
             buttons.getChildren().addAll(sellButton, backButton);
         } else buttons.getChildren().add(backButton);
 
         buttons.setAlignment(Pos.CENTER);
         buttons.setPadding(new Insets(20));
 
-        // ROOT
+        VBox bottom = new VBox(20, sellingDetails, buttons);
+        bottom.setAlignment(Pos.CENTER);
+
+        // ===================================== ROOT =====================================
         BorderPane root = new BorderPane();
         root.setTop(title);
-        root.setCenter(centerContent);
-        root.setBottom(buttons);
         BorderPane.setAlignment(title, Pos.CENTER);
-        root.setPadding(new Insets(20));
-        root.setStyle("-fx-background-image: url('/images/map-wallpaper-2.jpg');");
-        root.getStylesheets().add(Objects.requireNonNull(InventoryView.class.getResource("/css/style.css")).toExternalForm());
+        root.setCenter(centerContent);
+        BorderPane.setAlignment(centerContent, Pos.CENTER);
+        root.setBottom(bottom);
+        BorderPane.setAlignment(bottom, Pos.CENTER);
 
+        // ===================================== STYLE =====================================
+        Scene scene = new Scene(root, 800, 600);
+        scene.getStylesheets().add("/css/style.css");
+        inventoryList.getStyleClass().add("list-view");
+        detailsPane.getStyleClass().add("inventory-details");
+        sellingDetails.getStyleClass().add("floating-text");
         title.getStyleClass().add("title");
         root.getStyleClass().add("root");
 
-        return new Scene(root, 800, 600);
+        return scene;
     }
 
     private Button getButton(ListView<ItemStack> inventoryList, PlayerFighter player, Label details) {
         Button sellButton = new Button("Sell Selected");
-        sellButton.setOnAction(e -> {
+        sellButton.setOnAction(_ -> {
             try {
                 ItemStack selected = inventoryList.getSelectionModel().getSelectedItem();
 
@@ -112,14 +145,5 @@ public class InventoryView {
             }
         });
         return sellButton;
-    }
-
-    private String getStatDesc(Item item) {
-        if (item instanceof Equipment)
-            return ((Equipment) item).useEquipment() + " Damage";
-        else if (item instanceof Consumable)
-            return ((Potion) item).getStatsModifier() + " " + ((Consumable) item).getStatsType();
-
-        return "NONE";
     }
 }

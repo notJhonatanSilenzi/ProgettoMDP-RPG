@@ -1,10 +1,8 @@
 package it.unicam.cs.mpgc.rpg126164.gui.views;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.*;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -25,6 +23,15 @@ public class CreateCharacterPage {
     private final CombatController combatController;
     private final Runnable onBack;
 
+    /**
+     * Creates a create character view for the game
+     * @param mc the menu controller
+     * @param wc the world controller
+     * @param mkc the market controller
+     * @param lc the level controller
+     * @param cc the combat controller
+     * @param onBack the callback to the main menu
+     */
     public CreateCharacterPage(MenuController mc, WorldController wc, MarketController mkc, LevelController lc, CombatController cc, Runnable onBack) {
         this.menuController = mc;
         this.worldController = wc;
@@ -34,6 +41,11 @@ public class CreateCharacterPage {
         this.onBack = onBack;
     }
 
+    /**
+     * Creates a creation character scene for the given stage
+     * @param stage the current stage
+     * @return the creation character scene
+     */
     public Scene createScene(Stage stage) {
         // ===================================== TITLE =====================================
         Label title = new Label("Create Your Character");
@@ -45,7 +57,7 @@ public class CreateCharacterPage {
         archetypes.getItems().addAll(Archetype.values());
         Button createButton = createActionButton(stage, nameBox, descriptionBox, archetypes);
         Button goBack = new Button("Go Back");
-        goBack.setOnAction(e -> onBack.run());
+        goBack.setOnAction(_ -> onBack.run());
 
         HBox hBox = new HBox(createButton, goBack);
         hBox.setAlignment(Pos.CENTER);
@@ -95,7 +107,7 @@ public class CreateCharacterPage {
      */
     private Button createActionButton(Stage stage, TextField name, TextArea desc, ComboBox<Archetype> archetype) {
         Button createButton = new Button("Create");
-        createButton.setOnAction(e -> {
+        createButton.setOnAction(_ -> {
             PlayerFighter player = menuController.createNewGame(name.getText(), desc.getText(), archetype.getValue());
             worldController.createWorld(player);
             WorldGameHubMenu gameHub = new WorldGameHubMenu(

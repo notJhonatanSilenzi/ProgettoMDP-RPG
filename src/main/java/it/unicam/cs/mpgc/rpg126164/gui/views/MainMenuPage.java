@@ -3,12 +3,10 @@ package it.unicam.cs.mpgc.rpg126164.gui.views;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.GameState;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.*;
 import javafx.animation.PauseTransition;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.control.Label;
@@ -26,6 +24,14 @@ public class MainMenuPage {
     private final LevelController levelController;
     private final CombatController combatController;
 
+    /**
+     * Creates a main menu view
+     * @param menuController the menu controller
+     * @param worldController the world controller
+     * @param marketController the market controller
+     * @param levelController the level controller
+     * @param combatController the combat controller
+     */
     public MainMenuPage(MenuController menuController, WorldController worldController, MarketController marketController, LevelController levelController, CombatController combatController) {
         this.menuController = menuController;
         this.worldController = worldController;
@@ -34,6 +40,11 @@ public class MainMenuPage {
         this.combatController = combatController;
     }
 
+    /**
+     * Creates a main menu page for the given stage
+     * @param stage the current stage
+     * @return the main menu page
+     */
     public Scene createScene(Stage stage) {
         // ===================================== TITLE =====================================
         Label title = new Label("WELCOME");
@@ -43,7 +54,7 @@ public class MainMenuPage {
         Label deletedGame = new Label();
         Button newGameButton = newGameActionButton(stage);
         Button loadButton = loadGameActionButton(stage, deletedGame);
-        Button deleteButton = deleteGameActionButton(stage, deletedGame);
+        Button deleteButton = deleteGameActionButton(deletedGame);
 
         Button infoButton = new Button("Info");
         Button exitButton = new Button("Exit");
@@ -51,7 +62,7 @@ public class MainMenuPage {
             InfoPage infoPage = new InfoPage(() -> stage.setScene(createScene(stage)));
             stage.setScene(infoPage.createScene());
         });
-        exitButton.setOnAction(e -> stage.close());
+        exitButton.setOnAction(_ -> stage.close());
 
         VBox menuBox = new VBox(15, newGameButton, loadButton, deleteButton, infoButton, exitButton);
         menuBox.setAlignment(Pos.CENTER);
@@ -87,7 +98,7 @@ public class MainMenuPage {
      */
     Button newGameActionButton(Stage stage) {
         Button button = new Button("New Game");
-        button.setOnAction(e -> {
+        button.setOnAction(_ -> {
             CreateCharacterPage ccp = new CreateCharacterPage(
                     menuController,
                     worldController,
@@ -108,7 +119,7 @@ public class MainMenuPage {
      */
     Button loadGameActionButton(Stage stage, Label deletedGame) {
         Button button = new Button("Load Game");
-        button.setOnAction(e -> {
+        button.setOnAction(_ -> {
             try {
                 GameState gameState = menuController.loadGame();
                 worldController.loadWorldGame(gameState);
@@ -127,7 +138,7 @@ public class MainMenuPage {
         return button;
     }
 
-    Button deleteGameActionButton(Stage stage, Label deletedGame) {
+    Button deleteGameActionButton(Label deletedGame) {
         Button button = new Button("Delete Game");
         button.setOnAction(_ -> {
             menuController.clearSaveSlot();

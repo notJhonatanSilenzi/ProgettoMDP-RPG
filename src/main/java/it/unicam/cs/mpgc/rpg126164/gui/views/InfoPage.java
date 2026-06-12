@@ -27,7 +27,7 @@ public class InfoPage {
 
         // ===================================== BUTTON =====================================
         Button back = new Button("Back");
-        back.setOnAction(e -> onBack.run());
+        back.setOnAction(_ -> onBack.run());
 
         // ===================================== ROOT =====================================
         VBox root = new VBox(20, title, info, back);
@@ -48,16 +48,19 @@ public class InfoPage {
      * @return the basic info
      */
     private String getInfo() {
-        return "This game allows you to create a new game, or to load a saved one. Entering the\n" +
-                "world game, you can see four options: starting the adventure, entering the market\n" +
-                ", save the game or returning to the menu.\n" +
-                "In the adventure mode, you can fight enemies and complete levels, in order to gain\n" +
-                "prizes and complete the game. There are 5 levels and different types of enemies.\n" +
-                "In the market, you can buy exclusive items with the gold you will gain by defeating\n " +
-                "the enemies in the adventure mode.\n" +
-                "Saving the game allows you to continue the game in a future session.\n" +
-                "Fighting is simple. You just have to attack with your weapon, consume potions or change\n" +
-                "weapon, and defeat enemies. Enemies can harm you, so watch out!\n" + "\n" +
-                "Have fun and enjoy the game!";
+        return """
+                This game allows you to create a new game, or to load a saved one. Entering the
+                world game, you can see four options: starting the adventure, entering the market
+                , save the game or returning to the menu.
+                In the adventure mode, you can fight enemies and complete levels, in order to gain
+                prizes and complete the game. There are 5 levels and different types of enemies.
+                In the market, you can buy exclusive items with the gold you will gain by defeating
+                 \
+                the enemies in the adventure mode.
+                Saving the game allows you to continue the game in a future session.
+                Fighting is simple. You just have to attack with your weapon, consume potions or change
+                weapon, and defeat enemies. Enemies can harm you, so watch out!
+                
+                Have fun and enjoy the game!""";
     }
 }

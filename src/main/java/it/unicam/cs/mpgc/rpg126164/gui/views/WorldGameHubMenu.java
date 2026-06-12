@@ -12,8 +12,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.Objects;
-
+/**
+ * This class works as a world game hub menu, after creating a world game
+ */
 public class WorldGameHubMenu {
 
     private final MenuController menuController;
@@ -23,6 +24,15 @@ public class WorldGameHubMenu {
     private final CombatController combatController;
     private final Runnable onExit;
 
+    /**
+     * Creates a world game hub menu
+     * @param menuController the menu controller
+     * @param worldController the world controller
+     * @param marketController the market controller
+     * @param levelController the level controller
+     * @param combatController the combat controller
+     * @param onExit the callback to the main menu
+     */
     public WorldGameHubMenu(MenuController menuController, WorldController worldController, MarketController marketController, LevelController levelController, CombatController combatController, Runnable onExit) {
         this.menuController = menuController;
         this.worldController = worldController;
@@ -32,21 +42,114 @@ public class WorldGameHubMenu {
         this.onExit = onExit;
     }
 
+    /**
+     * Creates a world game hub menu scene for the given stage
+     * @param stage the current stage
+     * @return the world game hub menu view
+     */
     public Scene createScene(Stage stage) {
-        // TITLE
+        // ===================================== TITLE =====================================
         Label title = new Label("WORLD GAME HUB");
+        title.setAlignment(Pos.CENTER);
 
-        // BUTTONS
-        Button adventure = new Button("Adventure");
-        Button market = new Button("Emporium");
-        Button sheet = new Button("View Sheet");
-        Button save = new Button("Save Game");
-        Button exit = new Button("Exit");
-
+        // ===================================== BUTTONS =====================================
         Label gameSaved = new Label();
 
-        adventure.setOnAction(event -> openCombat(stage));
+        Button adventure = new Button("Adventure");
+        adventure.setOnAction(_ -> openCombat(stage));
+        Button market = marketOnAction(stage);
+        Button sheet = sheetOnAction(stage);
+        Button save = saveOnAction(gameSaved);
+        Button exit = new Button("Exit");
+        exit.setOnAction(_ -> onExit.run());
 
+        VBox buttons = new VBox(10, adventure, market, sheet, save, exit);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.setPadding(new Insets(40));
+        buttons.setSpacing(10);
+
+        // ===================================== ROOT =====================================
+        BorderPane root = new BorderPane();
+        root.setTop(title);
+        root.setCenter(buttons);
+        root.setBottom(gameSaved);
+        BorderPane.setAlignment(gameSaved, Pos.CENTER);
+        BorderPane.setAlignment(title, Pos.CENTER);
+
+        // ===================================== STYLE =====================================
+        Scene scene = new Scene(root, 800, 600);
+
+        scene.getStylesheets().add("/css/style.css");
+        root.getStyleClass().add("hub-root");
+        title.getStyleClass().add("hub-title");
+        gameSaved.getStyleClass().add("hub-message");
+        buttons.getStyleClass().add("hub-panel");
+        adventure.getStyleClass().add("hub-button");
+        market.getStyleClass().add("hub-button");
+        sheet.getStyleClass().add("hub-button");
+        save.getStyleClass().add("hub-button");
+        exit.getStyleClass().add("hub-button");
+
+        return scene;
+    }
+
+    /**
+     * Initializes the adventure mode of this game, through a level combat view
+     * @param stage the current stage
+     */
+    private void openCombat(Stage stage) {
+        levelController.moveToNextLevel();
+        levelController.enterLevel();
+        combatController.startFight();
+        LevelCombatView combatView = new LevelCombatView(
+                levelController,
+                combatController,
+                () -> openVictory(stage),
+                () -> openDefeat(stage)
+        );
+        stage.setScene(combatView.createScene(stage));
+    }
+
+    /**
+     * Sets up the victory view, in case of completing a level
+     * @param stage the current stage
+     */
+    private void openVictory(Stage stage) {
+        ResultView type = levelController.getWorldGame().getLevelManager().isLastLevel()
+                        ? ResultView.GAME_COMPLETED
+                        : ResultView.LEVEL_COMPLETED;
+        FightResultView view = new FightResultView(
+                levelController,
+                combatController,
+                () -> openCombat(stage),
+                () -> stage.setScene(createScene(stage)),
+                type
+        );
+        stage.setScene(view.createScene(stage));
+    }
+
+    /**
+     * Sets up the defeat view, in case of losing the fight
+     * @param stage the current stage
+     */
+    private void openDefeat(Stage stage) {
+        FightResultView view = new FightResultView(
+                levelController,
+                combatController,
+                () -> openCombat(stage),
+                () -> stage.setScene(createScene(stage)),
+                ResultView.LEVEL_FAILED
+        );
+        stage.setScene(view.createScene(stage));
+    }
+
+    /**
+     * Sets up the emporium button, in order to show an emporium view for this game
+     * @param stage the current stage
+     * @return the emporium button
+     */
+    private Button marketOnAction(Stage stage) {
+        Button market = new Button("Emporium");
         market.setOnAction(_ -> {
             worldController.enterMarket();
             EmporiumView emp = new EmporiumView(
@@ -56,7 +159,16 @@ public class WorldGameHubMenu {
             );
             stage.setScene(emp.createScene(stage));
         });
+        return market;
+    }
 
+    /**
+     * Sets up the character sheet button, in order to show a character sheet view
+     * @param stage the current stage
+     * @return the character sheet button
+     */
+    private Button sheetOnAction(Stage stage) {
+        Button sheet = new Button("View Sheet");
         sheet.setOnAction(_ -> {
             CharacterSheetView csv = new CharacterSheetView(
                     worldController,
@@ -65,83 +177,23 @@ public class WorldGameHubMenu {
             );
             stage.setScene(csv.createScene(stage));
         });
-        save.setOnAction(e -> {
-                menuController.saveGame();
-                gameSaved.setText("Game saved successfully");
-                PauseTransition pause = new PauseTransition(Duration.seconds(3));
-                pause.setOnFinished(event -> gameSaved.setText(""));
-                pause.play();
+        return sheet;
+    }
+
+    /**
+     * Sets up the save button, in order to save the game
+     * @param gameSaved the floating text label
+     * @return the save button
+     */
+    private Button saveOnAction(Label gameSaved) {
+        Button save = new Button("Save");
+        save.setOnAction(_ -> {
+            menuController.saveGame();
+            gameSaved.setText("Game saved successfully");
+            PauseTransition pause = new PauseTransition(Duration.seconds(3));
+            pause.setOnFinished(_ -> gameSaved.setText(""));
+            pause.play();
         });
-        exit.setOnAction(_ -> onExit.run());
-
-        VBox buttons = new VBox(10, adventure, market, sheet, save, exit);
-        buttons.setAlignment(Pos.CENTER);
-        buttons.setPadding(new Insets(40));
-        buttons.setSpacing(10);
-
-        BorderPane root = new BorderPane();
-        root.setTop(title);
-        root.setCenter(buttons);
-        root.setBottom(gameSaved);
-        root.setStyle("-fx-background-image: url('/images/hub-wallpaper.jpg');");
-
-        Scene scene = new Scene(root, 800, 600);
-
-        scene.getStylesheets().add(Objects.requireNonNull(WorldGameHubMenu.class.getResource("/css/style.css")).toExternalForm());
-        root.getStyleClass().add("menu");
-        title.getStyleClass().add("title");
-        title.setAlignment(Pos.CENTER);
-        gameSaved.getStyleClass().add("pauseText");
-        gameSaved.setStyle("-fx-text-fill: white");
-
-        return scene;
-    }
-
-    private void openCombat(Stage stage) {
-        levelController.moveToNextLevel();
-        levelController.enterLevel();
-        combatController.startFight();
-
-        LevelCombatView combatView = new LevelCombatView(
-                levelController,
-                combatController,
-                () -> openVictory(stage),
-                () -> openDefeat(stage)
-        );
-
-        stage.setScene(combatView.createScene(stage));
-    }
-
-    private void openVictory(Stage stage) {
-        ResultView type = levelController.getWorldGame().getLevelManager().isLastLevel()
-                        ? ResultView.GAME_COMPLETED
-                        : ResultView.LEVEL_COMPLETED;
-        System.out.println("RESULT VIEW = " + type);
-
-        FightResultView view = new FightResultView(
-                levelController,
-                combatController,
-                // pulsante principale
-                () -> openCombat(stage),
-                // pulsante secondario
-                () -> stage.setScene(createScene(stage)),
-                type
-        );
-
-        stage.setScene(view.createScene(stage));
-    }
-
-    private void openDefeat(Stage stage) {
-        FightResultView view = new FightResultView(
-                levelController,
-                combatController,
-                // retry
-                () -> openCombat(stage),
-                // hub
-                () -> stage.setScene(createScene(stage)),
-                ResultView.LEVEL_FAILED
-        );
-
-        stage.setScene(view.createScene(stage));
+        return save;
     }
 }
