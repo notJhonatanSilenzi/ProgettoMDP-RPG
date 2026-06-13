@@ -60,11 +60,8 @@ public class BaseFight implements Fight {
 
     @Override
     public int enemyCounterAttack(EnemyFighter enemy) {
-        if (currentEnemies.isEmpty()) return -1;
-
         if (enemy == null) throw new IllegalArgumentException("Invalid enemy index");
-
-        if (!enemy.getSheet().isAlive()) return -1;
+        if (currentEnemies.isEmpty() || !enemy.getSheet().isAlive()) return -1;
 
         int damage = (!player.getSheet().hasEvaded()) ? this.applyDamage(enemy, player) : 0;
         updateFightStatus();
@@ -115,8 +112,8 @@ public class BaseFight implements Fight {
 
         consumable.consume(target);
         player.getInventory().drop(new ItemStack(consumable, 1));
-        if (!target.getSheet().isAlive() && target instanceof Enemy) {
-            player.getMoneyCollector().cash(((Enemy) target).getEnemyType().getGoldForDefeat());
+        if (!target.getSheet().isAlive() && target instanceof EnemyFighter) {
+            player.getMoneyCollector().cash(((EnemyFighter) target).getEnemyType().getGoldForDefeat());
             this.currentEnemies.remove(target);
         }
         this.updateFightStatus();

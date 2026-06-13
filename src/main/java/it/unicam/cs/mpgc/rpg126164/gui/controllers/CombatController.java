@@ -2,8 +2,6 @@ package it.unicam.cs.mpgc.rpg126164.gui.controllers;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.EnemyFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.Fighter;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
@@ -12,8 +10,6 @@ import it.unicam.cs.mpgc.rpg126164.gui.GameSession;
 import it.unicam.cs.mpgc.rpg126164.services.CombatService;
 import it.unicam.cs.mpgc.rpg126164.services.CombatTurnResult;
 
-import java.util.Map;
-
 /**
  * This class works as a controller for the combat service
  */
@@ -21,6 +17,7 @@ public class CombatController {
 
     private final CombatService service;
     private final GameSession session;
+    private CombatTurnResult lastTurnResult;
 
     /**
      * Creates a combat controller
@@ -31,6 +28,8 @@ public class CombatController {
         this.service = service;
         this.session = session;
     }
+
+    public void setLastTurnResult(CombatTurnResult result) { this.lastTurnResult = result; }
 
     /**
      * Starts the current fight
@@ -87,4 +86,6 @@ public class CombatController {
      * @return the current fight
      */
     public Fight getCurrentFight() { return session.getCurrentFight(); }
+
+    public CombatTurnResult getLastTurnResult() { return lastTurnResult; }
 }

@@ -3,6 +3,8 @@ package it.unicam.cs.mpgc.rpg126164.gui.views;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.*;
+import javafx.animation.PauseTransition;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * This class works as a view for the creation of a playable character
@@ -51,11 +54,14 @@ public class CreateCharacterPage {
         Label title = new Label("Create Your Character");
 
         // ===================================== FORM =====================================
+        Label details = new Label();
+        details.setPadding(new Insets(15));
+        details.setAlignment(Pos.CENTER);
         TextField nameBox = new TextField();
         TextArea descriptionBox = new TextArea();
         ComboBox<Archetype> archetypes = new ComboBox<>();
         archetypes.getItems().addAll(Archetype.values());
-        Button createButton = createActionButton(stage, nameBox, descriptionBox, archetypes);
+        Button createButton = createActionButton(stage, nameBox, descriptionBox, archetypes, details);
         Button goBack = new Button("Go Back");
         goBack.setOnAction(_ -> onBack.run());
 
@@ -66,19 +72,21 @@ public class CreateCharacterPage {
         Label name = new Label("Name:");
         Label description = new Label("Description:");
         Label archetype = new Label("Archetype:");
-
         VBox createMenu = new VBox(10,
                 name, nameBox,
                 description, descriptionBox,
                 archetype, archetypes,
                 hBox
         );
+        createMenu.setPadding(new Insets(15));
 
         // ===================================== ROOT =====================================
         BorderPane root = new BorderPane();
         root.setTop(title);
         BorderPane.setAlignment(title, Pos.CENTER);
         root.setCenter(createMenu);
+        root.setBottom(details);
+        BorderPane.setAlignment(details, Pos.CENTER);
 
         // ===================================== STYLE =====================================
         Scene scene = new Scene(root, 800, 600);
@@ -93,6 +101,7 @@ public class CreateCharacterPage {
         nameBox.getStyleClass().add("text-field");
         descriptionBox.getStyleClass().add("text-area");
         archetypes.getStyleClass().add("combo-box");
+        details.getStyleClass().add("floating-text");
 
         return scene;
     }
@@ -105,19 +114,26 @@ public class CreateCharacterPage {
      * @param archetype the combo box with the archetypes
      * @return the create button
      */
-    private Button createActionButton(Stage stage, TextField name, TextArea desc, ComboBox<Archetype> archetype) {
+    private Button createActionButton(Stage stage, TextField name, TextArea desc, ComboBox<Archetype> archetype, Label details) {
         Button createButton = new Button("Create");
         createButton.setOnAction(_ -> {
-            PlayerFighter player = menuController.createNewGame(name.getText(), desc.getText(), archetype.getValue());
-            worldController.createWorld(player);
-            WorldGameHubMenu gameHub = new WorldGameHubMenu(
-                    menuController,
-                    worldController,
-                    marketController,
-                    levelController,
-                    combatController,
-                    onBack);
-            stage.setScene(gameHub.createScene(stage));
+            try {
+                PlayerFighter player = menuController.createNewGame(name.getText(), desc.getText(), archetype.getValue());
+                worldController.createWorld(player);
+                WorldGameHubMenu gameHub = new WorldGameHubMenu(
+                        menuController,
+                        worldController,
+                        marketController,
+                        levelController,
+                        combatController,
+                        onBack);
+                stage.setScene(gameHub.createScene(stage));
+            } catch (Exception e) {
+                details.setText(e.getMessage());
+                PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                pause.setOnFinished(_ -> details.setText(""));
+                pause.play();
+            }
         });
         return createButton;
     }

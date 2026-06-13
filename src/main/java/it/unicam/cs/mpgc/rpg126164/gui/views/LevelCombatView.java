@@ -55,12 +55,12 @@ public class LevelCombatView {
         Label weapon = new Label();
         CombatSheetComponents playerLabels = new CombatSheetComponents(name, description, archetype, hp, atk, df, evade, weapon);
         playerLabels.updateLabels(player);
-        VBox playerSheet = new VBox(name, description, archetype, hp, atk, df, evade, weapon);
+        VBox playerSheet = new VBox(10, name, description, archetype, hp, atk, df, evade, weapon);
         playerSheet.setAlignment(Pos.CENTER_LEFT);
 
         // ===================================== ENEMIES =====================================
         Label enemyName = new Label("Name: ");
-        Label enemyDesc = new Label("Description:");
+        Label enemyDesc = new Label("Description: ");
         Label enemyArch = new Label("Archetype: ");
         Label enemyHP = new Label("HP: ");
         Label enemyATK =  new Label("ATK: ");
@@ -75,12 +75,10 @@ public class LevelCombatView {
             @Override
             protected void updateItem(EnemyFighter enemy, boolean empty) {
                 super.updateItem(enemy, empty);
-
                 if (empty || enemy == null) {
                     setText(null);
                     return;
                 }
-
                 setText(enemy.getName());
             }
         });
@@ -88,12 +86,10 @@ public class LevelCombatView {
             @Override
             protected void updateItem(EnemyFighter enemy, boolean empty) {
                 super.updateItem(enemy, empty);
-
                 if (empty || enemy == null) {
                     setText(null);
                     return;
                 }
-
                 setText(enemy.getName());
             }
         });
@@ -108,46 +104,74 @@ public class LevelCombatView {
             enemyLabels.updateLabels(selectedEnemy);
         });
         VBox enemySheet = new VBox(10, enemyName, enemyDesc, enemyArch, enemyHP, enemyATK, enemyDF, enemyEvade, enemyWeapon);
+        enemySheet.setAlignment(Pos.CENTER_LEFT);
 
-        VBox enemySide = new VBox(10, enemyList, enemySheet);
-        enemySide.setAlignment(Pos.CENTER);
+        playerSheet.setPrefSize(300, 250);
+        playerSheet.setMinSize(300, 250);
+        playerSheet.setMaxSize(300, 250);
+
+        enemySheet.setPrefSize(300, 250);
+        enemySheet.setMinSize(300, 250);
+        enemySheet.setMaxSize(300, 250);
 
         // ===================================== TURN LOG =====================================
+        CombatTurnResult lastResult = combatController.getLastTurnResult();
         Label playerTurn = new Label();
         Label enemyTurn = new Label();
+        playerTurn.setAlignment(Pos.CENTER);
+        enemyTurn.setAlignment(Pos.CENTER);
+        if (lastResult != null) {
+            playerTurn.setText(lastResult.playerTurn());
+            enemyTurn.setText(lastResult.enemyTurn());
+        }
         VBox combatLog = new VBox(10, playerTurn, enemyTurn);
+        combatLog.setAlignment(Pos.CENTER);
+        combatLog.setPrefHeight(50);
+        combatLog.setMaxHeight(50);
+        combatLog.setPrefSize(800, 80);
+        combatLog.setMaxSize(800, 80);
+        combatLog.setPadding(new Insets(20));
 
         // ===================================== BATTLEFIELD =====================================
-        HBox battleField = new HBox(80, playerSheet, enemySide);
+        HBox battleField = new HBox(450, playerSheet, enemySheet);
         battleField.setAlignment(Pos.CENTER);
 
         Label details = new Label();
 
         // ===================================== BUTTONS =====================================
         Button attackBtn = attackButtonSetup(playerTurn, enemyTurn, enemyList, playerLabels, enemyLabels);
-        Button potionBtn = potionButtonSetup(playerTurn, enemyTurn, enemyList, playerLabels, enemyLabels, stage);
+        Button potionBtn = potionButtonSetup(enemyList, playerLabels, enemyLabels, stage);
         Button weaponBtn = weaponButtonSetup(details, stage);
 
-        HBox actions = new HBox(15, attackBtn, potionBtn, weaponBtn);
+        HBox actions = new HBox(15, attackBtn, potionBtn, weaponBtn, enemyList);
+        VBox combat = new VBox(10, combatLog, actions, details);
         actions.setAlignment(Pos.CENTER);
+        combat.setAlignment(Pos.CENTER);
 
         // ===================================== LAYOUT =====================================
-        VBox bottom = new VBox(10, combatLog, actions, details);
+        VBox centerWrapper = new VBox(20);
+        centerWrapper.setAlignment(Pos.CENTER);
+        centerWrapper.setPadding(new Insets(30, 0, 0, 0));
+        centerWrapper.getChildren().add(battleField);
 
         BorderPane root = new BorderPane();
         root.setTop(title);
-        root.setCenter(battleField);
-        root.setBottom(bottom);
+        BorderPane.setAlignment(title, Pos.CENTER);
+        root.setCenter(centerWrapper);
+        root.setBottom(combat);
+        BorderPane.setMargin(combat, new Insets(90, 0, 0, 0));
+        BorderPane.setAlignment(combatLog, Pos.CENTER);
 
-        root.setPadding(new Insets(15));
+        root.setPadding(new Insets(15, 5, 5, 5));
 
-        Scene scene = new Scene(root, 1100, 700);
+        // ===================================== STYLE =====================================
+        Scene scene = new Scene(root, 1100, 750);
         scene.getStylesheets().add("/css/style.css");
         title.getStyleClass().add("title");
 
-        playerSheet.getStyleClass().add("root");
-        enemySheet.getStyleClass().add("root");
-        combatLog.getStyleClass().add("root");
+        playerSheet.getStyleClass().add("inventory-details");
+        enemySheet.getStyleClass().add("inventory-details");
+        combatLog.getStyleClass().add("inventory-details");
         this.setLabelStyle(List.of(name, description, archetype, hp, atk, df, evade, weapon));
         this.setLabelStyle(List.of(enemyName, enemyDesc, enemyArch, enemyHP, enemyATK, enemyDF, enemyEvade, enemyWeapon));
         enemyList.getStyleClass().add("list-view");
@@ -156,6 +180,9 @@ public class LevelCombatView {
         weaponBtn.getStyleClass().add("button");
         details.getStyleClass().add("floating-text");
         battleField.setStyle("-fx-background-color: transparent;");
+
+        playerTurn.getStyleClass().add("floating-text");
+        enemyTurn.getStyleClass().add("floating-text");
 
         this.getBattlefieldImage(this.levelController.getWorldGame().getLevelManager().getCurrentLevel().getName(), root);
 
@@ -168,15 +195,19 @@ public class LevelCombatView {
         attackBtn.setOnAction(_ -> {
             if (selectedEnemy == null || !selectedEnemy.getSheet().isAlive()) {
                 playerTurn.setText("No valid target selected");
+                enemyTurn.setText("");
                 return;
             }
             CombatTurnResult result = combatController.playerAttackEnemy(selectedEnemy);
-            this.updateFightStatus(result, playerTurn, enemyTurn, enemyList, playerLabels, enemyLabels);
+            playerTurn.setText(result.playerTurn());
+            enemyTurn.setText(result.enemyTurn());
+            enemyLabels.updateLabels(selectedEnemy);
+            this.updateFightStatus(result, enemyList, playerLabels, enemyLabels);
         });
         return attackBtn;
     }
 
-    private Button potionButtonSetup(Label playerTurn, Label enemyTurn, ComboBox<EnemyFighter> enemyList,
+    private Button potionButtonSetup(ComboBox<EnemyFighter> enemyList,
                                      CombatSheetComponents playerLabels, CombatSheetComponents enemyLabels, Stage stage) {
         Button potionBtn = new Button("Potion");
         potionBtn.setOnAction(_ -> {
@@ -189,13 +220,16 @@ public class LevelCombatView {
                         if (potion.getTargetType() == PotionTargetType.SELF) target = combatController.getCurrentFight().getPlayer();
                         else {
                             if (selectedEnemy == null || !selectedEnemy.getSheet().isAlive()) {
-                                playerTurn.setText("No enemy selected");
+                                CombatTurnResult result = new CombatTurnResult("No enemy selected, potion not consumed", "", false);
+                                combatController.setLastTurnResult(result);
+                                updateFightStatus(result, enemyList, playerLabels, enemyLabels);
                                 return;
                             }
                             target = selectedEnemy;
                         }
                         CombatTurnResult result = combatController.playerConsumesPotion(potion, target);
-                        this.updateFightStatus(result, playerTurn, enemyTurn, enemyList, playerLabels, enemyLabels);
+                        combatController.setLastTurnResult(result);
+                        this.updateFightStatus(result, enemyList, playerLabels, enemyLabels);
                     },
                     () -> stage.setScene(createScene(stage))
             );
@@ -223,8 +257,23 @@ public class LevelCombatView {
         return weaponBtn;
     }
 
+
+    private void updateFightStatus(CombatTurnResult result, ComboBox<EnemyFighter> enemyList, CombatSheetComponents playerLabels, CombatSheetComponents enemyLabels) {
+        enemyList.getSelectionModel().clearSelection();
+        checkEnemyDead(enemyLabels, result);
+        playerLabels.updateLabels(combatController.getWorldGame().getPlayer());
+        enemyList.getItems().setAll(combatController.getCurrentFight().getCurrentEnemies());
+        if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasWon()) {
+            combatController.setLastTurnResult(null);
+            onVictory.run();
+        }
+        else if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasLost()) {
+            combatController.setLastTurnResult(null);
+            onDefeat.run();
+        }
+    }
+
     private void checkEnemyDead(CombatSheetComponents enemyLabels, CombatTurnResult result) {
-        selectedEnemy = null;
         if (result.enemyDied()) {
             enemyLabels.name().setText("Name: ");
             enemyLabels.archetype().setText("Archetype: ");
@@ -235,19 +284,7 @@ public class LevelCombatView {
             enemyLabels.evade().setText("Evade Chance: ");
             enemyLabels.weapon().setText("Weapon: ");
         }
-    }
-
-    private void updateFightStatus(CombatTurnResult result, Label playerTurn, Label enemyTurn, ComboBox<EnemyFighter> enemyList, CombatSheetComponents playerLabels, CombatSheetComponents enemyLabels) {
-        playerTurn.setText(result.playerTurn());
-        enemyTurn.setText(result.enemyTurn());
-        enemyList.getSelectionModel().clearSelection();
-        checkEnemyDead(enemyLabels, result);
-        playerLabels.updateLabels(combatController.getWorldGame().getPlayer());
-        enemyList.getItems().setAll(combatController.getCurrentFight().getCurrentEnemies());
-        if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasWon())
-            onVictory.run();
-        else if (levelController.getWorldGame().getLevelManager().getCurrentLevel().playerHasLost())
-            onDefeat.run();
+        selectedEnemy = null;
     }
 
     private void getBattlefieldImage(String name, BorderPane root) {
@@ -263,6 +300,6 @@ public class LevelCombatView {
 
     private void setLabelStyle(List<Label> labels) {
         for (Label label : labels)
-            label.getStyleClass().add("character-value");
+            label.getStyleClass().add("combat-text");
     }
 }

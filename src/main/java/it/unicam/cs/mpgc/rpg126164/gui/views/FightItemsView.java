@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg126164.gui.views;
 
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
+import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.FightResult;
 import it.unicam.cs.mpgc.rpg126164.gui.controllers.CombatController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.function.Consumer;
 
@@ -55,15 +57,20 @@ public class FightItemsView {
         center.setAlignment(Pos.CENTER);
 
         // ===================================== BUTTONS =====================================
-        HBox buttons = getHBox(centerContent);
+        Label details = new Label();
+        HBox buttons = getHBox(centerContent, details);
+        buttons.setAlignment(Pos.CENTER);
+        VBox bottom = new VBox(10, buttons, details);
+        details.setAlignment(Pos.CENTER);
+        bottom.setAlignment(Pos.CENTER);
 
         // ===================================== ROOT =====================================
         BorderPane root = new BorderPane();
         root.setTop(title);
         BorderPane.setAlignment(title, Pos.CENTER);
         root.setCenter(center);
-        root.setBottom(buttons);
         BorderPane.setAlignment(buttons, Pos.CENTER);
+        root.setBottom(bottom);
         BorderPane.setAlignment(center, Pos.CENTER);
         BorderPane.setMargin(center, new Insets(0, 0, 20, 0));
 
@@ -72,6 +79,7 @@ public class FightItemsView {
         scene.getStylesheets().add("/css/style.css");
         root.getStyleClass().add("root");
         title.getStyleClass().add("title");
+        details.getStyleClass().add("floating-text");
 
         return scene;
     }
@@ -81,7 +89,7 @@ public class FightItemsView {
      * @param inventory the inventory component to show
      * @return the button box
      */
-    private HBox getHBox(InventoryComponent inventory) {
+    private HBox getHBox(InventoryComponent inventory, Label details) {
         // ===================================== BUTTONS =====================================
         Button actionButton = new Button(mode == InventoryMode.POTION ? "Consume" : "Equip");
         Button backButton = new Button("Back");
@@ -89,6 +97,10 @@ public class FightItemsView {
             ItemStack selected = inventory.getSelectedItem();
             if (selected == null) return;
             itemSelected.accept(selected);
+            details.setText((mode == InventoryMode.POTION) ? "Potion consumed!" : "Weapon equipped!");
+            if (!(combatController.getCurrentFight().getFinalResult() == FightResult.LOSE)
+                    && !(combatController.getCurrentFight().getFinalResult() == FightResult.WIN))
+                onBack.run();
         });
         backButton.setOnAction(_ -> onBack.run());
 

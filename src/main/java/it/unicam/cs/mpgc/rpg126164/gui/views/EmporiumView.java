@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -48,6 +49,7 @@ public class EmporiumView {
         // ===================================== TITLE =====================================
         Label title = new Label("EMPORIUM");
         title.setAlignment(Pos.CENTER);
+        title.setTextAlignment(TextAlignment.CENTER);
 
         // ===================================== GOLD INFO =====================================
         Label goldLabel = new Label("Unit: " + player.getMoneyCollector().getCurrentAmount() + " / " + player.getMoneyCollector().getMaxAmount());
@@ -60,7 +62,10 @@ public class EmporiumView {
         );
 
         // ===================================== BUTTONS =====================================
-        Button buyButton = purchaseOnAction(center, player, marketController.getWorldGame().getMarket(), goldLabel);
+        Label details = new Label();
+        details.setAlignment(Pos.CENTER);
+        details.setTextAlignment(TextAlignment.CENTER);
+        Button buyButton = purchaseOnAction(center, player, marketController.getWorldGame().getMarket(), goldLabel, details);
         Button inventoryButton = inventoryOnAction(stage);
         Button backButton = new Button("Back");
         backButton.setOnAction(_ -> {
@@ -72,18 +77,23 @@ public class EmporiumView {
         buttons.setAlignment(Pos.CENTER);
         buttons.getChildren().addAll(buyButton, inventoryButton, backButton);
 
+        VBox bottom =  new VBox(10, buttons, details);
+        bottom.setAlignment(Pos.CENTER);
+
         // ===================================== ROOT =====================================
         BorderPane root = new BorderPane();
         VBox top = new VBox(10, title, goldLabel);
+        top.setAlignment(Pos.CENTER);
         root.setTop(top);
         root.setCenter(center.root());
         BorderPane.setMargin(center.root(), new Insets(0, 0, 20, 0));
-        root.setBottom(buttons);
+        root.setBottom(bottom);
         BorderPane.setAlignment(title, Pos.CENTER);
 
         // ===================================== STYLE =====================================
         Scene scene = builder.setStyles(title, buyButton, inventoryButton, backButton, root);
         goldLabel.getStyleClass().add("floating-text");
+        details.getStyleClass().add("floating-text");
 
         return scene;
     }
@@ -96,15 +106,20 @@ public class EmporiumView {
      * @param goldLabel the floating label to update
      * @return the buy button
      */
-    private Button purchaseOnAction(InventoryComponent inventory, PlayerFighter player, Market market, Label goldLabel) {
+    private Button purchaseOnAction(InventoryComponent inventory, PlayerFighter player, Market market, Label goldLabel, Label details) {
         Button purchaseButton = new Button("Buy");
         purchaseButton.setOnAction(_ -> {
-            Item selected = inventory.getSelectedItem().getItem();
+            try {
+                Item selected = inventory.getSelectedItem().getItem();
 
-            if (selected == null) return;
-            marketController.buyItem(new ItemStack(selected, 1));
-            inventory.refresh(market);
-            goldLabel.setText("Unit: " + player.getMoneyCollector().getCurrentAmount() + " / " + player.getMoneyCollector().getMaxAmount());
+                if (selected == null) return;
+                marketController.buyItem(new ItemStack(selected, 1));
+                inventory.refresh(market);
+                goldLabel.setText("Unit: " + player.getMoneyCollector().getCurrentAmount() + " / " + player.getMoneyCollector().getMaxAmount());
+            } catch (Exception ex) {
+                details.setText(ex.getMessage());
+            }
+
         });
         return purchaseButton;
     }

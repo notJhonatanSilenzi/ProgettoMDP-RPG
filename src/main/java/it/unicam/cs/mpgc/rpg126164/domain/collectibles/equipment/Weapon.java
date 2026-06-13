@@ -100,8 +100,5 @@ public class Weapon implements Equipment, Serializable {
     public int getTradeValue() { return tradeValue; }
 
     @Override
-    public String infoToString() {
-        return this.getName()  + " - " + this.getDescription() + " - " + this.ATK + " Damage - "
-                + this.getTradeValue();
-    }
+    public String getStatsDesc() { return this.ATK + " ATK"; }
 }

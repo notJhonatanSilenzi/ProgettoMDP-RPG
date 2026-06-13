@@ -26,6 +26,8 @@ public interface InventoryBehaviour {
      */
     void drop(ItemStack stack);
 
+    boolean canAdd(ItemStack stack);
+
     /**
      * Returns the items currently in the inventory, with their relative amount
      * @return the items currently in the inventory

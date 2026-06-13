@@ -78,15 +78,54 @@ public class InventoryComponentBuilder {
         detailsTitle.setAlignment(Pos.CENTER);
         Label nameLabel = new Label();
         Label descriptionLabel = new Label();
+        Label statsLabel = new Label();
         Label quantityLabel = new Label();
         Label valueLabel = new Label();
         descriptionLabel.setWrapText(true);
         HBox detailsTitleBox = new HBox(10, detailsTitle);
         detailsTitleBox.setAlignment(Pos.CENTER);
-        VBox detailsPane = new VBox(10, detailsTitleBox, nameLabel, descriptionLabel, quantityLabel, valueLabel);
-        detailsPane.setPrefWidth(350);
+        VBox detailsPane = new VBox(5, detailsTitleBox, nameLabel, descriptionLabel, statsLabel, quantityLabel, valueLabel);
+        detailsPane.setPrefWidth(400);
+        detailsPane.setAlignment(Pos.CENTER_LEFT);
+        detailsPane.setFillWidth(true);
 
         // ===================================== LIST VIEW =====================================
+        ListView<ItemStack> inventoryList = getItemStackListView(inventoryItems);
+
+        inventoryList.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((_, _, selected) -> {
+                    if (selected == null) {
+                        nameLabel.setText("");
+                        descriptionLabel.setText("");
+                        statsLabel.setText("");
+                        quantityLabel.setText("");
+                        valueLabel.setText("");
+                        return;
+                    }
+                    Item item = selected.getItem();
+                    nameLabel.setText("Name: " + item.getName());
+                    descriptionLabel.setText("Description: " + item.getDescription());
+                    statsLabel.setText("Effect: " + selected.getItem().getStatsDesc());
+                    quantityLabel.setText("Quantity: " + selected.getCount());
+                    valueLabel.setText("Value: " + item.getTradeValue() + " " + moneyName
+                            + " (" + item.getTradeValue()/2 + " if sold)");
+                });
+
+        HBox centerContent = new HBox(15, inventoryList, detailsPane);
+        centerContent.setAlignment(Pos.CENTER);
+
+        // ===================================== STYLE =====================================
+        centerContent.getStylesheets().add("/css/style.css");
+        detailsTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 28px;");
+        setLabelStyle(List.of(detailsTitle, nameLabel, descriptionLabel, statsLabel, quantityLabel, valueLabel));
+        inventoryList.getStyleClass().add("list-view");
+        detailsPane.getStyleClass().add("inventory-details");
+
+        return new InventoryComponent(centerContent, inventoryList, inventoryItems);
+    }
+
+    private static ListView<ItemStack> getItemStackListView(ObservableList<ItemStack> inventoryItems) {
         ListView<ItemStack> inventoryList = new ListView<>();
         inventoryList.setItems(inventoryItems);
         inventoryList.setPrefWidth(350);
@@ -104,36 +143,7 @@ public class InventoryComponentBuilder {
                 setText(item.getName() + " (x" + stack.getCount() + ")");
             }
         });
-
-        inventoryList.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((_, _, selected) -> {
-                    if (selected == null) {
-                        nameLabel.setText("");
-                        descriptionLabel.setText("");
-                        quantityLabel.setText("");
-                        valueLabel.setText("");
-                        return;
-                    }
-                    Item item = selected.getItem();
-                    nameLabel.setText("Name: " + item.getName());
-                    descriptionLabel.setText("Description: " + item.getDescription());
-                    quantityLabel.setText("Quantity: " + selected.getCount());
-                    valueLabel.setText("Value: " + item.getTradeValue() + " " + moneyName
-                            + " (" + item.getTradeValue()/2 + " if sold)");
-                });
-
-        HBox centerContent = new HBox(15, inventoryList, detailsPane);
-        centerContent.setAlignment(Pos.CENTER);
-
-        // ===================================== STYLE =====================================
-        centerContent.getStylesheets().add("/css/style.css");
-        detailsTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 28px;");
-        setLabelStyle(List.of(detailsTitle, nameLabel, descriptionLabel, quantityLabel, valueLabel));
-        inventoryList.getStyleClass().add("list-view");
-        detailsPane.getStyleClass().add("inventory-details");
-
-        return new InventoryComponent(centerContent, inventoryList, inventoryItems);
+        return inventoryList;
     }
 
     /**

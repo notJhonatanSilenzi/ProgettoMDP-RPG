@@ -39,6 +39,8 @@ public class Emporium implements Market {
             throw new IllegalArgumentException("Item stack cannot be null");
         if (this.player == null) throw new IllegalStateException("No getPlayer is in the emporium");
 
+        if (!this.canAfford(itemStack)) throw new RuntimeException("Can't afford, item already in possession or not enough money");
+
         itemsForSale.drop(itemStack);
         player.getInventory().collect(itemStack);
         player.getMoneyCollector().spend(itemStack.getCount() * itemStack.getItem().getTradeValue());;
@@ -60,9 +62,14 @@ public class Emporium implements Market {
 
     @Override
     public void exit() {
-        if (this.player == null) throw new IllegalStateException("No getPlayer is in the emporium but tried to exit");
+        if (this.player == null) throw new IllegalStateException("No Player is in the emporium but tried to exit");
 
         this.player = null;
+    }
+
+    private boolean canAfford(ItemStack itemStack) {
+        return player.getMoneyCollector().canAfford(itemStack.getCount() * itemStack.getItem().getTradeValue())
+                && player.getInventory().canAdd(itemStack);
     }
 
 

@@ -15,7 +15,7 @@ public record CombatSheetComponents(
 ) {
     public void updateLabels(Fighter fighter) {
         name.setText("Name: "+ fighter.getName());
-        description.setText("Description:" + fighter.getDescription());
+        description.setText("Description: " + fighter.getDescription());
         archetype.setText("Archetype: " + fighter.getArchetype());
         hp.setText("HP: " + fighter.getSheet().getHP());
         atk.setText("ATK: " + fighter.getSheet().getATK());

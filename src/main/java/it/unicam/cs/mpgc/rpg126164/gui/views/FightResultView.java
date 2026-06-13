@@ -44,7 +44,7 @@ public class FightResultView {
         String moneyName = combatController.getWorldGame().getPlayer().getMoneyCollector().getMoneyName();
 
         // ===================================== TITLE =====================================
-        Label title = new Label(resultContext.title());
+        Label title = new Label(resultContext.title().replace('_', ' '));
         title.setAlignment(Pos.CENTER);
         Label description = new Label(resultContext.description());
         description.setAlignment(Pos.CENTER);

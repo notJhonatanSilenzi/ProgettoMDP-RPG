@@ -126,8 +126,7 @@ public class Potion implements Consumable, Serializable {
     public int getStatsModifier() { return statsModifier; }
 
     @Override
-    public String infoToString() {
-        return this.getName() + " - " + this.getDescription() + " - " + this.targetType + " - " +
-                this.getStatsModifier() + " " + this.getStatsType() + " - " + this.getTradeValue();
+    public String getStatsDesc() {
+        return this.getStatsModifier() + ((this.statsType == StatsType.HEALTH) ? " HP" : ((this.statsType == StatsType.ATTACK) ? " ATK" : " DF"));
     }
 }

@@ -11,6 +11,7 @@ import java.util.Map;
  * This class represents a concrete inventory for a playable character or a market. It implements InventoryBehaviour, and
  * it contains all the items that the object has currently stored in
  */
+@SuppressWarnings("ClassCanBeRecord")
 public class Inventory implements InventoryBehaviour, Serializable {
 
     private final Map<Item, ItemStack> items;
@@ -52,6 +53,15 @@ public class Inventory implements InventoryBehaviour, Serializable {
         if (remaining > 0) itemStack.setCount(remaining);
         else this.items.remove(item);
     }
+
+    @Override
+    public boolean canAdd(ItemStack stack) {
+        if (stack == null) throw new IllegalArgumentException("Invalid parameters");
+
+        if (!this.items.containsKey(stack.getItem())) return true;
+        return items.get(stack.getItem()).getCount() + stack.getCount() <= stack.getItem().getMaxAmount();
+    }
+
 
     @Override
     public int getWeaponCount() {

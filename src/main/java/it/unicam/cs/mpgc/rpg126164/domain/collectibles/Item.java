@@ -47,5 +47,5 @@ public interface Item {
      * Returns a string that describes this item
      * @return a string description
      */
-    String infoToString();
+    String getStatsDesc();
 }
