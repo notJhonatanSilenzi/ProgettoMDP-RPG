@@ -4,7 +4,6 @@ import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.EnemyType;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Weapon;
-import it.unicam.cs.mpgc.rpg126164.persistance.repositories.WeaponRepository;
 import org.hibernate.Session;
 
 /**
@@ -22,7 +21,7 @@ public class EnemySeeder implements Seeder {
 
     /**
      * Seeds normal enemies
-     * @param session the session used to persist data
+     * @param session the current hibernate session
      */
     private void seedNormalEnemies(Session session) {
         Weapon ironSpear = getWeapon(session, "Iron Spear");
@@ -38,7 +37,7 @@ public class EnemySeeder implements Seeder {
 
     /**
      * Seeds all the medium enemies
-     * @param session the session used to persist data
+     * @param session the current hibernate session
      */
     private void seedMediumEnemies(Session session) {
         Weapon heavySpear = getWeapon(session, "Heavy Spear");
@@ -50,7 +49,7 @@ public class EnemySeeder implements Seeder {
 
     /**
      * Seeds the large enemy and the boss
-     * @param session the session used to persist the data
+     * @param session the current hibernate session
      */
     private void seedLargeAndBoss(Session session) {
         Weapon lightSpell = getWeapon(session, "Light Spell");
@@ -62,7 +61,7 @@ public class EnemySeeder implements Seeder {
 
     /**
      * Queries the weapon, given the name
-     * @param session the session to query
+     * @param session the current hibernate session
      * @param name the name
      * @return the complete weapon
      */

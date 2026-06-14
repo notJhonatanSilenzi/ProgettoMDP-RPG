@@ -11,6 +11,7 @@ import java.util.UUID;
  * and it contains an additive of ATK to the fighter's base ATK. They're not cumulable, so they can't be stacked
  * in the inventory and their count is always 1.
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "weapons")
 public class Weapon implements Equipment, Serializable {
@@ -44,6 +45,8 @@ public class Weapon implements Equipment, Serializable {
      * @param maxAmount the maximum amount of this item that can be stacked in the inventory, must be 1 for this type of item
      * @param tradeValue its value in the market/shop
      * @param ATK the additive of ATK to the fighter's base ATK when equipped
+     * @throws IllegalArgumentException if any of the parameters is null, too short in character count
+     * or if numeric values are below zero
      */
     public Weapon(String name, String description, int maxAmount, int tradeValue, int ATK) {
         if (name == null || description == null || tradeValue <= 0 || name.isEmpty() ||

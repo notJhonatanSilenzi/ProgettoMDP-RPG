@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.LevelManager;
 import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
@@ -24,8 +23,12 @@ public class BaseWorldGame implements WorldGame {
      * @param levelManager the level manager to be used in this game
      * @param market the market to be used in this game
      * @param saveManager the save manager to be used in this game
+     * @throws IllegalArgumentException if any of the parameters is null
      */
     public BaseWorldGame(LevelManager levelManager, Market market, SaveManager saveManager) {
+        if (levelManager == null ||  market == null || saveManager == null)
+            throw new IllegalArgumentException("Arguments cannot be null");
+
         this.player = null;
         this.levelManager = levelManager;
         this.market = market;
@@ -42,7 +45,7 @@ public class BaseWorldGame implements WorldGame {
 
     @Override
     public void enterMarket() {
-        if (this.player == null) throw new IllegalArgumentException("Game not started");;
+        if (this.player == null) throw new IllegalArgumentException("Game not started");
 
         this.market.enter(player);
     }

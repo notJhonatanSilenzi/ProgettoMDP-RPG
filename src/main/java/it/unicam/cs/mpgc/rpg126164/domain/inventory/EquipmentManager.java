@@ -20,6 +20,7 @@ public class EquipmentManager implements Serializable {
     /**
      * Sets the given equipable item as current item
      * @param equipment the item to equip
+     * @throws IllegalArgumentException if the given equipment is null
      */
     public void equip(Equipment equipment) {
         if (equipment == null) throw new IllegalArgumentException("Null parameter");
@@ -30,6 +31,7 @@ public class EquipmentManager implements Serializable {
     /**
      * Returns the current equipment
      * @return the current equipment
+     * @throws IllegalArgumentException if the current equipment is null
      */
     public Equipment getCurrentEquipment() {
         if (current == null) throw new IllegalArgumentException("Null parameter");

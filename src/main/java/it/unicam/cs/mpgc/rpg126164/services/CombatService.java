@@ -5,6 +5,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.Consumable;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.potions.PotionTargetType;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
+import it.unicam.cs.mpgc.rpg126164.services.utils.CombatTurnResult;
 
 /**
  * This class works as a service for the fight system during levels
@@ -14,6 +15,7 @@ public class CombatService {
     /**
      * Starts the fight, initializing the fight system and allowing to process turns
      * @param fight the fight to start
+     * @throws IllegalArgumentException if the fight is null
      */
     public void startFight(Fight fight) {
         if (fight == null) throw new IllegalArgumentException("Fight cannot be null");
@@ -26,6 +28,7 @@ public class CombatService {
      * @param fight the fight to process
      * @param enemy the enemy to attack
      * @return the combat turn result
+     * @throws IllegalArgumentException if the fight or the enemy is null
      */
     public CombatTurnResult playerAttackEnemy(Fight fight, EnemyFighter enemy) {
         if (fight == null || enemy == null) throw new IllegalArgumentException("Invalid parameters");
@@ -36,7 +39,7 @@ public class CombatService {
         return new CombatTurnResult(
                 fight.getPlayer().getName() + " dealt " + playerDamage + " damage to " + enemy.getName(),
                 enemyTurn,
-                !enemy.getSheet().isAlive()
+                enemy.getSheet().isDead()
         );
     }
 
@@ -46,7 +49,8 @@ public class CombatService {
      * @param potion the potion to consume
      * @param target  the index of the fighter that receives the effects of the potion. If it's below
      *               zero, the player receives the effects
-     * @return the output string for the UI
+     * @return the last combat turn result
+     * @throws IllegalArgumentException if the fight, potion or target is null
      */
     public CombatTurnResult playerConsumesPotion(Fight fight, Consumable potion, Fighter target) {
         if (fight == null || potion == null) throw new IllegalArgumentException("Invalid parameters");
@@ -60,18 +64,17 @@ public class CombatService {
         return new CombatTurnResult(
                 playerTurn,
                 enemyTurn,
-                !target.getSheet().isAlive()
+                target.getSheet().isDead()
         );
     }
 
-    private String resolveEnemyTurnCounterattack(int damage, Fight fight, EnemyFighter enemy) {
-        String output;
-        if (damage < 0) output = enemy.getName() + " has been defeated!";
-        else if (damage == 0) output = fight.getPlayer().getName() + " has evaded the attack!";
-        else output = enemy.getName() + " dealt " + damage + " to " + fight.getPlayer().getName();
-        return output;
-    }
-
+    /**
+     * Resolves the output for the player consume potion's turn
+     * @param fight the current fight
+     * @param potion the potion consumed
+     * @param target the target that receives the effects of the consumed potion
+     * @return the output string for the controllers
+     */
     private String resolvePlayerTurnOutputAfterPotion(Fight fight, Consumable potion, Fighter target) {
         return (potion.getTargetType() == PotionTargetType.SELF)
                 ? fight.getPlayer().getName() + " consumed " + potion.getName() + " and gained " +
@@ -81,10 +84,26 @@ public class CombatService {
     }
 
     /**
+     * Resolves the output for the enemy counterattack's turn
+     * @param damage the damage applied
+     * @param fight the current fight
+     * @param enemy the enemy that counterattacks
+     * @return the output string for the controllers
+     */
+    private String resolveEnemyTurnCounterattack(int damage, Fight fight, EnemyFighter enemy) {
+        String output;
+        if (damage < 0) output = enemy.getName() + " has been defeated!";
+        else if (damage == 0) output = fight.getPlayer().getName() + " has evaded the attack!";
+        else output = enemy.getName() + " dealt " + damage + " to " + fight.getPlayer().getName();
+        return output;
+    }
+
+    /**
      * Allows the player to change weapon during the fight
      * @param player the player that changes weapon
      * @param fight the fight to process
      * @param weapon the weapon chosen by the player
+     * @throws IllegalArgumentException if any of the parameters is null
      */
     public void changeEquipment(PlayerFighter player, Fight fight, Equipment weapon) {
         if (player == null || fight == null || weapon == null)
@@ -96,6 +115,7 @@ public class CombatService {
     /**
      * Restarts the given fight, in case of loss by the player
      * @param fight the fight to restart
+     * @throws IllegalArgumentException if the fight is null
      */
     public void restartLevel(Fight fight) {
         if (fight == null) throw new IllegalArgumentException("Fight cannot be null");

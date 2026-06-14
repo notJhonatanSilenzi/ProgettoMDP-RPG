@@ -18,6 +18,7 @@ public class BaseAdventure implements LevelManager {
     /**
      * Creates a basic adventure for a world game
      * @param levels the levels to complete in order to complete this game mode
+     * @throws IllegalArgumentException if levels is null or empty
      */
     public BaseAdventure(List<Level> levels) {
         if (levels == null || levels.isEmpty()) throw new IllegalArgumentException("Levels cannot be null or empty.");
@@ -40,8 +41,6 @@ public class BaseAdventure implements LevelManager {
 
 
     // GETTERS
-
-    public List<Level> getLevels() { return levels; }
 
     @Override
     public Level getCurrentLevel() { return currentLevel; }

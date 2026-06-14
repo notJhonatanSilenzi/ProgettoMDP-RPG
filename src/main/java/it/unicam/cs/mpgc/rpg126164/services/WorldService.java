@@ -29,6 +29,13 @@ public class WorldService {
     private final LevelRepository levelRepository;
     private final LevelPrizeRepository levelPrizeRepository;
 
+    /**
+     * Creates a world service
+     * @param weaponRepository the weapon repository
+     * @param potionRepository the potion repository
+     * @param levelRepository the level repository
+     * @param levelPrizeRepository the level-prize associations repository
+     */
     public WorldService(WeaponRepository weaponRepository, PotionRepository potionRepository,LevelRepository levelRepository, LevelPrizeRepository levelPrizeRepository) {
         this.weaponRepository = weaponRepository;
         this.potionRepository = potionRepository;
@@ -40,8 +47,11 @@ public class WorldService {
      * Builds a world game for a new gameplay, with a new player character
      * @param player the player's character
      * @return a new world game
+     * @throws IllegalArgumentException if the player is null
      */
     public WorldGame buildNewWorldGame(PlayerFighter player) {
+        if (player == null) throw new IllegalArgumentException("Player cannot be null");
+
         WorldGame worldGame = new BaseWorldGame(buildAdventure(), buildNewEmporium(), new SaveSlot());
         worldGame.enter(player);
         return worldGame;
@@ -51,8 +61,11 @@ public class WorldService {
      * Builds a world game, based on the last game state
      * @param gameState the game state of the last session
      * @return the last stated world game
+     * @throws IllegalArgumentException if the game state is null
      */
     public WorldGame buildSavedWorldGame(GameState gameState) {
+        if (gameState == null) throw new IllegalArgumentException("GameState cannot be null");
+
         LevelManager adventure = buildAdventure();
         adventure.setCurrentLevel(gameState.currentLevelIndex());
         WorldGame worldGame = new BaseWorldGame(adventure, buildSavedEmporium(gameState), new SaveSlot());
@@ -97,12 +110,22 @@ public class WorldService {
      * Builds an emporium, according to the last saved game state
      * @param gameState the last game state saved
      * @return the last saved emporium
+     * @throws IllegalArgumentException if the game state is null
      */
-    private Market buildSavedEmporium(GameState gameState) { return new Emporium(gameState.emporiumInventory()); }
+    private Market buildSavedEmporium(GameState gameState) {
+        if (gameState == null) throw new IllegalArgumentException("GameState cannot be null");
+
+        return new Emporium(gameState.emporiumInventory());
+    }
 
     /**
      * Makes the player enter into the market of the given world game
      * @param worldGame the world game
+     * @throws IllegalArgumentException if the world game is null
      */
-    public void enterMarket(WorldGame worldGame) { worldGame.enterMarket(); }
+    public void enterMarket(WorldGame worldGame) {
+        if (worldGame == null) throw new IllegalArgumentException("WorldGame cannot be null");
+
+        worldGame.enterMarket();
+    }
 }

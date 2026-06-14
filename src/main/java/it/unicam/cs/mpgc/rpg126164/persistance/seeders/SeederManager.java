@@ -22,7 +22,7 @@ public class SeederManager {
     /**
      * Checks if the session needs to be seeded with data, and if so it seeds the data in the
      * database
-     * @param session the session to be seeded
+     * @param session the current hibernate session
      */
     public void seedIfNecessary(Session session) {
         long count = session.createQuery("SELECT COUNT(e) FROM Enemy e", Long.class)
@@ -33,7 +33,7 @@ public class SeederManager {
 
     /**
      * Seeds all the data using the methods of the seeders
-     * @param session the session that receives the data from the seeders
+     * @param session the current hibernate session
      */
     private void seedAll(Session session) {
         for (Seeder seeder : seeders) seeder.seed(session);

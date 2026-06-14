@@ -43,6 +43,7 @@ public class Wallet implements MoneyCollector, Serializable {
     @Override
     public boolean canAfford(int n) { return amount >= n; }
 
+
     // GETTERS
 
     @Override

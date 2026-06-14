@@ -10,6 +10,7 @@ import java.util.UUID;
  * This class works as an association class for the db, giving information on the enemies to create, when
  * the given level will be initialized from the database
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "level_enemy")
 public class LevelEnemy {
@@ -33,6 +34,7 @@ public class LevelEnemy {
      * @param level the given level
      * @param enemy the given enemy
      * @param quantity the amount of the given enemy in this level
+     * @throws IllegalArgumentException if the parameters are null or negative
      */
     public LevelEnemy(BaseLevel level, Enemy enemy, int quantity) {
         if (level == null || enemy == null || quantity <= 0)
@@ -52,6 +54,4 @@ public class LevelEnemy {
     public BaseLevel getLevel() { return level; }
 
     public Enemy getEnemy() { return enemy; }
-
-    public int getQuantity() { return quantity; }
 }

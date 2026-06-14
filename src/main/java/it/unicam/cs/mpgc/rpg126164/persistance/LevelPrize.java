@@ -10,6 +10,7 @@ import java.util.UUID;
  * This class works as a level-prize association for the database, in order to recreate the correct
  * item stack of prizes
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "level_prizes")
 public class LevelPrize {
@@ -34,6 +35,7 @@ public class LevelPrize {
      * @param level the level
      * @param potion the prize
      * @param quantity the prize's quantity
+     * @throws IllegalArgumentException if the arguments are null or empty
      */
     public LevelPrize(BaseLevel level, Potion potion, int quantity) {
         if (level == null || potion == null || quantity <= 0)

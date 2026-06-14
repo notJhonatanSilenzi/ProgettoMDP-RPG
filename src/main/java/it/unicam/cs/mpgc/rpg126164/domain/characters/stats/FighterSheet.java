@@ -25,6 +25,8 @@ public class FighterSheet implements CharacterSheet, Serializable {
      * @param ATK the attack
      * @param DF the defense
      * @param evadeChance the chance to evade an attack, between 0 and 1
+     * @throws IllegalArgumentException if any of the parameters is 0, and if evade chance isn't
+     * between 0 and 1
      */
     public FighterSheet(int HP, int HP_MAX, int ATK, int DF, double evadeChance) {
         if (HP_MAX <= 0 || ATK <= 0 || DF <= 0 || HP != HP_MAX || evadeChance < 0 || evadeChance > 1)
@@ -87,7 +89,7 @@ public class FighterSheet implements CharacterSheet, Serializable {
     }
 
     @Override
-    public boolean isAlive() { return this.getHP() > 0; }
+    public boolean isDead() { return this.getHP() <= 0; }
 
     @Override
     public boolean hasEvaded() {

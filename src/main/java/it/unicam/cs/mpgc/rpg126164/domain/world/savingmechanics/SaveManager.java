@@ -15,6 +15,7 @@ public interface SaveManager {
     /**
      * Loads the game from the last saved state
      * @return the last saved state of the game
+     * @throws IllegalStateException if there's no save file in the game
      */
     GameState load();
 

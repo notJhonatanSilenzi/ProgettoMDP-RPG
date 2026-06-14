@@ -16,7 +16,8 @@ public interface MoneyCollector {
     /**
      * This method allows to spend a certain amount of money
      * @param n the amount of money that the character is spending
-     * @throws IllegalArgumentException if n is greater than the current amount
+     * @throws IllegalArgumentException if n is greater than the current amount, means the wallet can't
+     * afford the buying
      */
     void spend(int n);
 

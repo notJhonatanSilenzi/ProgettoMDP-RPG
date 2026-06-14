@@ -4,7 +4,8 @@ import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 
 /**
- * This class works as a session, and it contains a reference to the current world game
+ * This class works as a session, and it contains a reference to the current world game and the current
+ * fight, based on the current level progression
  */
 public class GameSession {
 

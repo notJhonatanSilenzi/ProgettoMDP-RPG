@@ -19,10 +19,10 @@ public class Inventory implements InventoryBehaviour, Serializable {
     /**
      * Creates an inventory
      * @param items the starting items collection
+     * @throws IllegalArgumentException if the items collection is null
      */
     public Inventory(Map<Item, ItemStack> items) {
-        if (items == null)
-            throw new IllegalArgumentException("Invalid parameters for inventory");
+        if (items == null) throw new IllegalArgumentException("Invalid parameters for inventory");
 
         this.items = items;
     }
@@ -34,8 +34,10 @@ public class Inventory implements InventoryBehaviour, Serializable {
         Item item = stack.getItem();
         // Item is already in the inventory
         if (this.items.containsKey(item)) {
-            ItemStack itemStack = this.items.get(item);
-            itemStack.setCount(Math.min(itemStack.getCount() + stack.getCount(), item.getMaxAmount()));
+            ItemStack itemStack = this.items.get(item); // If the max amount has already been reached, throw exception
+            if ((itemStack.getCount() + stack.getCount()) > item.getMaxAmount())
+                throw new RuntimeException("The maximum amount of items exceeded");
+            else itemStack.setCount(itemStack.getCount() + stack.getCount());
         } else this.items.put(stack.getItem(), stack); // Item isn't in the inventory
     }
 
@@ -62,7 +64,6 @@ public class Inventory implements InventoryBehaviour, Serializable {
         return items.get(stack.getItem()).getCount() + stack.getCount() <= stack.getItem().getMaxAmount();
     }
 
-
     @Override
     public int getWeaponCount() {
         int count = 0;
@@ -71,7 +72,6 @@ public class Inventory implements InventoryBehaviour, Serializable {
                 count += 1;
         return count;
     }
-
 
 
     // GETTERS

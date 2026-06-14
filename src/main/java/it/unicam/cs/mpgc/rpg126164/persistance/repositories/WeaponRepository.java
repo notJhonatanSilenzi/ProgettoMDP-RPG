@@ -26,17 +26,6 @@ public class WeaponRepository {
     }
 
     /**
-     * Finds the weapon, given the id
-     * @param id the id of the weapon
-     * @return the complete weapon
-     */
-    public Weapon findById(String id) {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.find(Weapon.class, id);
-        }
-    }
-
-    /**
      * Finds all the weapons in the database
      * @return the list of all weapons in the database
      */

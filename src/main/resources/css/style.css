@@ -1,3 +1,7 @@
+/*
+This class contains all the custom styles in CSS for JavaFX, in order to custom the UI for a better
+experience.
+*/
 
 /* ===================================== BASE STYLE ===================================== */
 
@@ -265,4 +269,34 @@
     -fx-text-fill: #f2e6c9;
     -fx-font-family: "Palatino Linotype", cursive;
     -fx-font-size: 12px;
+}
+
+
+/* ===================================== SCROLL BARS STYLE ===================================== */
+
+.scroll-bar:vertical,
+.scroll-bar:horizontal { /* General Scroll Bar style */
+    -fx-background-color: transparent;
+    -fx-pref-width: 12px;
+    -fx-pref-height: 12px;
+}
+.scroll-bar .track { /* Scroll Bar Trace style */
+    -fx-background-color: rgba(0, 0, 0, 0.35);
+    -fx-background-radius: 6;
+}
+.scroll-bar .thumb { /* Scroll Bar Thumb style */
+    -fx-background-color: linear-gradient(to bottom, #c2a76b, #8c6a3d);
+    -fx-background-radius: 6;
+}
+.scroll-bar .thumb:hover { /* Scroll Bar Thumb Hover style */
+    -fx-background-color: #e0c07a;
+}
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button { /* Scroll Bar Buttons style*/
+    -fx-background-color: transparent;
+    -fx-padding: 2;
+}
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow { /* Scroll Bar Arrows style */
+    -fx-background-color: #c2a76b;
 }

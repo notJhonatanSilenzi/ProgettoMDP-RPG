@@ -9,7 +9,7 @@ public interface Seeder {
 
     /**
      * Adds persistence data to the given session
-     * @param session the session that receives the data to persist
+     * @param session the current hibernate session
      */
     void seed(Session session);
 }

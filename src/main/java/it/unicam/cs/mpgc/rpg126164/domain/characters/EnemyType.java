@@ -1,17 +1,17 @@
 package it.unicam.cs.mpgc.rpg126164.domain.characters;
 
 /**
- * This enum represents the three types of enemies the getPlayer can face off, and returns a multiplier to adapt the
+ * This enum represents the three types of enemies the player can face off, and returns a multiplier to adapt the
  * stats for the gameplay
  */
 public enum EnemyType {
     /**
-     * The standard type of enemies, a bit weaker than the getPlayer. The most common in the game
+     * The standard type of enemies, a bit weaker than the player. The most common in the game
      */
     NORMAL(0.5, 40),
 
     /**
-     * A type of enemy stronger than the normal one, with a bit higher stats than the getPlayer. They're rare in
+     * A type of enemy stronger than the normal one, with a bit higher stats than the player. They're rare in
      * the game, more rare than normal enemies
      */
     MEDIUM(0.75, 80),
@@ -32,11 +32,15 @@ public enum EnemyType {
     /**
      * Gets the multiplier, given the type of enemy
      * @param multiplier the multiplier to adapt game stats
+     * @param goldForDefeat the amount of gold that the player receives, if defeats the enemy
      */
     EnemyType(double multiplier, int goldForDefeat) {
         this.multiplier = multiplier;
         this.goldForDefeat = goldForDefeat;
     }
+
+
+    // GETTERS
 
     public double getMultiplier() { return multiplier; }
 

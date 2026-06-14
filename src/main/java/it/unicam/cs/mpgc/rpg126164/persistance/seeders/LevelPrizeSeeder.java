@@ -21,7 +21,7 @@ public class LevelPrizeSeeder implements Seeder {
 
     /**
      * Seeds the data for the first level, associating it with its prize
-     * @param session the session to seed data with
+     * @param session the current hibernate session
      */
     private void seedLevel1(Session session) {
         BaseLevel level1 = this.getLevel(session, "Level 1 - Old Ruins");
@@ -33,7 +33,7 @@ public class LevelPrizeSeeder implements Seeder {
 
     /**
      * Seeds the data for the second level, associating it with its prize
-     * @param session the session to seed data with
+     * @param session the current hibernate session
      */
     private void seedLevel2(Session session) {
         BaseLevel level2 = this.getLevel(session, "Level 2 - Dry Desert");
@@ -47,7 +47,7 @@ public class LevelPrizeSeeder implements Seeder {
 
     /**
      * Seeds the data for the third level, associating it with its prize
-     * @param session the session to seed data with
+     * @param session the current hibernate session
      */
     private void seedLevel3(Session session) {
         BaseLevel level3 = this.getLevel(session, "Level 3 - Lava Cave");
@@ -59,7 +59,7 @@ public class LevelPrizeSeeder implements Seeder {
 
     /**
      * Seeds the data for the fourth level, associating it with its prize
-     * @param session the session to seed data with
+     * @param session the current hibernate session
      */
     private void seedLevel4(Session session) {
         BaseLevel level4 = this.getLevel(session, "Level 4 - Mystic Forest");
@@ -71,7 +71,7 @@ public class LevelPrizeSeeder implements Seeder {
 
     /**
      * Queries the level, given the name
-     * @param session the session to query
+     * @param session the current hibernate session
      * @param name the name
      * @return the complete level
      */
@@ -83,7 +83,7 @@ public class LevelPrizeSeeder implements Seeder {
 
     /**
      * Creates a potion, querying the session with a given name
-     * @param session the session to query
+     * @param session the current hibernate session
      * @param name the potion name
      * @return the complete potion
      */

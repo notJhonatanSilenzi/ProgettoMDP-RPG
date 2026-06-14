@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg126164.domain.world.gameplay;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
@@ -8,7 +7,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 
 /**
  * This class represents an implementation of the Market interface, and it works as an emporium for the world game.
- * In this area, players can enter to buy and sell items, and it's represented by the getPlayer in the market and by
+ * In this area, players can enter to buy and sell items, and it's represented by the player in the market and by
  * the inventory with the items on sale
  */
 public class Emporium implements Market {
@@ -18,6 +17,8 @@ public class Emporium implements Market {
 
     /**
      * Creates an emporium for this world
+     * @param itemsForSale the initial inventory of items in the emporium
+     * @throws IllegalArgumentException if the inventory is null or empty
      */
     public Emporium(InventoryBehaviour itemsForSale) {
         if (itemsForSale == null) throw new IllegalArgumentException("Items for sale cannot be null");
@@ -37,19 +38,19 @@ public class Emporium implements Market {
     public void buy(ItemStack itemStack) {
         if (itemStack == null)
             throw new IllegalArgumentException("Item stack cannot be null");
-        if (this.player == null) throw new IllegalStateException("No getPlayer is in the emporium");
+        if (this.player == null) throw new IllegalStateException("No player is in the emporium");
 
-        if (!this.canAfford(itemStack)) throw new RuntimeException("Can't afford, item already in possession or not enough money");
+        if (!this.canAfford(itemStack)) throw new RuntimeException("Can't afford, item already in max amount or not enough money");
 
         itemsForSale.drop(itemStack);
         player.getInventory().collect(itemStack);
-        player.getMoneyCollector().spend(itemStack.getCount() * itemStack.getItem().getTradeValue());;
+        player.getMoneyCollector().spend(itemStack.getCount() * itemStack.getItem().getTradeValue());
     }
 
     @Override
     public void sell(ItemStack itemStack) {
         if (itemStack == null) throw new IllegalArgumentException("Item stack cannot be null");
-        if (this.player == null) throw new IllegalStateException("No getPlayer is in the emporium");
+        if (this.player == null) throw new IllegalStateException("No player is in the emporium");
 
         if (itemStack.getItem() instanceof Equipment)
             if (player.getInventory().getWeaponCount() <= 1)

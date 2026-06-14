@@ -2,16 +2,8 @@ package it.unicam.cs.mpgc.rpg126164;
 
 import it.unicam.cs.mpgc.rpg126164.gui.GameSession;
 import it.unicam.cs.mpgc.rpg126164.services.*;
+import it.unicam.cs.mpgc.rpg126164.services.utils.GameBootstrap;
 import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 /**
  * In this class, the game gets initialized through the game bootstrap. It also initializes all the
@@ -19,8 +11,13 @@ import javafx.stage.Stage;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    /**
+     * Builds the game services, the game bootstrap and the game session
+     * @param args the args
+     */
+    static void main(String[] args) {
 
+        // ============================ SERVICES AND SESSION ============================
         GameBootstrap bootstrap = new GameBootstrap();
         GameService gameService = bootstrap.initGamePlay();
         WorldService worldService = bootstrap.initWorldGame();
@@ -29,6 +26,7 @@ public class Main {
         CombatService combatService = bootstrap.initCombat();
         GameSession session = new GameSession();
 
+        // ============================ APPLICATION SETUP ============================
         RPGApplication.setGameService(gameService);
         RPGApplication.setWorldService(worldService);
         RPGApplication.setMarketService(marketService);

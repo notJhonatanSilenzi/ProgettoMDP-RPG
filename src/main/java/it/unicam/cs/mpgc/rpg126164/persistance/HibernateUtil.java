@@ -14,9 +14,9 @@ import org.hibernate.cfg.Configuration;
 public class HibernateUtil {
 
     /**
-     * Creates a SessionFactory with the annotated class. It is a static final variable, so it will
-     * be initialized only once and shared across the application. It annotates weapons, potions, enemies
-     * and levels
+     * Creates a SessionFactory with the annotated classes. It is a static final variable, so it will
+     * be initialized only once at the start of the application. It annotates weapons, potions, enemies,
+     * levels and relationships level-enemy and level-prize
      */
     private static final SessionFactory sessionFactory =
             new Configuration()

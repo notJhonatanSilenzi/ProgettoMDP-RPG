@@ -10,44 +10,50 @@ public interface CharacterSheet {
     /**
      * This method allows to get damage from other fighting characters
      * @param damage the hp that this character loses
+     * @throws IllegalArgumentException if the damage is below zero
      */
     void damage(int damage);
 
     /**
      * This method allows this character to heal himself
      * @param heal the hp that this character gains
+     * @throws IllegalArgumentException if the damage is below zero
      */
     void heal(int heal);
 
     /**
      * This method allows to increase the attack of this character
      * @param increase the additive of ATK that this character gains
+     * @throws IllegalArgumentException if the damage is below zero
      */
     void increaseAttack(int increase);
 
     /**
      * This method allows to decrease the attack of this character
      * @param decrease the additive of ATK that this character loses
+     * @throws IllegalArgumentException if the damage is below zero
      */
     void decreaseAttack(int decrease);
 
     /**
      * This method allows to increase the defense of this character
      * @param increase the additive of DF that this character gains
+     * @throws IllegalArgumentException if the damage is below zero
      */
     void increaseDefense(int increase);
 
     /**
      * This method allows to decrease the defense of this character
      * @param decrease the additive of DF that this character loses
+     *     * @throws IllegalArgumentException if the damage is below zero
      */
     void decreaseDefense(int decrease);
 
     /**
-     * This method allows to check if this character is still alive
-     * @return true if the character is still alive, false otherwise
+     * This method allows to check if this character is dead
+     * @return true if the character is dead, false otherwise
      */
-    boolean isAlive();
+    boolean isDead();
 
     /**
      * Uses the evadeChance field to determine if the character has evaded during a fight, so he doesn't receive

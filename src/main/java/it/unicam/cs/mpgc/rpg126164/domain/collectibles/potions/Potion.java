@@ -11,6 +11,7 @@ import java.util.UUID;
  * This class represents a generic potions, and it can be consumed to benefit of the specific effect. It implements
  * the Consumable interface, and extends the AbstractItem abstract class
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "potions")
 public class Potion implements Consumable, Serializable {
@@ -52,6 +53,10 @@ public class Potion implements Consumable, Serializable {
      * @param maxAmount the maximum amount reachable in an item stack
      * @param tradeValue its value in the market
      * @param targetType the type of target that this effect can be applied to
+     * @param statsType the type of stat that the potion modifies
+     * @param statsModifier the amount of stat that this potion takes away or adds to the sheet
+     * @throws IllegalArgumentException if the given parameters are null, empty, too short on character
+     * count or numeric values below zero
      */
     public Potion(String name, String description, int maxAmount, int tradeValue,
                   PotionTargetType targetType, StatsType statsType, int statsModifier) {
@@ -59,7 +64,7 @@ public class Potion implements Consumable, Serializable {
         if (name == null || description == null || maxAmount <= 0 || tradeValue <= 0 ||
                 targetType == null || statsType == null || statsModifier <= 0 || name.isEmpty()
                 || description.isEmpty() || name.length() < 3 ||  description.length() < 3)
-            throw new IllegalArgumentException("Effect and target type cannot be null.");
+            throw new IllegalArgumentException("Invalid parameters");
 
         this.id = UUID.randomUUID().toString();
         this.name = name;

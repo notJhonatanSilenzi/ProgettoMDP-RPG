@@ -7,7 +7,8 @@ import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
 /**
  * This interface allows to any character that implements this interface to fight with other characters able to
  * fight, allowing to interact with the sheet and the archetype. This interface is implemented by the playable
- * characters and the enemies, and it allows access to the bonus attacks given by the current equipment
+ * characters and the enemies, according to specific interfaces, and it allows access to the bonus attacks
+ * given by the current equipment
  */
 public interface Fighter {
 

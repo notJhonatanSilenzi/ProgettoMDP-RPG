@@ -1,14 +1,9 @@
 package it.unicam.cs.mpgc.rpg126164.gui.controllers;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.Item;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 import it.unicam.cs.mpgc.rpg126164.gui.GameSession;
 import it.unicam.cs.mpgc.rpg126164.services.MarketService;
-
-import java.util.Map;
 
 /**
  * This class works as a market controller for the market service
@@ -27,19 +22,6 @@ public class MarketController {
         this.service = service;
         this.gameSession = gameSession;
     }
-
-    /**
-     * Shows the item stacks in the market's inventory
-     * @return the item stacks in stock in the market
-     */
-    public Map<Item, ItemStack> showMarketItems() { return service.showMarketItems(this.getWorldGame().getMarket()); }
-
-    /**
-     * Shows the item stacks in the player's inventory
-     * @param player the player of this session
-     * @return the item stacks of the player
-     */
-    public Map<Item, ItemStack> showPlayerItems(PlayerFighter player) { return service.showPlayerItems(player); }
 
     /**
      * Buys the given item stack for the player

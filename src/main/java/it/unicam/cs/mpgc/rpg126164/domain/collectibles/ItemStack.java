@@ -15,6 +15,8 @@ public class ItemStack implements Serializable {
      * Creates an item stack
      * @param item the referenced item
      * @param count its current amount
+     * @throws IllegalArgumentException if the item is null or if the count is below zero or above the
+     * max amount allowed for the given item
      */
     public ItemStack(Item item, int count) {
         if (item == null || count <= 0 || count > item.getMaxAmount())
@@ -23,6 +25,7 @@ public class ItemStack implements Serializable {
         this.item = item;
         this.count = count;
     }
+
 
     // GETTERS AND SETTERS
 

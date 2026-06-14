@@ -8,7 +8,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.combat.Fight;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 import it.unicam.cs.mpgc.rpg126164.gui.GameSession;
 import it.unicam.cs.mpgc.rpg126164.services.CombatService;
-import it.unicam.cs.mpgc.rpg126164.services.CombatTurnResult;
+import it.unicam.cs.mpgc.rpg126164.services.utils.CombatTurnResult;
 
 /**
  * This class works as a controller for the combat service
@@ -29,8 +29,6 @@ public class CombatController {
         this.session = session;
     }
 
-    public void setLastTurnResult(CombatTurnResult result) { this.lastTurnResult = result; }
-
     /**
      * Starts the current fight
      */
@@ -38,6 +36,7 @@ public class CombatController {
 
     /**
      * Makes the player attack the enemy, and then the player may receive a counterattack by the target
+     * @param enemy the enemy attacked by the player
      */
     public CombatTurnResult playerAttackEnemy(EnemyFighter enemy) {
         return this.service.playerAttackEnemy(
@@ -49,6 +48,8 @@ public class CombatController {
     /**
      * Makes the player consume a potion
      * @param potion the potion to consume
+     * @param target the target that receives the potion's effect
+     * @return the last combat turn result for the UI
      */
     public CombatTurnResult playerConsumesPotion(Consumable potion, Fighter target) {
         return this.service.playerConsumesPotion(
@@ -87,5 +88,15 @@ public class CombatController {
      */
     public Fight getCurrentFight() { return session.getCurrentFight(); }
 
+    /**
+     * Returns the last combat turn result
+     * @return the last combat turn result
+     */
     public CombatTurnResult getLastTurnResult() { return lastTurnResult; }
+
+    /**
+     * Sets the given combat result as the current last turn result
+     * @param result the last combat result turn to update
+     */
+    public void setLastTurnResult(CombatTurnResult result) { this.lastTurnResult = result; }
 }

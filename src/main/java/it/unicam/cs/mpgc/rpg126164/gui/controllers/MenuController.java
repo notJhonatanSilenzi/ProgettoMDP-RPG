@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg126164.gui.controllers;
 
-import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.GameState;

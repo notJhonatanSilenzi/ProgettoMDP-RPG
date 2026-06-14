@@ -3,8 +3,6 @@ package it.unicam.cs.mpgc.rpg126164.persistance.seeders;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.Enemy;
 import it.unicam.cs.mpgc.rpg126164.domain.gamemechanics.BaseLevel;
 import it.unicam.cs.mpgc.rpg126164.persistance.LevelEnemy;
-import it.unicam.cs.mpgc.rpg126164.persistance.repositories.EnemyRepository;
-import it.unicam.cs.mpgc.rpg126164.persistance.repositories.LevelRepository;
 import org.hibernate.Session;
 
 /**
@@ -24,7 +22,7 @@ public class LevelEnemySeeder implements Seeder {
 
     /**
      * Seeds all the info about level 1
-     * @param session the session used to persist data
+     * @param session the current hibernate session
      */
     private void seedLevel1(Session session) {
         BaseLevel level1 = getLevel(session, "Level 1 - Old Ruins");
@@ -36,7 +34,7 @@ public class LevelEnemySeeder implements Seeder {
 
     /**
      * Seeds all the info about level 2
-     * @param session the session used to persist data
+     * @param session the current hibernate session
      */
     private void seedLevel2(Session session) {
         BaseLevel level2 = getLevel(session, "Level 2 - Dry Desert");
@@ -50,7 +48,7 @@ public class LevelEnemySeeder implements Seeder {
 
     /**
      * Seeds all the info about level 3
-     * @param session the session used to persist data
+     * @param session the current hibernate session
      */
     private void seedLevel3(Session session) {
         BaseLevel level3 = getLevel(session, "Level 3 - Lava Cave");
@@ -62,7 +60,7 @@ public class LevelEnemySeeder implements Seeder {
 
     /**
      * Seeds all the info about level 4
-     * @param session the session used to persist data
+     * @param session the current hibernate session
      */
     private void seedLevel4(Session session) {
         BaseLevel level4 = getLevel(session, "Level 4 - Mystic Forest");
@@ -78,7 +76,7 @@ public class LevelEnemySeeder implements Seeder {
 
     /**
      * Seeds all the info about level 5
-     * @param session the session used to persist data
+     * @param session the current hibernate session
      */
     private void seedLevel5(Session session) {
         BaseLevel level5 = getLevel(session, "Level 5 - Snow Mountain");
@@ -90,7 +88,7 @@ public class LevelEnemySeeder implements Seeder {
 
     /**
      * Queries the level, given the name
-     * @param session the session to query
+     * @param session the current hibernate session
      * @param name the name
      * @return the complete level
      */
@@ -102,7 +100,7 @@ public class LevelEnemySeeder implements Seeder {
 
     /**
      * Queries the enemy, given the name
-     * @param session the session to query
+     * @param session the current hibernate session
      * @param name the name
      * @return the complete enemy
      */

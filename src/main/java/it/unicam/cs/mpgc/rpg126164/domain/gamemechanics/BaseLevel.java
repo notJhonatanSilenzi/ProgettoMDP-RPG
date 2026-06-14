@@ -12,6 +12,7 @@ import java.util.UUID;
  * This class represents a generic level in the world game. It contains a reference to the fight to complete in order
  * to move onto the next level, and also a price and a flag to assert the level is completed.
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "levels")
 public class BaseLevel implements Level {
@@ -22,9 +23,6 @@ public class BaseLevel implements Level {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
-
-    @Column(name = "enemy_count", nullable = false)
-    private int enemyCount;
 
     @Transient
     private Fight fight;
@@ -40,15 +38,13 @@ public class BaseLevel implements Level {
     /**
      * Creates a basic level in the world game
      * @param name the name of the level
-     * @param enemyCount the number of enemies that the getPlayer must defeat to complete the level
+     * @throws IllegalArgumentException if the name is null or empty
      */
-    public BaseLevel(String name, int enemyCount) {
-        if  (name == null || enemyCount <= 0 || name.isEmpty())
-            throw new IllegalArgumentException("Invalid parameters");
+    public BaseLevel(String name) {
+        if  (name == null || name.isEmpty()) throw new IllegalArgumentException("Invalid parameters");
 
         this.id = UUID.randomUUID().toString();
         this.name = name;
-        this.enemyCount = enemyCount;
         this.fight = null;
         this.prize = null;
         this.completed = false;
@@ -62,12 +58,6 @@ public class BaseLevel implements Level {
 
     @Override
     public boolean playerHasLost() { return fight.getFinalResult() == FightResult.LOSE; }
-
-    @Override
-    public void reset() {
-        fight.reset();
-        completed = false;
-    }
 
     /**
      * Gives a price to the getPlayer, if they completed the level by winning the fight

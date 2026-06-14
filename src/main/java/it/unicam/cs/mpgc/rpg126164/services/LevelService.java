@@ -40,8 +40,11 @@ public class LevelService {
      * @param player the player's character
      * @param adventure the adventure game mode
      * @return the fight for the current level
+     * @throws IllegalArgumentException if any of the arguments are null
      */
     public Fight enterLevel(PlayerFighter player, LevelManager adventure) {
+        if (player == null || adventure == null) throw new IllegalArgumentException("Null parameters");
+
         Level currentLevel = adventure.getCurrentLevel();
         List<LevelEnemy> entries = levelEnemyRepository.findByLevel(currentLevel);
         List<EnemyFighter> enemies = new ArrayList<>();
@@ -55,18 +58,23 @@ public class LevelService {
     /**
      * Shifts the current level to the next one, if the previous one has been completed
      * @param adventure the adventure mode of the game
+     * @throws IllegalArgumentException if the adventure is null
      */
     public void moveToNextLevel(LevelManager adventure) {
+        if (adventure == null) throw new IllegalArgumentException("Null parameters");
+
         adventure.nextLevel();
     }
 
     /**
      * Gives the prize of this level to the player
-     *
-     * @param player    the player's character
+     * @param player the player's character
      * @param adventure the adventure mode of this game
+     * @throws IllegalArgumentException if any of the parameters is null
      */
     public ItemStack playerReceivesPrice(PlayerFighter player, LevelManager adventure) {
+        if (player == null || adventure == null) throw new IllegalArgumentException("Null parameters");
+
         return adventure.getCurrentLevel().givePrizeToPlayer(player);
     }
 }

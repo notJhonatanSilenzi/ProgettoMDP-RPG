@@ -5,7 +5,7 @@ import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.MoneyCollector;
 
 /**
- * This interface is a specific Fighter interface for playable character
+ * This interface is a specific Fighter interface for playable characters
  */
 public interface PlayerFighter extends Fighter {
 
@@ -22,8 +22,9 @@ public interface PlayerFighter extends Fighter {
     MoneyCollector getMoneyCollector();
 
     /**
-     * Equips the given equipment as current weapon
-     * @param equipment the equipment to equip
+     * Allows to equip the given equipment as current equipment in fights
+     * @param equipment the item to equip
+     * @throws IllegalArgumentException if the given equipment is null
      */
     void equip(Equipment equipment);
 }

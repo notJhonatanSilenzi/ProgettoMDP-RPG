@@ -4,13 +4,11 @@ import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayableCharacter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.PlayerFighter;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
-import it.unicam.cs.mpgc.rpg126164.domain.inventory.EquipmentManager;
-import it.unicam.cs.mpgc.rpg126164.domain.inventory.Inventory;
-import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.GameState;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.SaveManager;
 import it.unicam.cs.mpgc.rpg126164.domain.world.savingmechanics.WorldGame;
 import it.unicam.cs.mpgc.rpg126164.persistance.repositories.*;
+import it.unicam.cs.mpgc.rpg126164.services.utils.PlayerBuilder;
 
 /**
  * This class initializes a game service, the base handler for this game. It receives all the repositories
@@ -24,6 +22,8 @@ public class GameService {
     /**
      * Creates a game service
      * @param saveManager the save slot
+     * @param pr the potion repository
+     * @param wr the weapon repository
      */
     public GameService(SaveManager saveManager, PotionRepository pr, WeaponRepository wr) {
         if (saveManager == null || pr == null || wr == null)
@@ -39,7 +39,7 @@ public class GameService {
      * @param name the name of the getPlayer's character
      * @param description its description
      * @param archetype its chosen archetype
-     * @return the new world game
+     * @return the new player for the world game
      */
     public PlayerFighter createNewGame(String name, String description, Archetype archetype) {
         PlayerBuilder builder = new PlayerBuilder(potionRepository, weaponRepository);

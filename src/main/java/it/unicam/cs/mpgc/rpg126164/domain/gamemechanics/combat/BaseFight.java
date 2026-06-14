@@ -21,8 +21,10 @@ public class BaseFight implements Fight {
 
     /**
      * Creates a base fight system between fighters
-     * @param player the getPlayer character
+     * @param player the player character
      * @param enemies the enemies to defeat
+     * @throws IllegalArgumentException if the player or the enemies list are null, or if the enemies
+     * list is empty
      */
     public BaseFight(PlayerFighter player, List<EnemyFighter> enemies) {
         if (player == null || enemies == null || enemies.isEmpty())
@@ -50,7 +52,7 @@ public class BaseFight implements Fight {
         if (target == null) throw new IllegalArgumentException("Invalid enemy index");
 
         int damage = this.applyDamage(player, target);
-        if (!target.getSheet().isAlive()) {
+        if (target.getSheet().isDead()) {
             player.getMoneyCollector().cash(target.getEnemyType().getGoldForDefeat());
             currentEnemies.remove(target);
         }
@@ -61,7 +63,7 @@ public class BaseFight implements Fight {
     @Override
     public int enemyCounterAttack(EnemyFighter enemy) {
         if (enemy == null) throw new IllegalArgumentException("Invalid enemy index");
-        if (currentEnemies.isEmpty() || !enemy.getSheet().isAlive()) return -1;
+        if (currentEnemies.isEmpty() || enemy.getSheet().isDead()) return -1;
 
         int damage = (!player.getSheet().hasEvaded()) ? this.applyDamage(enemy, player) : 0;
         updateFightStatus();
@@ -73,7 +75,7 @@ public class BaseFight implements Fight {
      * been defeated by the enemies
      */
     private void updateFightStatus() {
-        if (!player.getSheet().isAlive()) this.setResult(FightResult.LOSE);
+        if (player.getSheet().isDead()) this.setResult(FightResult.LOSE);
         else if (currentEnemies.isEmpty()) this.setResult(FightResult.WIN);
     }
 
@@ -112,7 +114,7 @@ public class BaseFight implements Fight {
 
         consumable.consume(target);
         player.getInventory().drop(new ItemStack(consumable, 1));
-        if (!target.getSheet().isAlive() && target instanceof EnemyFighter) {
+        if (target.getSheet().isDead() && target instanceof EnemyFighter) {
             player.getMoneyCollector().cash(((EnemyFighter) target).getEnemyType().getGoldForDefeat());
             this.currentEnemies.remove(target);
         }
@@ -138,7 +140,7 @@ public class BaseFight implements Fight {
 
     /**
      * Checks if the given object is equal to this fight, basing on getPlayer and enemies
-     * @param obj   the reference object with which to compare.
+     * @param obj the reference object with which to compare.
      * @return true if the two objects are equal, false otherwise
      */
     @Override

@@ -3,7 +3,6 @@ package it.unicam.cs.mpgc.rpg126164.domain.characters;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.Archetype;
 import it.unicam.cs.mpgc.rpg126164.domain.characters.stats.CharacterSheet;
 import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Equipment;
-import it.unicam.cs.mpgc.rpg126164.domain.collectibles.ItemStack;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.EquipmentManager;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.InventoryBehaviour;
 import it.unicam.cs.mpgc.rpg126164.domain.inventory.MoneyCollector;
@@ -33,8 +32,15 @@ public class PlayableCharacter extends Character implements PlayerFighter, Seria
      * @param name the name of the character
      * @param description its description
      * @param archetype the chosen archetype
+     * @param inv the initial inventory
+     * @param manager the equipment manager
+     * @param wallet the initial wallet
+     * @throws IllegalArgumentException if any of the parameters is null
      */
     public PlayableCharacter(String name, String description, Archetype archetype, InventoryBehaviour inv, EquipmentManager manager, MoneyCollector wallet) {
+        if (archetype == null || inv == null || manager == null || wallet == null)
+            throw new IllegalArgumentException("Invalid parameters");
+
         super(name, description);
         this.archetype =  archetype;
         this.sheet = archetype.getSheet();
@@ -43,13 +49,9 @@ public class PlayableCharacter extends Character implements PlayerFighter, Seria
         this.wallet = wallet;
     }
 
-    /**
-     * Allows to equip the given equipment as current equipment in fights
-     * @param equipment the item to equip
-     */
+    @Override
     public void equip(Equipment equipment) {
-        if (equipment == null)
-            throw new IllegalArgumentException("Null parameter");
+        if (equipment == null) throw new IllegalArgumentException("Null parameter");
 
         this.equipmentManager.equip(equipment);
     }

@@ -31,6 +31,7 @@ public interface Fight {
      * that the target receives, if he doesn't evade the attack
      * @param target the index of the enemy to attack
      * @return the damage dealt to the enemy
+     * @throws IllegalArgumentException if the target is null
      */
     int playerAttackEnemy(EnemyFighter target);
 
@@ -38,6 +39,7 @@ public interface Fight {
      * Simulates the counterattack action of an enemy towards the player
      * @param target the index of the enemy that counterattacks
      * @return the damage dealt to the player
+     * @throws IllegalArgumentException if the target is null
      */
     int enemyCounterAttack(EnemyFighter target);
 
@@ -48,6 +50,7 @@ public interface Fight {
      *              the player receives the effects.
      * @param consumable the consumable item to consume
      * @return the amount of stat applied to the target
+     * @throws IllegalArgumentException if the target or the consumable is null
      */
     int consumeItem(Fighter target, Consumable consumable);
 
@@ -55,6 +58,7 @@ public interface Fight {
      * Simulates the action of equipping an equipable item. This action doesn't waste turns in the fight
      * @param player the getPlayer that equips the item
      * @param equipment the item to equip
+     * @throws IllegalArgumentException if the player or the equipment is null
      */
     void equipItem(PlayerFighter player, Equipment equipment);
 

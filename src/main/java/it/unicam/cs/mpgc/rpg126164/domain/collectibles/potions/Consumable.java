@@ -15,6 +15,8 @@ public interface Consumable extends Item {
      * to the target that uses it or to other characters. The target that consumes this item must be a
      * target able to fight
      * @param target the target that consumes this consumable object
+     * @throws IllegalArgumentException if the given target is null or is invalid for this consumable
+     * item
      */
     void consume(Fighter target);
 

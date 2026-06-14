@@ -7,19 +7,23 @@ import it.unicam.cs.mpgc.rpg126164.domain.world.gameplay.Market;
 public interface WorldGame {
 
     /**
-     * This method allows the getPlayer to enter the game world, and start playing.
-     * @param character the getPlayer that enters the game world
+     * This method allows the player to enter the game world, and start playing.
+     * @param character the player that enters the game world
+     * @throws IllegalArgumentException if the player is null
+     * @throws IllegalStateException if the game already started
      */
     void enter(PlayerFighter character);
 
     /**
-     * This method allows the getPlayer to enter the market, where they can buy and sell items,
+     * This method allows the player to enter the market, where they can buy and sell items,
      * in order to obtain unique items and cash in money
+     * @throws IllegalStateException if the game hasn't started yet
      */
     void enterMarket();
 
     /**
      * Saves the current state of the game, creating a GameState DTO
+     * @throws IllegalStateException if the game hasn't started yet
      */
     void save();
 

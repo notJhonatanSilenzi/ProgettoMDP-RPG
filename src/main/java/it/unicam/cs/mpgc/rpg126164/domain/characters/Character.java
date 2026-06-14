@@ -27,10 +27,10 @@ public abstract class Character implements Serializable {
     public Character() {}
 
     /**
-     * Constructor that initializes a generic character with an id and a name
+     * Constructor that initializes a generic character with an id, a name and a description
      * @param name the character's name
      * @param description the character's description
-     * @throws IllegalArgumentException if id or name are null
+     * @throws IllegalArgumentException if name or description are null
      */
     public Character(String name, String description) {
         if (name == null || description == null)
@@ -43,7 +43,7 @@ public abstract class Character implements Serializable {
 
     /**
      * Checks if the given object is equal to this character, basing on id
-     * @param obj   the reference object with which to compare.
+     * @param obj the reference object with which to compare.
      * @return true if the two objects are the same, false otherwise
      */
     @Override
@@ -59,6 +59,7 @@ public abstract class Character implements Serializable {
      */
     @Override
     public int hashCode() { return Objects.hash(this.getId()); }
+
 
     // GETTERS
 

@@ -7,10 +7,11 @@ import it.unicam.cs.mpgc.rpg126164.domain.collectibles.equipment.Weapon;
 import jakarta.persistence.*;
 
 /**
- * This class represents an NPC character able to fight with the getPlayer, and it's similar to playable characters
- * in its representation. The difference is that it can't change weapon and doesn't have an inventory. There
- * are three types of enemies, and the type influences the stats in the sheet
+ * This class represents an NPC character able to fight with the player, and it's similar to playable characters
+ * in its representation. The difference is that it can't change weapon and doesn't have an inventory and a wallet.
+ * There are three types of enemies, and the type influences the stats in the sheet
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "enemies")
 public class Enemy extends Character implements EnemyFighter {
@@ -36,8 +37,12 @@ public class Enemy extends Character implements EnemyFighter {
      * @param equipment its weapon
      * @param archetype its archetype, which influences the sheet creation
      * @param type its type, which influences the amount of stats to adapt its strength
+     * @throws IllegalArgumentException if any of the parameters is null
      */
     public Enemy(String name, String description, Weapon equipment, Archetype archetype, EnemyType type) {
+        if (equipment == null ||  archetype == null || type == null)
+            throw new IllegalArgumentException("Invalid parameters");
+
         super(name, description);
         this.equipment = equipment;
         this.archetype = archetype;
@@ -71,7 +76,4 @@ public class Enemy extends Character implements EnemyFighter {
 
     @Override
     public EnemyType getEnemyType()  { return this.type; }
-
-    @Override
-    public int getGoldForDefeat() { return this.type.getGoldForDefeat(); }
 }

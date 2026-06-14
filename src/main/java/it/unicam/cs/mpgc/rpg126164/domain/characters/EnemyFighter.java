@@ -10,10 +10,4 @@ public interface EnemyFighter extends Fighter {
      * @return the type of enemy
      */
     EnemyType getEnemyType();
-
-    /**
-     * Returns the amount of money that a playable character will gain if this enemy gets defeated
-     * @return the amount of money for the defeat
-     */
-    int getGoldForDefeat();
 }
