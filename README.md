@@ -3,6 +3,8 @@ Applicativo per gioco RPG. Progetto per il corso Metodologie di Programmazione 2
 UNICAM - Università degli Studi di Camerino
 Corso di laurea triennale in Informatica
 
+
+
 # MDP-RPG
 This project is an application for a Role Play Game (RPG), and it allows to play to a RPG through an UI. It allows to create your own character, access to different areas of the game and especially to fight with the enemies through a world game based on levels. This is a scolastic project for a university exam in UNICAM.
 
