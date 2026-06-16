@@ -54,11 +54,15 @@ public class BaseWorldGame implements WorldGame {
     public void save() {
         if (this.player == null) throw new IllegalArgumentException("Game not started");
 
+        int levelIndexToSave = this.levelManager.getCurrentLevelIndex();
+        if (this.levelManager.getCurrentLevel().isCompleted() && !this.levelManager.isLastLevel())
+            levelIndexToSave++;
+
         this.saveManager.save(
                 new GameState(
                         this.player,
                         this.levelManager.getCurrentLevel().getId(),
-                        this.levelManager.getCurrentLevelIndex(),
+                        levelIndexToSave,
                         this.market.getWarehouse()
                 )
         );

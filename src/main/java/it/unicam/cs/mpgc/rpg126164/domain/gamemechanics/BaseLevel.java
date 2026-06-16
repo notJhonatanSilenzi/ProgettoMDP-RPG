@@ -68,9 +68,13 @@ public class BaseLevel implements Level {
         if (player == null) throw new IllegalArgumentException("Invalid parameters");
 
         if (prize == null) return null;
+        if (completed) return prize;
 
         if (playerHasWon()) {
-            player.getInventory().collect(prize);
+            if (!player.getInventory().canAdd(prize))
+                return prize; // oppure gestisci messaggio "inventory full"
+
+            player.getInventory().collect(new ItemStack(prize.getItem(), prize.getCount()));
             completed = true;
         }
         return prize;
